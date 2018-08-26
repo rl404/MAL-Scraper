@@ -21,7 +21,9 @@ $url = "https://myanimelist.net/" . $_GET['type'] . "/" . $_GET['id'];
 //     exit();
 // }
 
-$html = HtmlDomParser::file_get_html($url);
+$html = HtmlDomParser::file_get_html($url)->find('#content', 0)->outertext;
+$html = str_replace('&quot;', '\"', $html);
+$html = HtmlDomParser::str_get_html($html);
 
 // title, cover
 $anime_cover = $html->find('img.ac', 0);
@@ -263,3 +265,9 @@ $data = [
 ];
 
 response(200, "Success", $data);
+
+// echo "<pre>";
+// print_r($data);
+// echo "</pre>";
+
+unset($data);

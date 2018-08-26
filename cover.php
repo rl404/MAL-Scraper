@@ -34,9 +34,9 @@ foreach ($anime_list->find('table') as $anime) {
 	if ($is_anime) {
 		$separated_link = explode("/", $anime->find('.animetitle', 0)->href);
 		$anime_id = $separated_link[2];
-		$anime_id = 16157;
 
-		$image = file_get_contents('http://localhost/mal-scraper/info.php?type=anime&id=' . $anime_id);
+		$info_url = 'http://' . $_SERVER['SERVER_NAME'] . '/mal-scraper/info/anime/' . $anime_id;
+		$image = file_get_contents($info_url);
 		$image = json_decode($image, true);
 		$image = $image['data']['cover'];
 
@@ -45,7 +45,6 @@ foreach ($anime_list->find('table') as $anime) {
 
 		$style = $style0 . $style1;
 		echo $style . "\n";
-		exit;
 	}
 }
 
