@@ -1,0 +1,11 @@
+{
+    "name": "rl404/mal-scraper",
+    "authors": [
+        {
+            "name": "rl404"
+        }
+    ],
+    "require": {
+        "sunra/php-simple-html-dom-parser": "1.5.2"
+    }
+}
