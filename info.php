@@ -1,5 +1,7 @@
 <?php
 
+header('Content-Type: application/json');
+
 require "vendor/autoload.php";
 
 use Sunra\PhpSimple\HtmlDomParser;
@@ -265,9 +267,4 @@ $data = [
 ];
 
 response(200, "Success", $data);
-
-// echo "<pre>";
-// print_r($data);
-// echo "</pre>";
-
 unset($data);

@@ -8,7 +8,7 @@ function response($status,$status_message,$data)
 	$response['status_message'] = $status_message;
 	$response['data'] = $data;
 	
-	$json_response = json_encode($response, JSON_UNESCAPED_UNICODE);
+	$json_response = json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 	$json_response = str_replace("\\\\", "", $json_response);
 	echo $json_response;
 }
