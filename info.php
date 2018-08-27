@@ -79,6 +79,39 @@ while (true) {
 	$clean_info_value = preg_replace("/([\s])+/", " ", $clean_info_value);
 	$clean_info_value = str_replace(", add some", "", $clean_info_value);
 
+	if ($clean_info_type == "published" || $clean_info_type == "aired") {
+		$start_air = "";
+		$end_air = "";
+		if ($clean_info_value != "Not available") {
+			$parsed_airing = explode(" to ", $clean_info_value);
+
+			$start_air = ($parsed_airing[0] != "?") ? date('Y-m-d', strtotime($parsed_airing[0])) : "";
+			$end_air = ($parsed_airing[1] != "?") ? date('Y-m-d', strtotime($parsed_airing[1])) : "";
+		}
+
+		$clean_info_value = [];
+		$clean_info_value['start'] = $start_air;
+		$clean_info_value['end'] = $end_air;
+	}
+
+	if ($clean_info_type == "producers"
+		|| $clean_info_type == "licensors"
+		|| $clean_info_type == "studios"
+		|| $clean_info_type == "genres"
+		|| $clean_info_type == "authors"
+	) {
+		$info_temp = [];
+		$info_temp_index = 0;
+		if ($clean_info_value != "None found") {
+			foreach ($next_info->find('a') as $each_info) {
+				$info_temp[$info_temp_index]['name'] = $each_info->plaintext;
+				$info_temp[$info_temp_index]['link'] = "https://myanimelist.net" . $each_info->href;
+				$info_temp_index++;
+			}
+		}
+		$clean_info_value = $info_temp;
+	}
+
 	$info[$clean_info_type] = $clean_info_value;
 
 	$next_info = $next_info->next_sibling();
