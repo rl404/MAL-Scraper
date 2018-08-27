@@ -19,11 +19,11 @@ $_GET['status'] = empty($_GET['status']) ? 7 : $_GET['status'];
 
 $url = "https://myanimelist.net/animelist/" . $_GET['user'] . "?status=" . $_GET['status'];
 
-// $file_headers = @get_headers($url);
-// if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-//     response(400, "Invalid id", NULL);
-//     exit();
-// }
+$file_headers = @get_headers($url);
+if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+    response(400, "Invalid id", NULL);
+    exit();
+}
 
 $html = HtmlDomParser::file_get_html($url);
 
@@ -35,7 +35,7 @@ foreach ($anime_list->find('table') as $anime) {
 		$separated_link = explode("/", $anime->find('.animetitle', 0)->href);
 		$anime_id = $separated_link[2];
 
-		$info_url = 'http://' . $_SERVER['SERVER_NAME'] . '/mal-scraper/info/anime/' . $anime_id;
+		$info_url = 'http://' . $_SERVER['SERVER_NAME'] . '/info/anime/' . $anime_id;
 		$image = file_get_contents($info_url);
 		$image = json_decode($image, true);
 		$image = $image['data']['cover'];
@@ -48,5 +48,5 @@ foreach ($anime_list->find('table') as $anime) {
 	}
 }
 
-$html->clear(); 
+$html->clear();
 unset($html);

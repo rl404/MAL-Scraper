@@ -17,14 +17,15 @@ if (empty($_GET['type']) || empty($_GET['id'])) {
 
 $url = "https://myanimelist.net/" . $_GET['type'] . "/" . $_GET['id'];
 
-// $file_headers = @get_headers($url);
-// if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-//     response(400, "Invalid id", NULL);
-//     exit();
-// }
+$file_headers = @get_headers($url);
+if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+    response(400, "Invalid id", NULL);
+    exit();
+}
 
 $html = HtmlDomParser::file_get_html($url)->find('#content', 0)->outertext;
 $html = str_replace('&quot;', '\"', $html);
+$html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
 $html = HtmlDomParser::str_get_html($html);
 
 // title, cover
@@ -132,7 +133,7 @@ if ($character_area) {
 			if ($va) {
 				$va_name =  $va->find('a', 0)->plaintext;
 				$va_role =  $va->find('small', 0)->plaintext;
-				
+
 				$character[$char_index]['va_name'] = $va_name;
 				$character[$char_index]['va_role'] = $va_role;
 			}
@@ -157,7 +158,7 @@ if ($character_area) {
 			if ($va) {
 				$va_name =  $va->find('a', 0)->plaintext;
 				$va_role =  $va->find('small', 0)->plaintext;
-				
+
 				$character[$char_index]['va_name'] = $va_name;
 				$character[$char_index]['va_role'] = $va_role;
 			}
@@ -190,7 +191,7 @@ if ($staff_area) {
 			if ($va) {
 				$va_name =  $va->find('a', 0)->plaintext;
 				$va_role =  $va->find('small', 0)->plaintext;
-				
+
 				$staff[$staff_index]['va_name'] = $va_name;
 				$staff[$staff_index]['va_role'] = $va_role;
 			}
@@ -215,7 +216,7 @@ if ($staff_area) {
 			if ($va) {
 				$va_name =  $va->find('a', 0)->plaintext;
 				$va_role =  $va->find('small', 0)->plaintext;
-				
+
 				$staff[$staff_index]['va_name'] = $va_name;
 				$staff[$staff_index]['va_role'] = $va_role;
 			}
@@ -247,7 +248,7 @@ if ($song_area) {
 }
 unset($song_area);
 
-$html->clear(); 
+$html->clear();
 unset($html);
 
 $data = [
