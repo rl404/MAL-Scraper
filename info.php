@@ -106,12 +106,45 @@ $popularity = str_replace("#", "", $popularity);
 $members = $html->find('span[class="numbers members"] strong', 0)->plaintext;
 $members = str_replace(",", "", $members);
 
+// favorite
+$favorite = $html->find('div[data-id=info2]', 0)->next_sibling()->next_sibling()->next_sibling();
+$favorite_title = $favorite->find('span', 0)->plaintext;
+$favorite = $favorite->plaintext;
+$favorite = trim(str_replace($favorite_title, "", $favorite));
+$favorite = str_replace(",", "", $favorite);
+$favorite = preg_replace("/([\s])+/", " ", $favorite);
+
 // synopsis
 $synopsis = $html->find('span[itemprop=description]', 0);
 if ($synopsis) {
 	$synopsis = $synopsis->plaintext;
 	$synopsis = trim(preg_replace("/\s+/", " ", $synopsis));
 }
+
+// related
+$related = [];
+$related_area = $html->find('.anime_detail_related_anime', 0);
+foreach ($related_area->find('tr') as $rel) {
+	$rel_type = $rel->find('td', 0)->plaintext;
+	$rel_type = trim(strtolower(str_replace(":", "", $rel_type)));
+
+	$each_rel = [];
+	$each_rel_index = 0;
+	$rel_anime = $rel->find('td', 1);
+	foreach ($rel_anime->find('a') as $r) {
+		$rel_anime_link = $r->href;
+		$separated_anime_link = explode('/', $rel_anime_link);
+
+		$each_rel[$each_rel_index]['id'] = $separated_anime_link[2];
+		$each_rel[$each_rel_index]['title'] = $r->plaintext;
+		$each_rel[$each_rel_index]['type'] = $separated_anime_link[1];
+
+		$each_rel_index++;
+	}
+
+	$related[$rel_type] = $each_rel;
+}
+unset($related_area);
 
 // character + va
 $character = [];
@@ -251,21 +284,30 @@ unset($song_area);
 $html->clear();
 unset($html);
 
+// combine all data
 $data = [
 	'id' => $id,
 	'title' => $title,
 	'title2' => $title2,
-	'cover' => $cover,
-	'info' => $info,
+	'cover' => $cover
+];
+
+$data = array_merge($data, $info);
+
+$data2 = [
 	'score' => $score,
 	'rank' => $rank,
 	'popularity' => $popularity,
 	'members' => $members,
+	'favorite' => $favorite,
 	'synopsis' => $synopsis,
+	'related' => $related,
 	'character' => $character,
 	'staff' => $staff,
 	'song' => $song,
 ];
+
+$data = array_merge($data, $data2);
 
 response(200, "Success", $data);
 unset($data);
