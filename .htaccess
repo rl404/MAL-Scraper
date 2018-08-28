@@ -1,3 +1,4 @@
 RewriteEngine on
 RewriteRule ^info/([a-z]+)/([0-9]+)/?$ info.php?type=$1&id=$2 [NC,L]
+RewriteRule ^character/([a-z]+)/([0-9]+)/?$ character.php?type=$1&id=$2 [NC,L]
 RewriteRule ^cover/(.+)/([0-9]*)/?$ cover.php?user=$1&status=$2 [NC,L]

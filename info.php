@@ -19,7 +19,7 @@ $url = "https://myanimelist.net/" . $_GET['type'] . "/" . $_GET['id'];
 
 $file_headers = @get_headers($url);
 if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-    response(400, "Invalid id", NULL);
+    response(404, "Invalid id", NULL);
     exit();
 }
 
