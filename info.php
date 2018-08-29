@@ -86,7 +86,9 @@ while (true) {
 			$parsed_airing = explode(" to ", $clean_info_value);
 
 			$start_air = ($parsed_airing[0] != "?") ? date('Y-m-d', strtotime($parsed_airing[0])) : "";
-			$end_air = ($parsed_airing[1] != "?") ? date('Y-m-d', strtotime($parsed_airing[1])) : "";
+			if (count($parsed_airing) > 1) {
+				$end_air = ($parsed_airing[1] != "?") ? date('Y-m-d', strtotime($parsed_airing[1])) : "";
+			}
 		}
 
 		$clean_info_value = [];
@@ -151,7 +153,7 @@ $favorite = preg_replace("/([\s])+/", " ", $favorite);
 $synopsis = $html->find('span[itemprop=description]', 0);
 if ($synopsis) {
 	$synopsis = $synopsis->plaintext;
-	$synopsis = trim(preg_replace("/\s+/", " ", $synopsis));
+	$synopsis = trim(preg_replace('/\n[^\S\n]*/', "\n",  $synopsis));
 }
 
 // related
