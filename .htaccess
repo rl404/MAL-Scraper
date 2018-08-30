@@ -6,3 +6,4 @@ RewriteRule ^character-staff/([a-z]+)/([0-9]+)/?$ character-staff.php?type=$1&id
 RewriteRule ^cover/(.+)/([0-9]*)/?$ cover.php?user=$1&status=$2 [NC,L]
 RewriteRule ^top-anime/?$ top-anime.php [NC,L]
 RewriteRule ^top-manga/?$ top-manga.php [NC,L]
+RewriteRule ^search-anime/?$ search-anime.php [NC,L]
