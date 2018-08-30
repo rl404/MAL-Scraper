@@ -36,7 +36,8 @@ $left_area = $html->find('td', 0);
 $right_area = $left_area->next_sibling();
 
 // image
-$image = $left_area->find('img', 0)->src;
+$image = $left_area->find('img', 0);
+$image = $image ? $image->src : '';
 
 // biodata
 $biodata = $left_area->innertext;
