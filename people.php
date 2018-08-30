@@ -46,7 +46,69 @@ for ($i = 0; $i < 4; $i++) {
 	$useless_biodata .= $useless_area->outertext;
 	$useless_area = $useless_area->next_sibling();
 }
-$biodata = trim(strip_tags(str_replace($useless_biodata, '', $biodata)));
+$biodata = str_replace($useless_biodata, '', $biodata);
+$biodata = preg_replace("/([\s])+/", " ", $biodata);
+
+// given name
+$given_name = '';
+preg_match("/(Given name:<\/span>)[^<]*/", $biodata, $temp_given_name);
+if ($temp_given_name) {
+	$given_name = strip_tags($temp_given_name[0]);
+	$parsed_given_name = explode(": ", $given_name);
+	$given_name = trim($parsed_given_name[1]);
+}
+
+// family name
+$family_name = '';
+preg_match("/(Family name:<\/span>)([^<])*/", $biodata, $temp_family_name);
+if ($temp_family_name) {
+	$family_name = strip_tags($temp_family_name[0]);
+	$parsed_family_name = explode(": ", $family_name);
+	$family_name = trim($parsed_family_name[1]);
+}
+
+// alternative name
+$alternative_name = '';
+preg_match("/(Alternate names:<\/span>)([^<])*/", $biodata, $temp_alternative_name);
+if ($temp_alternative_name) {
+	$alternative_name = strip_tags($temp_alternative_name[0]);
+	$parsed_alternative_name = explode(": ", $alternative_name);
+	$alternative_name = trim($parsed_alternative_name[1]);
+	$alternative_name = explode(', ', $alternative_name);
+}
+
+// birthday
+$birthday = '';
+preg_match("/(Birthday:<\/span>)([^<])*/", $biodata, $temp_birthday);
+if ($temp_birthday) {
+	$birthday = strip_tags($temp_birthday[0]);
+	$parsed_alternative_name = explode(": ", $birthday);
+	$birthday = trim($parsed_alternative_name[1]);
+}
+
+// website
+$website = '';
+preg_match("/(Website:<\/span> <a)([^<])*/", $biodata, $temp_website);
+if ($temp_website) {
+	preg_match("/\".+\"/", $temp_website[0], $temp_website);
+	if ($temp_website[0] != '"http://"') {
+		$website = str_replace('"', '', $temp_website[0]);
+	}
+}
+
+// favorite
+$favorite = '';
+preg_match("/(Member Favorites:<\/span>)([^<])*/", $biodata, $temp_favorite);
+if ($temp_favorite) {
+	$favorite = strip_tags($temp_favorite[0]);
+	$parsed_favorite = explode(": ", $favorite);
+	$favorite = trim($parsed_favorite[1]);
+	$favorite = str_replace(',', '', $favorite);
+}
+
+// more
+$more = $left_area->find('div[class^=people-informantion-more]', 0)->plaintext;
+$more = preg_replace('/\n[^\S\n]*/', "\n", $more);
 
 // va
 $va = [];
@@ -147,7 +209,13 @@ $data = [
 	'id' => $_GET['id'],
 	'name' => $name,
 	'image' => $image,
-	'biodata' => $biodata,
+	'given_name' => $given_name,
+	'family_name' => $family_name,
+	'alternative_name' => $alternative_name,
+	'birthday' => $birthday,
+	'website' => $website,
+	'favorite' => $favorite,
+	'more' => $more,
 	'va' => $va,
 	'staff' => $staff,
 	'published_manga' => $published_manga,
