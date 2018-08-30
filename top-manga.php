@@ -17,7 +17,7 @@ if (!empty($_GET['type'])) {
 	$type = getTopMangaType($_GET['type']);
 }
 
-if (!empty($_GET['page'])) {
+if (!empty($_GET['page']) && is_numeric($_GET['page'])) {
 	$page = 50*($_GET['page']-1);
 }
 
