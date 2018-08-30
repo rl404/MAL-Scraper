@@ -14,14 +14,14 @@ $type = '';
 $page = 0;
 
 if (!empty($_GET['type'])) {
-	$type = getTopAnimeType($_GET['type']);
+	$type = getTopMangaType($_GET['type']);
 }
 
 if (!empty($_GET['page'])) {
 	$page = 50*($_GET['page']-1);
 }
 
-$url = "https://myanimelist.net/topanime.php?type=" . $type . "&limit=" . $page;
+$url = "https://myanimelist.net/topmanga.php?type=" . $type . "&limit=" . $page;
 
 $file_headers = @get_headers($url);
 if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
@@ -61,9 +61,9 @@ foreach ($top_table->find('tr[class=ranking-list]') as $each_anime) {
 	$type = $parsed_info_2[0];
 	$data[$data_index]['type'] = $type;
 
-	// episode
-	$episode = str_replace('(', '', $parsed_info_2[1]);
-	$data[$data_index]['episode'] = $episode;
+	// volume
+	$volume = str_replace('(', '', $parsed_info_2[1]);
+	$data[$data_index]['volume'] = $volume;
 
 	// date
 	$date = explode('-', $parsed_info[1]);

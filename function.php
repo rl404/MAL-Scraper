@@ -13,7 +13,7 @@ function response($status,$status_message,$data)
 	echo $json_response;
 }
 
-function getTopType($type)
+function getTopAnimeType($type)
 {
 	$converted_type = '';
 	switch ($type) {
@@ -37,6 +37,43 @@ function getTopType($type)
 			break;
 		case "6":
 			$converted_type = 'special';
+			break;
+		case "7":
+			$converted_type = 'bypopularity';
+			break;
+		case "8":
+			$converted_type = 'favorite';
+			break;
+		default:
+			$converted_type = '';
+	}
+	return $converted_type;
+}
+
+function getTopMangaType($type)
+{
+	$converted_type = '';
+	switch ($type) {
+		case "0":
+			$converted_type = '';
+			break;
+		case "1":
+			$converted_type = 'manga';
+			break;
+		case "2":
+			$converted_type = 'novels';
+			break;
+		case "3":
+			$converted_type = 'oneshots';
+			break;
+		case "4":
+			$converted_type = 'doujin';
+			break;
+		case "5":
+			$converted_type = 'manhwa';
+			break;
+		case "6":
+			$converted_type = 'manhua';
 			break;
 		case "7":
 			$converted_type = 'bypopularity';
