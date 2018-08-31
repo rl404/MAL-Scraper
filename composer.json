@@ -1,11 +1,20 @@
 {
     "name": "rl404/mal-scraper",
+    "description": "MAL web scraper",
     "authors": [
         {
-            "name": "rl404"
+            "name": "Axel Oktavian Antonio",
+            "email": "axel.rl.404@gmail.com"
         }
     ],
+    "minimum-stability": "dev",
     "require": {
-        "sunra/php-simple-html-dom-parser": "1.5.2"
+    	"php": ">=5.3.0",
+    	"sunra/php-simple-html-dom-parser": "1.5.2"
+    },
+    "autoload": {
+        "psr-0": {
+            "MalScraper": "src/"
+        }
     }
 }
