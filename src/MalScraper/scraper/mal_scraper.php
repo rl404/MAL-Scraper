@@ -7,7 +7,7 @@ define('MAX_FILE_SIZE', 100000000);
 use \DateTime;
 use Sunra\PhpSimple\HtmlDomParser;
 
-function return response($status,$status_message,$data)
+function response($status,$status_message,$data)
 {
 	header("HTTP/1.1 " . $status);
 
