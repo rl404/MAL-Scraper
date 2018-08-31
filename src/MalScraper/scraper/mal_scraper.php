@@ -7,7 +7,7 @@ define('MAX_FILE_SIZE', 100000000);
 use \DateTime;
 use Sunra\PhpSimple\HtmlDomParser;
 
-function response($status,$status_message,$data)
+function return response($status,$status_message,$data)
 {
 	header("HTTP/1.1 " . $status);
 
@@ -17,7 +17,7 @@ function response($status,$status_message,$data)
 
 	$json_response = json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 	$json_response = str_replace("\\\\", "", $json_response);
-	echo $json_response;
+	return $json_response;
 }
 
 function getTopAnimeType($type)
@@ -130,7 +130,7 @@ function getInfo($type,$id)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    response(404, "Invalid id", NULL);
+	    return response(404, "Invalid id", NULL);
 	    exit();
 	}
 
@@ -455,7 +455,7 @@ function getInfo($type,$id)
 
 	$data = array_merge($data, $data2);
 
-	response(200, "Success", $data);
+	return response(200, "Success", $data);
 	unset($data);
 }
 
@@ -465,7 +465,7 @@ function getCharacter($id)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    response(404, "Page Not Found", NULL);
+	    return response(404, "Page Not Found", NULL);
 	    exit();
 	}
 
@@ -623,7 +623,7 @@ function getCharacter($id)
 		'mangaography' => $mangaography,
 	];
 
-	response(200, "Success", $data);
+	return response(200, "Success", $data);
 	unset($data);
 }
 
@@ -633,7 +633,7 @@ function getCharacterStaff($type,$id)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    response(404, "Page Not Found", NULL);
+	    return response(404, "Page Not Found", NULL);
 	    exit();
 	}
 
@@ -763,7 +763,7 @@ function getCharacterStaff($type,$id)
 		'staff' => $staff
 	];
 
-	response(200, "Success", $data);
+	return response(200, "Success", $data);
 	unset($data);
 }
 
@@ -773,7 +773,7 @@ function getPeople($id)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    response(404, "Page Not Found", NULL);
+	    return response(404, "Page Not Found", NULL);
 	    exit();
 	}
 
@@ -976,7 +976,7 @@ function getPeople($id)
 		'published_manga' => $published_manga,
 	];
 
-	response(200, "Success", $data);
+	return response(200, "Success", $data);
 	unset($data);
 }
 
@@ -988,7 +988,7 @@ function searchAnime($q, $page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    response(404, "Invalid id", NULL);
+	    return response(404, "Invalid id", NULL);
 	    exit;
 	}
 
@@ -1039,7 +1039,7 @@ function searchAnime($q, $page=1)
 	unset($result_table);
 	unset($result_area);
 
-	response(200, "Success", $data);
+	return response(200, "Success", $data);
 	unset($data);
 }
 
@@ -1051,7 +1051,7 @@ function searchManga($q,$page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    response(404, "Invalid id", NULL);
+	    return response(404, "Invalid id", NULL);
 	    exit();
 	}
 
@@ -1103,7 +1103,7 @@ function searchManga($q,$page=1)
 	unset($result_area);
 
 
-	response(200, "Success", $data);
+	return response(200, "Success", $data);
 	unset($data);
 }
 
@@ -1115,7 +1115,7 @@ function searchPeople($q,$page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    response(404, "Invalid id", NULL);
+	    return response(404, "Invalid id", NULL);
 	    exit();
 	}
 
@@ -1156,7 +1156,7 @@ function searchPeople($q,$page=1)
 	unset($result_table);
 	unset($result_area);
 
-	response(200, "Success", $data);
+	return response(200, "Success", $data);
 	unset($data);
 }
 
@@ -1166,7 +1166,7 @@ function searchCharacter($q,$page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    response(404, "Invalid id", NULL);
+	    return response(404, "Invalid id", NULL);
 	    exit();
 	}
 
@@ -1230,7 +1230,7 @@ function searchCharacter($q,$page=1)
 		}
 	}
 
-	response(200, "Success", $data);
+	return response(200, "Success", $data);
 	unset($data);
 }
 
@@ -1245,7 +1245,7 @@ function getSeason($year=false,$season=false)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    response(404, "Invalid id", NULL);
+	    return response(404, "Invalid id", NULL);
 	    exit();
 	}
 
@@ -1340,7 +1340,7 @@ function getSeason($year=false,$season=false)
 		$data[] = $result;
 	}
 
-	response(200, "Success", $data);
+	return response(200, "Success", $data);
 	unset($data);
 }
 
@@ -1353,7 +1353,7 @@ function getTopAnime($type=0,$page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    response(404, "Invalid id", NULL);
+	    return response(404, "Invalid id", NULL);
 	    exit();
 	}
 
@@ -1412,7 +1412,7 @@ function getTopAnime($type=0,$page=1)
 	}
 	unset($top_table);
 
-	response(200, "Success", $data);
+	return response(200, "Success", $data);
 	unset($data);
 }
 
@@ -1425,7 +1425,7 @@ function getTopManga($type=0,$page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    response(404, "Invalid id", NULL);
+	    return response(404, "Invalid id", NULL);
 	    exit();
 	}
 
@@ -1484,7 +1484,7 @@ function getTopManga($type=0,$page=1)
 	}
 	unset($top_table);
 
-	response(200, "Success", $data);
+	return response(200, "Success", $data);
 	unset($data);
 }
 
@@ -1494,7 +1494,7 @@ function getCover($user,$status=7)
 
 	$file_headers = @get_headers($url);
 	if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    response(400, "Invalid id", NULL);
+	    return response(400, "Invalid id", NULL);
 	    exit();
 	}
 
