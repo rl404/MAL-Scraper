@@ -1,5 +1,7 @@
 RewriteEngine on
 RewriteRule ^info/([a-z]+)/([0-9]+)/?$ info.php?type=$1&id=$2 [NC,L]
+RewriteRule ^season/([0-9]+)/([a-z]+)/?$ season.php?year=$1&season=$2 [NC,L]
+RewriteRule ^season/?$ season.php [NC,L]
 RewriteRule ^character/([0-9]+)/?$ character.php?id=$1 [NC,L]
 RewriteRule ^people/([0-9]+)/?$ people.php?id=$1 [NC,L]
 RewriteRule ^character-staff/([a-z]+)/([0-9]+)/?$ character-staff.php?type=$1&id=$2 [NC,L]
@@ -9,3 +11,4 @@ RewriteRule ^top-manga/?$ top-manga.php [NC,L]
 RewriteRule ^search-anime/?$ search-anime.php [NC,L]
 RewriteRule ^search-manga/?$ search-manga.php [NC,L]
 RewriteRule ^search-character/?$ search-character.php [NC,L]
+RewriteRule ^search-people/?$ search-people.php [NC,L]

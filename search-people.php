@@ -20,7 +20,7 @@ if (!empty($_GET['page']) && is_numeric($_GET['page'])) {
 	$page = 50*($_GET['page']-1);
 }
 
-$url = "https://myanimelist.net/character.php?q=" . $_GET['q'] . "&show=" . $page;
+$url = "https://myanimelist.net/people.php?q=" . $_GET['q'] . "&show=" . $page;
 
 $file_headers = @get_headers($url);
 if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
@@ -43,7 +43,7 @@ while (true) {
 	// id
 	$id = $name_area->find('a', 0)->href;
 	$parsed_char_id = explode('/', $id);
-	$id = $parsed_char_id[4];
+	$id = $parsed_char_id[2];
 	$result['id'] = $id;
 
 	// name
@@ -55,31 +55,6 @@ while (true) {
 	$nickname = $nickname ? substr($nickname->plaintext, 1, strlen($nickname->plaintext)-2) : '';
 	$result['nickname'] = $nickname;
 
-	// role
-	$role = [];
-	$role_area = $result_area->find('td', 2)->find('small', 0);
-	foreach ($role_area->find('a') as $each_role) {
-		$temp_role = [];
-
-		// role id
-		$role_id = $each_role->href;
-		$parsed_role_id = explode('/', $role_id);
-		$role_id = $parsed_role_id[2];
-		$temp_role['id'] = $role_id;
-
-		// role type
-		$role_type = $parsed_role_id[1];
-
-		// role title
-		$role_title = $each_role->plaintext;
-		$temp_role['title'] = $role_title;
-
-		if ($role_title) {
-			$role[$role_type][] = $temp_role;
-		}
-	}
-	$result = array_merge($result, $role);
-
 	$data[] = $result;
 
 	$result_area = $result_area->next_sibling();
@@ -87,6 +62,8 @@ while (true) {
 		break;
 	}
 }
+unset($result_table);
+unset($result_area);
 
 response(200, "Success", $data);
 unset($data);
