@@ -14,7 +14,6 @@ class MalScraper {
 	 * @return 	json 	\scraper\getInfo
 	 */
 	public static function getInfo() {
-		header('Content-Type: application/json');
 		return call_user_func_array ( '\scraper\getInfo' , func_get_args() );
 	}
 
@@ -25,7 +24,6 @@ class MalScraper {
 	 * @return 	json 	\scraper\getCharacter
 	 */
 	public static function getCharacter() {
-		header('Content-Type: application/json');
 		return call_user_func_array ( '\scraper\getCharacter' , func_get_args() );
 	}
 
@@ -37,7 +35,6 @@ class MalScraper {
 	 * @return 	json 	\scraper\getCharacterStaff
 	 */
 	public static function getCharacterStaff() {
-		header('Content-Type: application/json');
 		return call_user_func_array ( '\scraper\getCharacterStaff' , func_get_args() );
 	}
 
@@ -48,7 +45,6 @@ class MalScraper {
 	 * @return 	json 	\scraper\getPeople
 	 */
 	public static function getPeople() {
-		header('Content-Type: application/json');
 		return call_user_func_array ( '\scraper\getPeople' , func_get_args() );
 	}
 
@@ -60,7 +56,6 @@ class MalScraper {
 	 * @return 	json 	\scraper\searchAnime
 	 */
 	public static function searchAnime() {
-		header('Content-Type: application/json');
 		return call_user_func_array ( '\scraper\searchAnime' , func_get_args() );
 	}
 
@@ -72,7 +67,6 @@ class MalScraper {
 	 * @return 	json 	\scraper\searchManga
 	 */
 	public static function searchManga() {
-		header('Content-Type: application/json');
 		return call_user_func_array ( '\scraper\searchManga' , func_get_args() );
 	}
 
@@ -84,7 +78,6 @@ class MalScraper {
 	 * @return 	json 	\scraper\searchCharacter
 	 */
 	public static function searchCharacter() {
-		header('Content-Type: application/json');
 		return call_user_func_array ( '\scraper\searchCharacter' , func_get_args() );
 	}
 
@@ -96,7 +89,6 @@ class MalScraper {
 	 * @return 	json 	\scraper\searchPeople
 	 */
 	public static function searchPeople() {
-		header('Content-Type: application/json');
 		return call_user_func_array ( '\scraper\searchPeople' , func_get_args() );
 	}
 
@@ -108,7 +100,6 @@ class MalScraper {
 	 * @return 	json 	\scraper\getSeason
 	 */
 	public static function getSeason() {
-		header('Content-Type: application/json');
 		return call_user_func_array ( '\scraper\getSeason' , func_get_args() );
 	}
 
@@ -120,7 +111,6 @@ class MalScraper {
 	 * @return 	json 	\scraper\getTopAnime
 	 */
 	public static function getTopAnime() {
-		header('Content-Type: application/json');
 		return call_user_func_array ( '\scraper\getTopAnime' , func_get_args() );
 	}
 
@@ -132,7 +122,6 @@ class MalScraper {
 	 * @return 	json 	\scraper\getTopManga
 	 */
 	public static function getTopManga() {
-		header('Content-Type: application/json');
 		return call_user_func_array ( '\scraper\getTopManga' , func_get_args() );
 	}
 
