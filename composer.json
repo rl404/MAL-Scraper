@@ -1,6 +1,6 @@
 {
     "name": "rl404/mal-scraper",
-    "description": "MAL web scraper",
+    "description": "Scrap everything from MyAnimeList web into json",
     "authors": [
         {
             "name": "Axel Oktavian Antonio",
