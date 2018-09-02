@@ -14,6 +14,10 @@ _Mal-Scraper_ is using [Sunra's](https://github.com/sunra/php-simple-html-dom-pa
     - Manga
     - Charater (from anime and manga)
     - People (voice actor, author, staff, etc)
+- Get list of anime or manga of selected
+    - Studio/producer
+    - Magazine
+    - Genre
 - Get list of character and staff involved in an anime or manga
 - Get result of searching (pagination supported)
     - Anime
@@ -45,6 +49,7 @@ _Mal-Scraper_ is using [Sunra's](https://github.com/sunra/php-simple-html-dom-pa
 ## Installation
 1. `composer require rl404/mal-scraper @dev`
 2. That's it.
+
 #### Dependencies
 - PHP 5.3+
 - [HTML DOM Parser](https://github.com/sunra/php-simple-html-dom-parser)
