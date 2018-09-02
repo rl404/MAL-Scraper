@@ -1116,8 +1116,8 @@ function getMagazine($id,$page=1)
 		$title = $name_area->find('p a', 0)->plaintext;
 		$result['title'] = $title;
 
-		// producer
-		$producer = [];
+		// author
+		$author = [];
 		$producer_area = $each_anime->find('div[class=prodsrc]', 0);
 		$temp_producer = $producer_area->find('span[class=producer]', 0);
 		foreach ($temp_producer->find('a') as $each_producer) {
@@ -1126,20 +1126,20 @@ function getMagazine($id,$page=1)
 			// prod id
 			$prod_id = $each_producer->href;
 			$parsed_prod_id = explode('/', $prod_id);
-			$temp_prod['id'] = $parsed_prod_id[3];
+			$temp_prod['id'] = $parsed_prod_id[4];
 
 			// prod name
 			$prod_name = $each_producer->plaintext;
 			$temp_prod['name'] = $prod_name;
 
-			$producer[] = $temp_prod;
+			$author[] = $temp_prod;
 		}
-		$result['producer'] = $producer;
+		$result['author'] = $author;
 
-		// episode
-		$episode = $producer_area->find('div[class=eps]', 0)->plaintext;
-		$episode = trim(str_replace(['eps', 'ep'], '', $episode));
-		$result['episode'] = $episode;
+		// volume
+		$volume = $producer_area->find('div[class=eps]', 0)->plaintext;
+		$volume = trim(str_replace(['vols', 'vol'], '', $volume));
+		$result['volume'] = $volume;
 
 		// source
 		$source = $producer_area->find('span[class=source]', 0)->plaintext;
@@ -1163,14 +1163,8 @@ function getMagazine($id,$page=1)
 		$serialization = $serialization ? $serialization->plaintext : '';
 		$result['serialization'] = $serialization;
 
-		// type
-		$info_area = $each_anime->find('.information', 0);
-		$type = $info_area->find('.info', 0)->plaintext;
-		$type = explode('-', $type);
-		$type = trim($type[0]);
-		$result['type'] = $type;
-
 		// airing start
+		$info_area = $each_anime->find('.information', 0);
 		$airing_start = $info_area->find('.info .remain-time', 0)->plaintext;
 		$result['airing_start'] = trim($airing_start);
 
@@ -1230,7 +1224,7 @@ function getGenre($type,$id,$page=1)
 			// prod id
 			$prod_id = $each_producer->href;
 			$parsed_prod_id = explode('/', $prod_id);
-			$temp_prod['id'] = $parsed_prod_id[3];
+			$temp_prod['id'] = ($type == 'anime') ? $parsed_prod_id[3] : $parsed_prod_id[4];
 
 			// prod name
 			$prod_name = $each_producer->plaintext;
@@ -1238,12 +1232,21 @@ function getGenre($type,$id,$page=1)
 
 			$producer[] = $temp_prod;
 		}
-		$result['producer'] = $producer;
+
+		if ($type == 'anime') {
+			$result['producer'] = $producer;
+		} else {
+			$result['author'] = $producer;
+		}
 
 		// episode
 		$episode = $producer_area->find('div[class=eps]', 0)->plaintext;
-		$episode = trim(str_replace(['eps', 'ep'], '', $episode));
-		$result['episode'] = $episode;
+		$episode = trim(str_replace(['eps', 'ep', 'vols', 'vol'], '', $episode));
+		if ($type == 'anime') {
+			$result['episode'] = $episode;
+		} else {
+			$result['volume'] = $episode;
+		}
 
 		// source
 		$source = $producer_area->find('span[class=source]', 0)->plaintext;
@@ -1275,12 +1278,15 @@ function getGenre($type,$id,$page=1)
 			$result['serialization'] = $serialization;
 		}
 
-		// type
 		$info_area = $each_anime->find('.information', 0);
-		$type = $info_area->find('.info', 0)->plaintext;
-		$type = explode('-', $type);
-		$type = trim($type[0]);
-		$result['type'] = $type;
+		
+		if ($type == 'anime') {
+			// type
+			$type = $info_area->find('.info', 0)->plaintext;
+			$type = explode('-', $type);
+			$type = trim($type[0]);
+			$result['type'] = $type;
+		}
 
 		// airing start
 		$airing_start = $info_area->find('.info .remain-time', 0)->plaintext;
