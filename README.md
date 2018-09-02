@@ -8,13 +8,6 @@ Well, it is created to help people get MyAnimeList data without relying on MyAni
 
 _Mal-Scraper_ is using [Sunra's](https://github.com/sunra/php-simple-html-dom-parser) HTML DOM parser and inspired by [Kylart's](https://github.com/Kylart/MalScraper) and  [Jikan's](https://github.com/jikan-me/jikan) API.
 
-#### Table of Content
-- [Features](#features)
-- [Installation](#installation)
-- [Use](#use)
-- [Method](#method)
-- [Data Model](#data-model)
-
 ### Features
 - Get information of
     - Anime
