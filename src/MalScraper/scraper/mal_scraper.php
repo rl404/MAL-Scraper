@@ -1084,9 +1084,9 @@ function searchManga($q,$page=1)
 		$type = $result_area->find('td', 2)->plaintext;
 		$result['type'] = trim($type);
 
-		// episode
-		$episode = $result_area->find('td', 3)->plaintext;
-		$result['episode'] = trim($episode);
+		// volume
+		$volume = $result_area->find('td', 3)->plaintext;
+		$result['volume'] = trim($volume);
 
 		// score
 		$score = $result_area->find('td', 4)->plaintext;
