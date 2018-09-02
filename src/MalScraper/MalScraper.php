@@ -49,6 +49,40 @@ class MalScraper {
 	}
 
 	/**
+	 * Get list of anime produced by selected studio/producer
+	 *
+	 * @param 	integer	$id 	id of studio/producer
+	 * @param 	integer	$page 	page of result list
+	 * @return 	json 	\scraper\getStudioProducer
+	 */
+	public static function getStudioProducer() {
+		return call_user_func_array ( '\scraper\getStudioProducer' , func_get_args() );
+	}
+
+	/**
+	 * Get list of manga produced by selected magazine
+	 *
+	 * @param 	integer	$id 	id of magazine
+	 * @param 	integer	$page 	page of result list
+	 * @return 	json 	\scraper\getMagazine
+	 */
+	public static function getMagazine() {
+		return call_user_func_array ( '\scraper\getMagazine' , func_get_args() );
+	}
+
+	/**
+	 * Get list of anime contain selected genre
+	 *
+	 * @param 	string	$type 	anime or manga
+	 * @param 	integer	$id 	id of genre
+	 * @param 	integer	$page 	page of result list
+	 * @return 	json 	\scraper\getGenre
+	 */
+	public static function getGenre() {
+		return call_user_func_array ( '\scraper\getGenre' , func_get_args() );
+	}
+
+	/**
 	 * Get list of result of anime search
 	 *
 	 * @param 	string	$q 		search query
