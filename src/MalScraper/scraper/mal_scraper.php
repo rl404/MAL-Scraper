@@ -1199,6 +1199,7 @@ function searchCharacter($q,$page=1)
 
 		// role
 		$role = [];
+		$role['manga'] = $role['anime'] = [];
 		$role_area = $result_area->find('td', 2)->find('small', 0);
 		foreach ($role_area->find('a') as $each_role) {
 			$temp_role = [];
