@@ -302,21 +302,37 @@ function getInfo($type,$id)
 		$character_left = $character_area->find('div[class*=fl-l]', 0);
 		if ($character_left) {
 			foreach ($character_left->find('table[width=100%]') as $each_char) {
+				$char_image = $each_char->find('tr td', 0)->find('img', 0)->getAttribute('data-src');
+
 				$char = $each_char->find('tr td', 1);
+
+				$char_id = $char->find('a', 0)->href;
+				$char_id = explode('/', $char_id);
+				$char_id = $char_id[4];
 
 				$char_name = trim(preg_replace('/\s+/', ' ', $char->find('a', 0)->plaintext));
 				$char_role = trim($char->find('small', 0)->plaintext);
 
+				$character[$char_index]['id'] = $char_id;
 				$character[$char_index]['name'] = $char_name;
 				$character[$char_index]['role'] = $char_role;
+				$character[$char_index]['image'] = $char_image;
 
 				$va = $each_char->find('table td', 0);
 				if ($va) {
+					$va_id = $va->find('a', 0)->href;
+					$va_id = explode('/', $va_id);
+					$va_id = $va_id[4];
+
 					$va_name =  $va->find('a', 0)->plaintext;
 					$va_role =  $va->find('small', 0)->plaintext;
 
+					$va_image = $each_char->find('table td', 1)->find('img', 0)->getAttribute('data-src');
+
+					$character[$char_index]['va_id'] = $va_id;
 					$character[$char_index]['va_name'] = $va_name;
 					$character[$char_index]['va_role'] = $va_role;
+					$character[$char_index]['va_image'] = $va_image;
 				}
 
 				$char_index++;
@@ -327,21 +343,37 @@ function getInfo($type,$id)
 		$character_right = $character_area->find('div[class*=fl-r]', 0);
 		if ($character_right) {
 			foreach ($character_right->find('table[width=100%]') as $each_char) {
+				$char_image = $each_char->find('tr td', 0)->find('img', 0)->getAttribute('data-src');
+
 				$char = $each_char->find('tr td', 1);
+
+				$char_id = $char->find('a', 0)->href;
+				$char_id = explode('/', $char_id);
+				$char_id = $char_id[4];
 
 				$char_name = trim(preg_replace('/\s+/', ' ', $char->find('a', 0)->plaintext));
 				$char_role = trim($char->find('small', 0)->plaintext);
 
+				$character[$char_index]['id'] = $char_id;
 				$character[$char_index]['name'] = $char_name;
 				$character[$char_index]['role'] = $char_role;
+				$character[$char_index]['image'] = $char_image;
 
 				$va = $each_char->find('table td', 0);
 				if ($va) {
+					$va_id = $va->find('a', 0)->href;
+					$va_id = explode('/', $va_id);
+					$va_id = $va_id[4];
+
 					$va_name =  $va->find('a', 0)->plaintext;
 					$va_role =  $va->find('small', 0)->plaintext;
 
+					$va_image = $each_char->find('table td', 1)->find('img', 0)->getAttribute('data-src');
+
+					$character[$char_index]['va_id'] = $va_id;
 					$character[$char_index]['va_name'] = $va_name;
 					$character[$char_index]['va_role'] = $va_role;
+					$character[$char_index]['va_image'] = $va_image;
 				}
 
 				$char_index++;
@@ -360,22 +392,21 @@ function getInfo($type,$id)
 		$staff_left = $staff_area->find('div[class*=fl-l]', 0);
 		if ($staff_left) {
 			foreach ($staff_left->find('table[width=100%]') as $each_staff) {
+				$staff_image = $each_char->find('tr td', 0)->find('img', 0)->getAttribute('data-src');
+
 				$st = $each_staff->find('tr td', 1);
+
+				$staff_id = $st->find('a', 0)->href;
+				$staff_id = explode('/', $staff_id);
+				$staff_id = $staff_id[4];
 
 				$staff_name = trim(preg_replace('/\s+/', ' ', $st->find('a', 0)->plaintext));
 				$staff_role = trim($st->find('small', 0)->plaintext);
 
+				$staff[$staff_index]['id'] = $staff_id;
 				$staff[$staff_index]['name'] = $staff_name;
 				$staff[$staff_index]['role'] = $staff_role;
-
-				$va = $each_staff->find('table td', 0);
-				if ($va) {
-					$va_name =  $va->find('a', 0)->plaintext;
-					$va_role =  $va->find('small', 0)->plaintext;
-
-					$staff[$staff_index]['va_name'] = $va_name;
-					$staff[$staff_index]['va_role'] = $va_role;
-				}
+				$staff[$staff_index]['image'] = $staff_image;
 
 				$staff_index++;
 			}
@@ -385,22 +416,21 @@ function getInfo($type,$id)
 		$staff_right = $staff_area->find('div[class*=fl-r]', 0);
 		if ($staff_right) {
 			foreach ($staff_right->find('table[width=100%]') as $each_staff) {
+				$staff_image = $each_char->find('tr td', 0)->find('img', 0)->getAttribute('data-src');
+
 				$st = $each_staff->find('tr td', 1);
+
+				$staff_id = $st->find('a', 0)->href;
+				$staff_id = explode('/', $staff_id);
+				$staff_id = $staff_id[4];
 
 				$staff_name = trim(preg_replace('/\s+/', ' ', $st->find('a', 0)->plaintext));
 				$staff_role = trim($st->find('small', 0)->plaintext);
 
+				$staff[$staff_index]['id'] = $staff_id;
 				$staff[$staff_index]['name'] = $staff_name;
 				$staff[$staff_index]['role'] = $staff_role;
-
-				$va = $each_staff->find('table td', 0);
-				if ($va) {
-					$va_name =  $va->find('a', 0)->plaintext;
-					$va_role =  $va->find('small', 0)->plaintext;
-
-					$staff[$staff_index]['va_name'] = $va_name;
-					$staff[$staff_index]['va_role'] = $va_role;
-				}
+				$staff[$staff_index]['image'] = $staff_image;
 
 				$staff_index++;
 			}
