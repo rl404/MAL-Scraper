@@ -130,7 +130,7 @@ function getInfo($type,$id)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Invalid id", NULL);
+	    return response(404, "Page Not Found", NULL);
 	    exit();
 	}
 
@@ -1168,7 +1168,7 @@ function getStudioProducer($id,$page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Invalid id", NULL);
+	    return response(404, "Page Not Found", NULL);
 	    exit();
 	}
 
@@ -1273,7 +1273,7 @@ function getMagazine($id,$page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Invalid id", NULL);
+	    return response(404, "Page Not Found", NULL);
 	    exit();
 	}
 
@@ -1371,7 +1371,7 @@ function getGenre($type,$id,$page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Invalid id", NULL);
+	    return response(404, "Page Not Found", NULL);
 	    exit();
 	}
 
@@ -1495,7 +1495,7 @@ function getAllAnimeGenre()
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Invalid id", NULL);
+	    return response(404, "Page Not Found", NULL);
 	    exit();
 	}
 
@@ -1537,7 +1537,7 @@ function getAllMangaGenre()
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Invalid id", NULL);
+	    return response(404, "Page Not Found", NULL);
 	    exit();
 	}
 
@@ -1579,7 +1579,7 @@ function getAllStudioProducer()
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Invalid id", NULL);
+	    return response(404, "Page Not Found", NULL);
 	    exit();
 	}
 
@@ -1621,7 +1621,7 @@ function getAllMagazine()
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Invalid id", NULL);
+	    return response(404, "Page Not Found", NULL);
 	    exit();
 	}
 
@@ -1665,7 +1665,7 @@ function searchAnime($q, $page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Invalid id", NULL);
+	    return response(404, "Page Not Found", NULL);
 	    exit;
 	}
 
@@ -1728,7 +1728,7 @@ function searchManga($q,$page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Invalid id", NULL);
+	    return response(404, "Page Not Found", NULL);
 	    exit();
 	}
 
@@ -1792,7 +1792,7 @@ function searchPeople($q,$page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Invalid id", NULL);
+	    return response(404, "Page Not Found", NULL);
 	    exit();
 	}
 
@@ -1843,7 +1843,7 @@ function searchCharacter($q,$page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Invalid id", NULL);
+	    return response(404, "Page Not Found", NULL);
 	    exit();
 	}
 
@@ -1923,7 +1923,7 @@ function getSeason($year=false,$season=false)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Invalid id", NULL);
+	    return response(404, "Page Not Found", NULL);
 	    exit();
 	}
 
@@ -2031,7 +2031,7 @@ function getTopAnime($type=0,$page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Invalid id", NULL);
+	    return response(404, "Page Not Found", NULL);
 	    exit();
 	}
 
@@ -2103,7 +2103,7 @@ function getTopManga($type=0,$page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Invalid id", NULL);
+	    return response(404, "Page Not Found", NULL);
 	    exit();
 	}
 
@@ -2172,7 +2172,7 @@ function getCover($user,$status=7)
 
 	$file_headers = @get_headers($url);
 	if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(400, "Invalid id", NULL);
+	    return response(400, "Page Not Found", NULL);
 	    exit();
 	}
 
