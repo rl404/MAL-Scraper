@@ -155,27 +155,18 @@ function getInfo($type,$id)
 
 	// alternative title
 	$title2 = [];
-	if (count($anime_info->find('h2')) > 2) {
-		$alter_title = $anime_info->find('h2', 0);
-		$next_title = $alter_title->next_sibling();
-		while (true) {
-			$title_type = $next_title->find('span', 0)->plaintext;
-			$clean_title_type = strtolower(str_replace(": ", "", $title_type));
 
-			$title_value = $next_title->plaintext;
-			$clean_title_value = trim(str_replace($title_type, "", $title_value));
-			$clean_title_value = preg_replace("/([\s])+/", " ", $clean_title_value);
+	// english title
+	preg_match('/(English:<\/span>)([^<]*)/', $anime_info->innertext, $english);
+	$title2['english'] = trim($english ? $english[2] : '');
 
-			$title2[$clean_title_type] = $clean_title_value;
+	// synonym title
+	preg_match('/(Synonyms:<\/span>)([^<]*)/', $anime_info->innertext, $synonym);
+	$title2['synonym'] = trim($synonym ? $synonym[2] : '');
 
-			$next_title = $next_title->next_sibling();
-			if ($next_title->tag == 'h2' || $next_title->tag == 'br') {
-				break;
-			}
-		}
-		unset($alter_title);
-		unset($next_title);
-	}
+	// japanese title
+	preg_match('/(Japanese:<\/span>)([^<]*)/', $anime_info->innertext, $japanese);
+	$title2['japanese'] = trim($japanese ? $japanese[2] : '');
 
 	// other info
 	$info = [];
