@@ -18,6 +18,11 @@ _Mal-Scraper_ is using [Sunra's](https://github.com/sunra/php-simple-html-dom-pa
     - Studio/producer
     - Magazine
     - Genre
+- Get list of all
+    - Anime genre
+    - Manga genre
+    - Anime studio/producer
+    - Manga magazine
 - Get list of character and staff involved in an anime or manga
 - Get result of searching (pagination supported)
     - Anime
