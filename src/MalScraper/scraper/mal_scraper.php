@@ -509,6 +509,7 @@ function getCharacter($id)
 
 	// nickname
 	$nickname = $html->find('h1', 0)->plaintext;
+	$nickname = trim(preg_replace('/\s+/', ' ', $nickname));
 
 	$html = $html->find('#content table tr', 0);
 	$left_area = $html->find('td', 0);
@@ -532,10 +533,6 @@ function getCharacter($id)
 			$parsed_anime_id = explode('/', $anime_id);
 			$anime_id = $parsed_anime_id[4];
 			$animeography[$animeography_index]['id'] = $anime_id;
-
-			// url
-			$anime_url = $each_anime->find('a', 0)->href;
-			$animeography[$animeography_index]['url'] = $anime_url;
 
 			// title
 			$anime_title = $each_anime->find('a', 0)->plaintext;
@@ -566,10 +563,6 @@ function getCharacter($id)
 			$manga_id = $parsed_manga_id[4];
 			$mangaography[$mangaography_index]['id'] = $manga_id;
 
-			// url
-			$manga_url = $each_manga->find('a', 0)->href;
-			$mangaography[$mangaography_index]['url'] = $manga_url;
-
 			// title
 			$manga_title = $each_manga->find('a', 0)->plaintext;
 			$mangaography[$mangaography_index]['title'] = $manga_title;
@@ -593,7 +586,8 @@ function getCharacter($id)
 
 	// name
 	$name_area = $right_area->find('div[class=normal_header]', 0);
-	$name_kanji = $name_area->find('small', 0)->plaintext;
+	$name_kanji = $name_area->find('small', 0);
+	$name_kanji = $name_kanji ? $name_kanji->plaintext : '';
 
 	$name = trim(str_replace($name_kanji, '', $name_area->plaintext));
 	$name_kanji = preg_replace('/(\(|\))/', '', $name_kanji);
@@ -603,9 +597,15 @@ function getCharacter($id)
 
 	$about = str_replace($name_area->outertext, '', $about[0]);
 	$about = str_replace('<div class="normal_header">', '', $about);
-	$about = str_replace(['<br>', '<br />', '  '], ["\n", "\n", ' '], $about);
-	$about = strip_tags($about);
-	$about = preg_replace('/\n[^\S\n]*/', "\n", $about);
+
+	preg_match('/(No biography written)/', $about, $temp_about);
+	if (!$temp_about) {
+		$about = str_replace(['<br>', '<br />', '  '], ["\n", "\n", ' '], $about);
+		$about = strip_tags($about);
+		$about = preg_replace('/\n[^\S\n]*/', "\n", $about);
+	} else {
+		$about = '';
+	}
 
 	// va
 	$va = [];
@@ -614,10 +614,6 @@ function getCharacter($id)
 	$va_area = $va_area->next_sibling();
 	if ($va_area->tag == 'table') {
 		while (true) {
-
-			// image
-			$va_image = $va_area->find('img', 0)->src;
-			$va[$va_index]['image'] = $va_image;
 
 			// id
 			$va_name_area = $va_area->find('td', 1);
@@ -633,6 +629,10 @@ function getCharacter($id)
 			// role
 			$va_role = $va_name_area->find('small', 0)->plaintext;
 			$va[$va_index]['role'] = $va_role;
+
+			// image
+			$va_image = $va_area->find('img', 0)->src;
+			$va[$va_index]['image'] = $va_image;
 
 			$va_area = $va_area->next_sibling();
 			if ($va_area->tag != 'table') {
