@@ -1338,7 +1338,7 @@ function getAllAnimeGenre()
 
 		// count
 		$count = $each_genre->plaintext;
-		preg_match('/\(.+\)/', $count, $count);
+		preg_match('/\([0-9,]+\)/', $count, $count);
 		$count = substr($count[0], 1, strlen($count[0])-2);
 		$genre['count'] = str_replace(',', '', $count);
 
@@ -1380,7 +1380,7 @@ function getAllMangaGenre()
 
 		// count
 		$count = $each_genre->plaintext;
-		preg_match('/\(.+\)/', $count, $count);
+		preg_match('/\([0-9,]+\)/', $count, $count);
 		$count = substr($count[0], 1, strlen($count[0])-2);
 		$genre['count'] = str_replace(',', '', $count);
 
@@ -1422,7 +1422,7 @@ function getAllStudioProducer()
 
 		// count
 		$count = $each_studio->plaintext;
-		preg_match('/\(.+\)/', $count, $count);
+		preg_match('/\([0-9,]+\)/', $count, $count);
 		$count = substr($count[0], 1, strlen($count[0])-2);
 		$studio['count'] = str_replace(',', '', $count);
 
@@ -1464,7 +1464,7 @@ function getAllMagazine()
 
 		// count
 		$count = $each_magazine->plaintext;
-		preg_match('/\(.+\)/', $count, $count);
+		preg_match('/\([0-9,]+\)/', $count, $count);
 		$count = substr($count[0], 1, strlen($count[0])-2);
 		$magazine['count'] = str_replace(',', '', $count);
 
