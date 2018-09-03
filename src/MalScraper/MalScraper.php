@@ -28,6 +28,16 @@ class MalScraper {
 	}
 
 	/**
+	 * Get people information
+	 *
+	 * @param 	integer	$id 	id of people
+	 * @return 	json 	\scraper\getPeople
+	 */
+	public static function getPeople() {
+		return call_user_func_array ( '\scraper\getPeople' , func_get_args() );
+	}
+
+	/**
 	 * Get complete list of character and staff of anime or manga
 	 *
 	 * @param 	string	$type 	anime or manga
@@ -39,13 +49,14 @@ class MalScraper {
 	}
 
 	/**
-	 * Get people information
+	 * Get detail stat of anime or manga
 	 *
-	 * @param 	integer	$id 	id of people
-	 * @return 	json 	\scraper\getPeople
+	 * @param 	string	$type 	anime or manga
+	 * @param 	integer	$id 	id of the anime or manga
+	 * @return 	json 	\scraper\getStat
 	 */
-	public static function getPeople() {
-		return call_user_func_array ( '\scraper\getPeople' , func_get_args() );
+	public static function getStat() {
+		return call_user_func_array ( '\scraper\getStat' , func_get_args() );
 	}
 
 	/**
