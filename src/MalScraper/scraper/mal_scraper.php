@@ -179,7 +179,7 @@ function getInfo($type,$id)
 		$info_value = $next_info->plaintext;
 		$clean_info_value = trim(str_replace($info_type, "", $info_value));
 		$clean_info_value = preg_replace("/([\s])+/", " ", $clean_info_value);
-		$clean_info_value = str_replace(", add some", "", $clean_info_value);
+		$clean_info_value = str_replace([", add some", '?', 'Not yet aired', 'Unknown', 'None'], "", $clean_info_value);
 
 		if ($clean_info_type == "published" || $clean_info_type == "aired") {
 			$start_air = "";
@@ -208,8 +208,9 @@ function getInfo($type,$id)
 			$info_temp_index = 0;
 			if ($clean_info_value != "None found") {
 				foreach ($next_info->find('a') as $each_info) {
+					$temp_id = explode('/', $each_info->href);
+					$info_temp[$info_temp_index]['id'] = $temp_id[3];
 					$info_temp[$info_temp_index]['name'] = $each_info->plaintext;
-					$info_temp[$info_temp_index]['link'] = "https://myanimelist.net" . $each_info->href;
 					$info_temp_index++;
 				}
 			}
@@ -230,9 +231,15 @@ function getInfo($type,$id)
 	// score
 	$score = $html->find('div[class="fl-l score"]', 0)->plaintext;
 	$score = trim($score);
+	$score = $score != 'N/A' ? $score : '';
+
+	// voter
+	$voter = $html->find('div[class="fl-l score"]', 0)->getAttribute('data-user');
+	$voter = trim(str_replace(['users', 'user', ','], '', $voter));
 
 	// rank
 	$rank = $html->find('span[class="numbers ranked"] strong', 0)->plaintext;
+	$rank = $rank != 'N/A' ? $rank : '';
 	$rank = str_replace("#", "", $rank);
 
 	// popularity
@@ -256,30 +263,34 @@ function getInfo($type,$id)
 	if ($synopsis) {
 		$synopsis = $synopsis->plaintext;
 		$synopsis = trim(preg_replace('/\n[^\S\n]*/', "\n",  $synopsis));
+	} else {
+		$synopsis = '';
 	}
 
 	// related
 	$related = [];
 	$related_area = $html->find('.anime_detail_related_anime', 0);
-	foreach ($related_area->find('tr') as $rel) {
-		$rel_type = $rel->find('td', 0)->plaintext;
-		$rel_type = trim(strtolower(str_replace(":", "", $rel_type)));
+	if ($related_area) {
+		foreach ($related_area->find('tr') as $rel) {
+			$rel_type = $rel->find('td', 0)->plaintext;
+			$rel_type = trim(strtolower(str_replace(":", "", $rel_type)));
 
-		$each_rel = [];
-		$each_rel_index = 0;
-		$rel_anime = $rel->find('td', 1);
-		foreach ($rel_anime->find('a') as $r) {
-			$rel_anime_link = $r->href;
-			$separated_anime_link = explode('/', $rel_anime_link);
+			$each_rel = [];
+			$each_rel_index = 0;
+			$rel_anime = $rel->find('td', 1);
+			foreach ($rel_anime->find('a') as $r) {
+				$rel_anime_link = $r->href;
+				$separated_anime_link = explode('/', $rel_anime_link);
 
-			$each_rel[$each_rel_index]['id'] = $separated_anime_link[2];
-			$each_rel[$each_rel_index]['title'] = $r->plaintext;
-			$each_rel[$each_rel_index]['type'] = $separated_anime_link[1];
+				$each_rel[$each_rel_index]['id'] = $separated_anime_link[2];
+				$each_rel[$each_rel_index]['title'] = $r->plaintext;
+				$each_rel[$each_rel_index]['type'] = $separated_anime_link[1];
 
-			$each_rel_index++;
+				$each_rel_index++;
+			}
+
+			$related[$rel_type] = $each_rel;
 		}
-
-		$related[$rel_type] = $each_rel;
 	}
 	unset($related_area);
 
@@ -433,6 +444,7 @@ function getInfo($type,$id)
 
 	$data2 = [
 		'score' => $score,
+		'voter' => $voter,
 		'rank' => $rank,
 		'popularity' => $popularity,
 		'members' => $members,
