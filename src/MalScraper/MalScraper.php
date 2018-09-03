@@ -60,6 +60,37 @@ class MalScraper {
 	}
 
 	/**
+	 * Get addition picture of anime or manga
+	 *
+	 * @param 	string	$type 	anime or manga
+	 * @param 	integer	$id 	id of the anime or manga
+	 * @return 	json 	\scraper\getPicture
+	 */
+	public static function getPicture() {
+		return call_user_func_array ( '\scraper\getPicture' , func_get_args() );
+	}
+
+	/**
+	 * Get addition picture of character
+	 *
+	 * @param 	integer	$id 	id of the character
+	 * @return 	json 	\scraper\getCharacterPicture
+	 */
+	public static function getCharacterPicture() {
+		return call_user_func_array ( '\scraper\getCharacterPicture' , func_get_args() );
+	}
+
+	/**
+	 * Get addition picture of people
+	 *
+	 * @param 	integer	$id 	id of the people
+	 * @return 	json 	\scraper\getPeoplePicture
+	 */
+	public static function getPeoplePicture() {
+		return call_user_func_array ( '\scraper\getPeoplePicture' , func_get_args() );
+	}
+
+	/**
 	 * Get list of anime produced by selected studio/producer
 	 *
 	 * @param 	integer	$id 	id of studio/producer

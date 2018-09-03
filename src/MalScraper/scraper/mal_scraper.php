@@ -1065,6 +1065,103 @@ function getStat($type,$id)
 	unset($data);
 }
 
+function getPicture($type,$id)
+{
+	$url = "https://myanimelist.net/" . $type . "/" . $id;
+
+	$file_headers = @get_headers($url);
+	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+	    return response(404, "Page Not Found", NULL);
+	    exit();
+	}
+
+	$html = HtmlDomParser::file_get_html($url)->find('li a[href$=pics]', 0)->href;
+
+	if ($type == 'manga') {
+		$url = 'https://myanimelist.net' . $html;
+	} else {
+		$url = $html;
+	}
+
+	$html = HtmlDomParser::file_get_html($url)->find('.js-scrollfix-bottom-rel', 0)->outertext;
+	$html = str_replace('&quot;', '\"', $html);
+	$html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
+	$html = HtmlDomParser::str_get_html($html);
+
+	$data = [];
+	$picture_table = $html->find('table', 0);
+	if ($picture_table) {
+		foreach ($picture_table->find('img') as $each_picture) {
+			if ($each_picture) {
+				$data[] = $each_picture->src;
+			}
+		}
+	}
+
+	return response(200, "Success", $data);
+	unset($data);
+}
+
+function getCharacterPicture($id)
+{
+	$url = "https://myanimelist.net/character/" . $id;
+
+	$file_headers = @get_headers($url);
+	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+	    return response(404, "Page Not Found", NULL);
+	    exit();
+	}
+
+	$html = HtmlDomParser::file_get_html($url)->find('li a[href$=pictures]', 0)->href;
+	$html = HtmlDomParser::file_get_html($html)->find('#content table tr td', 0)->next_sibling()->outertext;
+	$html = str_replace('&quot;', '\"', $html);
+	$html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
+	$html = HtmlDomParser::str_get_html($html);
+
+	$data = [];
+	$picture_table = $html->find('table', 0);
+	if ($picture_table) {
+		foreach ($picture_table->find('img') as $each_picture) {
+			if ($each_picture) {
+				$data[] = $each_picture->src;
+			}
+		}
+	}
+
+	return response(200, "Success", $data);
+	unset($data);
+}
+
+function getPeoplePicture($id)
+{
+	$url = "https://myanimelist.net/people/" . $id;
+
+	$file_headers = @get_headers($url);
+	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+	    return response(404, "Page Not Found", NULL);
+	    exit();
+	}
+
+	$html = HtmlDomParser::file_get_html($url)->find('li a[href$=pictures]', 0)->href;
+	$html = HtmlDomParser::file_get_html($html)->find('#content table tr td', 0)->next_sibling()->outertext;
+	$html = str_replace('&quot;', '\"', $html);
+	$html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
+	$html = HtmlDomParser::str_get_html($html);
+
+	$data = [];
+	$picture_table = $html->find('table', 0);
+	if ($picture_table) {
+		foreach ($picture_table->find('img') as $each_picture) {
+			if ($each_picture) {
+				$data[] = $each_picture->src;
+			}
+		}
+	}
+
+	return response(200, "Success", $data);
+	unset($data);
+}
+
 function getStudioProducer($id,$page=1)
 {
 	$url = "https://myanimelist.net/anime/producer/" . $id . "/?page=" . $page;
