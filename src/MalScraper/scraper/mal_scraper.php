@@ -1279,7 +1279,7 @@ function getGenre($type,$id,$page=1)
 		}
 
 		$info_area = $each_anime->find('.information', 0);
-		
+
 		if ($type == 'anime') {
 			// type
 			$type = $info_area->find('.info', 0)->plaintext;
@@ -1302,6 +1302,174 @@ function getGenre($type,$id,$page=1)
 
 		$data[] = $result;
 	}
+
+	return response(200, "Success", $data);
+	unset($data);
+}
+
+function getAllAnimeGenre()
+{
+	$url = "https://myanimelist.net/anime.php";
+
+	$file_headers = @get_headers($url);
+	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+	    return response(404, "Invalid id", NULL);
+	    exit();
+	}
+
+	$html = HtmlDomParser::file_get_html($url)->find('.anime-manga-search', 0)->find('.genre-link', 0)->outertext;
+	$html = str_replace('&quot;', '\"', $html);
+	$html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
+	$html = HtmlDomParser::str_get_html($html);
+
+	$data = [];
+	foreach ($html->find('.genre-list a') as $each_genre) {
+		$genre = [];
+
+		// id
+		$link = $each_genre->href;
+		$link = explode('/', $link);
+		$id = $link[3];
+		$genre['id'] = $id;
+
+		// name
+		$name = str_replace('_', ' ', $link[4]);
+		$genre['name'] = $name;
+
+		// count
+		$count = $each_genre->plaintext;
+		preg_match('/\(.+\)/', $count, $count);
+		$count = substr($count[0], 1, strlen($count[0])-2);
+		$genre['count'] = str_replace(',', '', $count);
+
+		$data[] = $genre;
+ 	}
+
+	return response(200, "Success", $data);
+	unset($data);
+}
+
+function getAllMangaGenre()
+{
+	$url = "https://myanimelist.net/manga.php";
+
+	$file_headers = @get_headers($url);
+	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+	    return response(404, "Invalid id", NULL);
+	    exit();
+	}
+
+	$html = HtmlDomParser::file_get_html($url)->find('.anime-manga-search', 0)->find('.genre-link', 0)->outertext;
+	$html = str_replace('&quot;', '\"', $html);
+	$html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
+	$html = HtmlDomParser::str_get_html($html);
+
+	$data = [];
+	foreach ($html->find('.genre-list a') as $each_genre) {
+		$genre = [];
+
+		// id
+		$link = $each_genre->href;
+		$link = explode('/', $link);
+		$id = $link[3];
+		$genre['id'] = $id;
+
+		// name
+		$name = str_replace('_', ' ', $link[4]);
+		$genre['name'] = $name;
+
+		// count
+		$count = $each_genre->plaintext;
+		preg_match('/\(.+\)/', $count, $count);
+		$count = substr($count[0], 1, strlen($count[0])-2);
+		$genre['count'] = str_replace(',', '', $count);
+
+		$data[] = $genre;
+ 	}
+
+	return response(200, "Success", $data);
+	unset($data);
+}
+
+function getAllStudioProducer()
+{
+	$url = "https://myanimelist.net/anime/producer";
+
+	$file_headers = @get_headers($url);
+	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+	    return response(404, "Invalid id", NULL);
+	    exit();
+	}
+
+	$html = HtmlDomParser::file_get_html($url)->find('.anime-manga-search', 0)->outertext;
+	$html = str_replace('&quot;', '\"', $html);
+	$html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
+	$html = HtmlDomParser::str_get_html($html);
+
+	$data = [];
+	foreach ($html->find('.genre-list a') as $each_studio) {
+		$studio = [];
+
+		// id
+		$link = $each_studio->href;
+		$link = explode('/', $link);
+		$id = $link[3];
+		$studio['id'] = $id;
+
+		// name
+		$name = str_replace('_', ' ', $link[4]);
+		$studio['name'] = $name;
+
+		// count
+		$count = $each_studio->plaintext;
+		preg_match('/\(.+\)/', $count, $count);
+		$count = substr($count[0], 1, strlen($count[0])-2);
+		$studio['count'] = str_replace(',', '', $count);
+
+		$data[] = $studio;
+ 	}
+
+	return response(200, "Success", $data);
+	unset($data);
+}
+
+function getAllMagazine()
+{
+	$url = "https://myanimelist.net/manga/magazine";
+
+	$file_headers = @get_headers($url);
+	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+	    return response(404, "Invalid id", NULL);
+	    exit();
+	}
+
+	$html = HtmlDomParser::file_get_html($url)->find('.anime-manga-search', 0)->outertext;
+	$html = str_replace('&quot;', '\"', $html);
+	$html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
+	$html = HtmlDomParser::str_get_html($html);
+
+	$data = [];
+	foreach ($html->find('.genre-list a') as $each_magazine) {
+		$magazine = [];
+
+		// id
+		$link = $each_magazine->href;
+		$link = explode('/', $link);
+		$id = $link[3];
+		$magazine['id'] = $id;
+
+		// name
+		$name = str_replace('_', ' ', $link[4]);
+		$magazine['name'] = $name;
+
+		// count
+		$count = $each_magazine->plaintext;
+		preg_match('/\(.+\)/', $count, $count);
+		$count = substr($count[0], 1, strlen($count[0])-2);
+		$magazine['count'] = str_replace(',', '', $count);
+
+		$data[] = $magazine;
+ 	}
 
 	return response(200, "Success", $data);
 	unset($data);

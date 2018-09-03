@@ -83,6 +83,42 @@ class MalScraper {
 	}
 
 	/**
+	 * Get list of all anime genre
+	 *
+	 * @return 	json 	\scraper\getAllAnimeGenre
+	 */
+	public static function getAllAnimeGenre() {
+		return call_user_func_array ( '\scraper\getAllAnimeGenre' , func_get_args() );
+	}
+
+	/**
+	 * Get list of all manga genre
+	 *
+	 * @return 	json 	\scraper\getAllMangaGenre
+	 */
+	public static function getAllMangaGenre() {
+		return call_user_func_array ( '\scraper\getAllMangaGenre' , func_get_args() );
+	}
+
+	/**
+	 * Get list of all anime studio/producer
+	 *
+	 * @return 	json 	\scraper\getAllStudioProducer
+	 */
+	public static function getAllStudioProducer() {
+		return call_user_func_array ( '\scraper\getAllStudioProducer' , func_get_args() );
+	}
+
+	/**
+	 * Get list of all manga magazine
+	 *
+	 * @return 	json 	\scraper\getAllMagazine
+	 */
+	public static function getAllMagazine() {
+		return call_user_func_array ( '\scraper\getAllMagazine' , func_get_args() );
+	}
+
+	/**
 	 * Get list of result of anime search
 	 *
 	 * @param 	string	$q 		search query
