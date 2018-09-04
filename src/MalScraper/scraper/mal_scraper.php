@@ -1771,6 +1771,11 @@ function searchAnime($q, $page=1)
 	$result_area = $result_table->find('tr', 0)->next_sibling();
 	while (true) {
 		$result = [];
+
+		// image
+		$image = $result_area->find('td', 0)->find('a img', 0)->getAttribute('data-src');
+		$result['image'] = imageUrlCleaner($image);
+
 		$name_area = $result_area->find('td', 1);
 
 		// id
