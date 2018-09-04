@@ -124,6 +124,17 @@ function getCurrentSeason()
 	return $season;
 }
 
+function imageUrlCleaner($str)
+{
+	preg_match('/(questionmark)/', $str, $temp_image);
+	$str = $temp_image ? '' : $str;
+	$str = str_replace('v.jpg', '.jpg', $str);
+	$str = preg_replace('/r\/\d{3}x\d{3}\//', '', $str);
+	$str = preg_replace('/\?.+/', '', $str);
+
+	return $str;
+}
+
 function getInfo($type,$id)
 {
 	$url = "https://myanimelist.net/" . $type . "/" . $id;
@@ -179,7 +190,7 @@ function getInfo($type,$id)
 		$info_value = $next_info->plaintext;
 		$clean_info_value = trim(str_replace($info_type, "", $info_value));
 		$clean_info_value = preg_replace("/([\s])+/", " ", $clean_info_value);
-		$clean_info_value = str_replace([", add some", '?', 'Not yet aired', 'Unknown', 'None'], "", $clean_info_value);
+		$clean_info_value = str_replace([", add some", '?', 'Not yet aired', 'Unknown'], "", $clean_info_value);
 
 		if ($clean_info_type == "published" || $clean_info_type == "aired") {
 			$start_air = "";
@@ -209,7 +220,7 @@ function getInfo($type,$id)
 			if ($clean_info_value != "None found") {
 				foreach ($next_info->find('a') as $each_info) {
 					$temp_id = explode('/', $each_info->href);
-					$info_temp[$info_temp_index]['id'] = $temp_id[3];
+					$info_temp[$info_temp_index]['id'] = $clean_info_type == "authors" ? $temp_id[2] : $temp_id[3];
 					$info_temp[$info_temp_index]['name'] = $each_info->plaintext;
 					$info_temp_index++;
 				}
@@ -303,6 +314,7 @@ function getInfo($type,$id)
 		if ($character_left) {
 			foreach ($character_left->find('table[width=100%]') as $each_char) {
 				$char_image = $each_char->find('tr td', 0)->find('img', 0)->getAttribute('data-src');
+				$char_image = imageUrlCleaner($char_image);
 
 				$char = $each_char->find('tr td', 1);
 
@@ -328,12 +340,13 @@ function getInfo($type,$id)
 					$va_role =  $va->find('small', 0)->plaintext;
 
 					$va_image = $each_char->find('table td', 1)->find('img', 0)->getAttribute('data-src');
-
-					$character[$char_index]['va_id'] = $va_id;
-					$character[$char_index]['va_name'] = $va_name;
-					$character[$char_index]['va_role'] = $va_role;
-					$character[$char_index]['va_image'] = $va_image;
+					$va_image = imageUrlCleaner($va_image);
 				}
+
+				$character[$char_index]['va_id'] = isset($va_id) ? $va_id : '';
+				$character[$char_index]['va_name'] = isset($va_name) ? $va_name : '';
+				$character[$char_index]['va_role'] = isset($va_role) ? $va_role : '';
+				$character[$char_index]['va_image'] = isset($va_image) ? $va_image : '';
 
 				$char_index++;
 			}
@@ -344,6 +357,7 @@ function getInfo($type,$id)
 		if ($character_right) {
 			foreach ($character_right->find('table[width=100%]') as $each_char) {
 				$char_image = $each_char->find('tr td', 0)->find('img', 0)->getAttribute('data-src');
+				$char_image = imageUrlCleaner($char_image);
 
 				$char = $each_char->find('tr td', 1);
 
@@ -369,6 +383,7 @@ function getInfo($type,$id)
 					$va_role =  $va->find('small', 0)->plaintext;
 
 					$va_image = $each_char->find('table td', 1)->find('img', 0)->getAttribute('data-src');
+					$va_image = imageUrlCleaner($va_image);
 
 					$character[$char_index]['va_id'] = $va_id;
 					$character[$char_index]['va_name'] = $va_name;
@@ -392,7 +407,8 @@ function getInfo($type,$id)
 		$staff_left = $staff_area->find('div[class*=fl-l]', 0);
 		if ($staff_left) {
 			foreach ($staff_left->find('table[width=100%]') as $each_staff) {
-				$staff_image = $each_char->find('tr td', 0)->find('img', 0)->getAttribute('data-src');
+				$staff_image = $each_staff->find('tr td', 0)->find('img', 0)->getAttribute('data-src');
+				$staff_image = imageUrlCleaner($staff_image);
 
 				$st = $each_staff->find('tr td', 1);
 
@@ -416,7 +432,8 @@ function getInfo($type,$id)
 		$staff_right = $staff_area->find('div[class*=fl-r]', 0);
 		if ($staff_right) {
 			foreach ($staff_right->find('table[width=100%]') as $each_staff) {
-				$staff_image = $each_char->find('tr td', 0)->find('img', 0)->getAttribute('data-src');
+				$staff_image = $each_staff->find('tr td', 0)->find('img', 0)->getAttribute('data-src');
+				$staff_image = imageUrlCleaner($staff_image);
 
 				$st = $each_staff->find('tr td', 1);
 
@@ -465,21 +482,21 @@ function getInfo($type,$id)
 	// combine all data
 	$data = [
 		'id' => $id,
+		'cover' => $cover,
 		'title' => $title,
 		'title2' => $title2,
-		'cover' => $cover
-	];
-
-	$data = array_merge($data, $info);
-
-	$data2 = [
+		'synopsis' => $synopsis,
 		'score' => $score,
 		'voter' => $voter,
 		'rank' => $rank,
 		'popularity' => $popularity,
 		'members' => $members,
 		'favorite' => $favorite,
-		'synopsis' => $synopsis,
+	];
+
+	$data = array_merge($data, $info);
+
+	$data2 = [
 		'related' => $related,
 		'character' => $character,
 		'staff' => $staff,
@@ -510,13 +527,20 @@ function getCharacter($id)
 	// nickname
 	$nickname = $html->find('h1', 0)->plaintext;
 	$nickname = trim(preg_replace('/\s+/', ' ', $nickname));
+	preg_match('/\"([^"])*/', $nickname, $nickname);
+	if ($nickname) {
+		$nickname = substr($nickname[0], 1, strlen($nickname[0])-2);
+	} else {
+		$nickname = '';
+	}
 
 	$html = $html->find('#content table tr', 0);
 	$left_area = $html->find('td', 0);
 	$right_area = $left_area->next_sibling();
 
 	// image
-	$image = $left_area->find('img', 0);
+	$image = $left_area->find('div', 0)->find('a', 0);
+	$image = $image->find('img', 0);
 	$image = $image ? $image->src : '';
 
 	// animeography
@@ -526,6 +550,10 @@ function getCharacter($id)
 	$animeography_area = $animeography_area->find('tr');
 	if ($animeography_area) {
 		foreach ($animeography_area as $each_anime) {
+			$anime_image = $each_anime->find('td', 0)->find('img', 0)->src;
+			$anime_image = imageUrlCleaner($anime_image);
+			$animeography[$animeography_index]['image'] = $anime_image;
+
 			$each_anime = $each_anime->find('td', 1);
 
 			// id
@@ -555,6 +583,10 @@ function getCharacter($id)
 	$mangaography_area = $mangaography_area->find('tr');
 	if ($mangaography_area) {
 		foreach ($mangaography_area as $each_manga) {
+			$manga_image = $each_manga->find('td', 0)->find('img', 0)->src;
+			$manga_image = imageUrlCleaner($manga_image);
+			$mangaography[$mangaography_index]['image'] = $manga_image;
+
 			$each_manga = $each_manga->find('td', 1);
 
 			// id
@@ -632,6 +664,7 @@ function getCharacter($id)
 
 			// image
 			$va_image = $va_area->find('img', 0)->src;
+			$va_image = imageUrlCleaner($va_image);
 			$va[$va_index]['image'] = $va_image;
 
 			$va_area = $va_area->next_sibling();
@@ -645,15 +678,15 @@ function getCharacter($id)
 
 	$data = [
 		'id' => $id,
-		'nickname' => $nickname,
 		'image' => $image,
+		'nickname' => $nickname,
 		'name' => $name,
 		'name_kanji' => $name_kanji,
 		'favorite' => $favorite,
 		'about' => $about,
-		'va' => $va,
 		'animeography' => $animeography,
 		'mangaography' => $mangaography,
+		'va' => $va,
 	];
 
 	return response(200, "Success", $data);
@@ -765,6 +798,10 @@ function getPeople($id)
 	if ($va_area->tag == 'table') {
 		if ($va_area->find('tr')) {
 			foreach ($va_area->find('tr') as $each_va) {
+				// anime image
+				$anime_image = $each_va->find('td', 0)->find('img', 0)->getAttribute('data-src');
+				$va[$va_index]['anime']['image'] = imageUrlCleaner($anime_image);
+
 				$anime_area = $each_va->find('td', 1);
 
 				// anime id
@@ -776,6 +813,10 @@ function getPeople($id)
 				// anime title
 				$anime_title = $anime_area->find('a', 0)->plaintext;
 				$va[$va_index]['anime']['title'] = $anime_title;
+
+				// character image
+				$character_image = $each_va->find('td', 3)->find('img', 0)->getAttribute('data-src');
+				$va[$va_index]['character']['image'] = imageUrlCleaner($character_image);
 
 				$character_area = $each_va->find('td', 2);
 
@@ -805,6 +846,9 @@ function getPeople($id)
 	$staff_area = $right_area->find('.normal_header', 1)->next_sibling();
 	if ($staff_area->tag == 'table') {
 		foreach ($staff_area->find('tr') as $each_staff) {
+			$anime_image = $each_staff->find('td', 0)->find('img', 0)->getAttribute('data-src');
+			$staff[$staff_index]['image'] = imageUrlCleaner($anime_image);
+
 			$each_staff = $each_staff->find('td', 1);
 
 			// anime id
@@ -832,6 +876,9 @@ function getPeople($id)
 	$manga_area = $right_area->find('.normal_header', 2)->next_sibling();
 	if ($manga_area->tag == 'table') {
 		foreach ($manga_area->find('tr') as $each_manga) {
+			$manga_image = $each_manga->find('td', 0)->find('img', 0)->getAttribute('data-src');
+			$published_manga[$manga_index]['image'] = imageUrlCleaner($manga_image);
+
 			$each_manga = $each_manga->find('td', 1);
 
 			// manga id
@@ -906,7 +953,7 @@ function getCharacterStaff($type,$id)
 
 			// image
 			$char_image = $char_table->find('td .picSurround img', 0)->getAttribute('data-src');
-			$character[$character_index]['image'] = $char_image;
+			$character[$character_index]['image'] = imageUrlCleaner($char_image);
 
 			// id
 			$char_name_area = $char_table->find('td', 1);
@@ -948,7 +995,7 @@ function getCharacterStaff($type,$id)
 
 					// image
 					$va_image = $each_va->find('td', 1)->find('img', 0)->getAttribute('data-src');
-					$va[$va_index]['image'] = $va_image;
+					$va[$va_index]['image'] = imageUrlCleaner($va_image);
 
 					$va_index++;
 				}
@@ -976,7 +1023,7 @@ function getCharacterStaff($type,$id)
 			while (true) {
 				// image
 				$staff_image = $staff_table->find('td .picSurround img', 0)->getAttribute('data-src');
-				$staff[$staff_index]['image'] = $staff_image;
+				$staff[$staff_index]['image'] = imageUrlCleaner($staff_image);
 
 				// id
 				$staff_name_area = $staff_table->find('td', 1);
@@ -1215,6 +1262,10 @@ function getStudioProducer($id,$page=1)
 	foreach ($anime_table as $each_anime) {
 		$result = [];
 
+		// image
+		$image = $each_anime->find('div[class=image]', 0)->find('img', 0)->getAttribute('data-src');
+		$result['image'] = imageUrlCleaner($image);
+
 		// id
 		$name_area = $each_anime->find('div[class=title]', 0);
 		$id = $name_area->find('p a', 0)->href;
@@ -1320,6 +1371,10 @@ function getMagazine($id,$page=1)
 	foreach ($anime_table as $each_anime) {
 		$result = [];
 
+		// image
+		$image = $each_anime->find('div[class=image]', 0)->find('img', 0)->getAttribute('data-src');
+		$result['image'] = imageUrlCleaner($image);
+
 		// id
 		$name_area = $each_anime->find('div[class=title]', 0);
 		$id = $name_area->find('p a', 0)->href;
@@ -1417,6 +1472,10 @@ function getGenre($type,$id,$page=1)
 	$anime_table = $html->find('div[class="seasonal-anime js-seasonal-anime"]');
 	foreach ($anime_table as $each_anime) {
 		$result = [];
+
+		// image
+		$image = $each_anime->find('div[class=image]', 0)->find('img', 0)->getAttribute('data-src');
+		$result['image'] = imageUrlCleaner($image);
 
 		// id
 		$name_area = $each_anime->find('div[class=title]', 0);
@@ -1632,8 +1691,8 @@ function getAllStudioProducer()
 		$studio['id'] = $id;
 
 		// name
-		$name = str_replace('_', ' ', $link[4]);
-		$studio['name'] = $name;
+		$name = $each_studio->plaintext;
+		$studio['name'] = trim(preg_replace('/\([0-9,]+\)/', '', $name));
 
 		// count
 		$count = $each_studio->plaintext;
@@ -1674,8 +1733,8 @@ function getAllMagazine()
 		$magazine['id'] = $id;
 
 		// name
-		$name = str_replace('_', ' ', $link[4]);
-		$magazine['name'] = $name;
+		$name = $each_magazine->plaintext;
+		$magazine['name'] = trim(preg_replace('/\([0-9,]+\)/', '', $name));
 
 		// count
 		$count = $each_magazine->plaintext;
