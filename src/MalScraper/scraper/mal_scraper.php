@@ -126,10 +126,10 @@ function getCurrentSeason()
 
 function imageUrlCleaner($str)
 {
-	preg_match('/(questionmark)/', $str, $temp_image);
+	preg_match('/(questionmark)|(qm_50)/', $str, $temp_image);
 	$str = $temp_image ? '' : $str;
 	$str = str_replace('v.jpg', '.jpg', $str);
-	$str = preg_replace('/r\/\d{3}x\d{3}\//', '', $str);
+	$str = preg_replace('/r\/\d{1,3}x\d{1,3}\//', '', $str);
 	$str = preg_replace('/\?.+/', '', $str);
 
 	return $str;
@@ -1751,6 +1751,11 @@ function getAllMagazine()
 
 function searchAnime($q, $page=1)
 {
+	if (strlen($q) < 3) {
+		return response(405, "Search query needs at least 3 letters", NULL);
+		exit;
+	}
+
 	$page = 50*($page-1);
 
 	$url = "https://myanimelist.net/anime.php?q=" . $q . "&show=" . $page;
@@ -1797,11 +1802,15 @@ function searchAnime($q, $page=1)
 
 		// episode
 		$episode = $result_area->find('td', 3)->plaintext;
-		$result['episode'] = trim($episode);
+		$episode = trim($episode);
+		$episode = $episode == '-' ? '' : $episode;
+		$result['episode'] = $episode;
 
 		// score
 		$score = $result_area->find('td', 4)->plaintext;
-		$result['score'] = trim($score);
+		$score = trim($score);
+		$score = $score == 'N/A' ? '' : $score;
+		$result['score'] = $score;
 
 		$data[] = $result;
 
@@ -1819,6 +1828,11 @@ function searchAnime($q, $page=1)
 
 function searchManga($q,$page=1)
 {
+	if (strlen($q) < 3) {
+		return response(405, "Search query needs at least 3 letters", NULL);
+		exit;
+	}
+
 	$page = 50*($page-1);
 
 	$url = "https://myanimelist.net/manga.php?q=" . $q . "&show=" . $page;
@@ -1839,6 +1853,11 @@ function searchManga($q,$page=1)
 	$result_area = $result_table->find('tr', 0)->next_sibling();
 	while (true) {
 		$result = [];
+
+		// image
+		$image = $result_area->find('td', 0)->find('a img', 0)->getAttribute('data-src');
+		$result['image'] = imageUrlCleaner($image);
+
 		$name_area = $result_area->find('td', 1);
 
 		// id
@@ -1876,66 +1895,17 @@ function searchManga($q,$page=1)
 	unset($result_table);
 	unset($result_area);
 
-
-	return response(200, "Success", $data);
-	unset($data);
-}
-
-function searchPeople($q,$page=1)
-{
-	$page = 50*($page-1);
-
-	$url = "https://myanimelist.net/people.php?q=" . $q . "&show=" . $page;
-
-	$file_headers = @get_headers($url);
-	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
-	}
-
-	$html = HtmlDomParser::file_get_html($url)->find('#content', 0)->outertext;
-	$html = str_replace('&quot;', '\"', $html);
-	$html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
-	$html = HtmlDomParser::str_get_html($html);
-
-	$data = [];
-	$result_table = $html->find('table', 0);
-	$result_area = $result_table->find('tr', 0)->next_sibling();
-	while (true) {
-		$result = [];
-		$name_area = $result_area->find('td', 1);
-
-		// id
-		$id = $name_area->find('a', 0)->href;
-		$parsed_char_id = explode('/', $id);
-		$id = $parsed_char_id[2];
-		$result['id'] = $id;
-
-		// name
-		$name = $name_area->find('a', 0)->plaintext;
-		$result['name'] = $name;
-
-		// nickname
-		$nickname = $name_area->find('small', 0);
-		$nickname = $nickname ? substr($nickname->plaintext, 1, strlen($nickname->plaintext)-2) : '';
-		$result['nickname'] = $nickname;
-
-		$data[] = $result;
-
-		$result_area = $result_area->next_sibling();
-		if (!$result_area) {
-			break;
-		}
-	}
-	unset($result_table);
-	unset($result_area);
-
 	return response(200, "Success", $data);
 	unset($data);
 }
 
 function searchCharacter($q,$page=1)
 {
+	if (strlen($q) < 3) {
+		return response(405, "Search query needs at least 3 letters", NULL);
+		exit;
+	}
+
 	$url = "https://myanimelist.net/character.php?q=" . $q . "&show=" . $page;
 
 	$file_headers = @get_headers($url);
@@ -1954,6 +1924,11 @@ function searchCharacter($q,$page=1)
 	$result_area = $result_table->find('tr', 0)->next_sibling();
 	while (true) {
 		$result = [];
+
+		// image
+		$image = $result_area->find('td', 0)->find('a img', 0)->src;
+		$result['image'] = imageUrlCleaner($image);
+
 		$name_area = $result_area->find('td', 1);
 
 		// id
@@ -2009,6 +1984,69 @@ function searchCharacter($q,$page=1)
 	unset($data);
 }
 
+function searchPeople($q,$page=1)
+{
+	if (strlen($q) < 3) {
+		return response(405, "Search query needs at least 3 letters", NULL);
+		exit;
+	}
+
+	$page = 50*($page-1);
+
+	$url = "https://myanimelist.net/people.php?q=" . $q . "&show=" . $page;
+
+	$file_headers = @get_headers($url);
+	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+	    return response(404, "Page Not Found", NULL);
+	    exit();
+	}
+
+	$html = HtmlDomParser::file_get_html($url)->find('#content', 0)->outertext;
+	$html = str_replace('&quot;', '\"', $html);
+	$html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
+	$html = HtmlDomParser::str_get_html($html);
+
+	$data = [];
+	$result_table = $html->find('table', 0);
+	$result_area = $result_table->find('tr', 0)->next_sibling();
+	while (true) {
+		$result = [];
+
+		// image
+		$image = $result_area->find('td', 0)->find('a img', 0)->src;
+		$result['image'] = imageUrlCleaner($image);
+
+		$name_area = $result_area->find('td', 1);
+
+		// id
+		$id = $name_area->find('a', 0)->href;
+		$parsed_char_id = explode('/', $id);
+		$id = $parsed_char_id[2];
+		$result['id'] = $id;
+
+		// name
+		$name = $name_area->find('a', 0)->plaintext;
+		$result['name'] = $name;
+
+		// nickname
+		$nickname = $name_area->find('small', 0);
+		$nickname = $nickname ? substr($nickname->plaintext, 1, strlen($nickname->plaintext)-2) : '';
+		$result['nickname'] = $nickname;
+
+		$data[] = $result;
+
+		$result_area = $result_area->next_sibling();
+		if (!$result_area) {
+			break;
+		}
+	}
+	unset($result_table);
+	unset($result_area);
+
+	return response(200, "Success", $data);
+	unset($data);
+}
+
 function getSeason($year=false,$season=false)
 {
 	$year = !$year ? date('Y') : $year;
@@ -2033,6 +2071,14 @@ function getSeason($year=false,$season=false)
 	$anime_table = $html->find('div[class="seasonal-anime js-seasonal-anime"]');
 	foreach ($anime_table as $each_anime) {
 		$result = [];
+
+		// image
+		$temp_image = $each_anime->find('div[class=image]', 0)->find('img', 0);
+		$image = $temp_image->src;
+		if (!$image) {
+			$image = $temp_image->getAttribute('data-src');
+		}
+		$result['image'] = imageUrlCleaner($image);
 
 		// id
 		$name_area = $each_anime->find('div[class=title]', 0);
@@ -2068,6 +2114,7 @@ function getSeason($year=false,$season=false)
 		// episode
 		$episode = $producer_area->find('div[class=eps]', 0)->plaintext;
 		$episode = trim(str_replace(['eps', 'ep'], '', $episode));
+		$episode = $episode == '?' ? '' : $episode;
 		$result['episode'] = $episode;
 
 		// source
@@ -2084,7 +2131,12 @@ function getSeason($year=false,$season=false)
 
 		// synopsis
 		$synopsis = $each_anime->find('div[class="synopsis js-synopsis"]', 0)->plaintext;
-		$synopsis = trim(preg_replace("/([\s])+/", " ", $synopsis));
+		preg_match('/(No synopsis)/', $synopsis, $temp_synopsis);
+		if (!$temp_synopsis) {
+			$synopsis = trim(preg_replace("/([\s])+/", " ", $synopsis));
+		} else {
+			$synopsis = '';
+		}
 		$result['synopsis'] = $synopsis;
 
 		// licensor
@@ -2102,7 +2154,7 @@ function getSeason($year=false,$season=false)
 
 		// airing start
 		$airing_start = $info_area->find('.info .remain-time', 0)->plaintext;
-		$result['airing_start'] = trim($airing_start);
+		$result['airing_start'] = trim(str_replace(['?', ' ,'], ['', ','], $airing_start));
 
 		// member
 		$member = $info_area->find('.scormem span[class^=member]', 0)->plaintext;
@@ -2110,7 +2162,7 @@ function getSeason($year=false,$season=false)
 
 		// score
 		$score = $info_area->find('.scormem .score', 0)->plaintext;
-		$result['score'] = trim($score);
+		$result['score'] = trim(str_replace('N/A', '', $score));
 
 		$data[] = $result;
 	}
@@ -2145,6 +2197,10 @@ function getTopAnime($type=0,$page=1)
 		// rank
 		$rank = $each_anime->find('td span', 0)->plaintext;
 		$data[$data_index]['rank'] = trim($rank);
+
+		// image
+		$image = $each_anime->find('td', 1)->find('a img', 0)->getAttribute('data-src');
+		$data[$data_index]['image'] = imageUrlCleaner($image);
 
 		// id
 		$name_area = $each_anime->find('td .detail', 0);
@@ -2217,6 +2273,10 @@ function getTopManga($type=0,$page=1)
 		// rank
 		$rank = $each_anime->find('td span', 0)->plaintext;
 		$data[$data_index]['rank'] = trim($rank);
+
+		// image
+		$image = $each_anime->find('td', 1)->find('a img', 0)->getAttribute('data-src');
+		$data[$data_index]['image'] = imageUrlCleaner($image);
 
 		// id
 		$name_area = $each_anime->find('td .detail', 0);
