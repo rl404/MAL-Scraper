@@ -52,7 +52,7 @@ _Mal-Scraper_ is using [Sunra's](https://github.com/sunra/php-simple-html-dom-pa
     - By favorite
 
 ## Installation
-1. `composer require rl404/mal-scraper @dev`
+1. `composer require rl404/mal-scraper 1.0.0`
 2. That's it.
 
 #### Dependencies
