@@ -2222,6 +2222,7 @@ function getTopAnime($type=0,$page=1)
 
 		// episode
 		$episode = str_replace('(', '', $parsed_info_2[1]);
+		$episode = $episode == '?' ? '' : $episode;
 		$data[$data_index]['episode'] = $episode;
 
 		// date
@@ -2237,7 +2238,7 @@ function getTopAnime($type=0,$page=1)
 
 		//score
 		$score = $each_anime->find('td', 2)->plaintext;
-		$data[$data_index]['score'] = trim($score);
+		$data[$data_index]['score'] = trim(str_replace('N/A', '', $score));
 
 		$data_index++;
 	}
@@ -2298,6 +2299,7 @@ function getTopManga($type=0,$page=1)
 
 		// volume
 		$volume = str_replace('(', '', $parsed_info_2[1]);
+		$volume = $volume == '?' ? '' : $volume;
 		$data[$data_index]['volume'] = $volume;
 
 		// date
@@ -2313,7 +2315,7 @@ function getTopManga($type=0,$page=1)
 
 		//score
 		$score = $each_anime->find('td', 2)->plaintext;
-		$data[$data_index]['score'] = trim($score);
+		$data[$data_index]['score'] = trim(str_replace('N/A', '', $score));
 
 		$data_index++;
 	}
