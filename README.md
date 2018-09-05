@@ -2,7 +2,7 @@
 
 > Scrap everything from MyAnimeList website
 
-_Mal-Scraper_ is an unofficial PHP API which scrap and parse page source of [MyAnimeList](https://myanimelist.net/). 
+_Mal-Scraper_ is an unofficial PHP API which scraps and parses page source of [MyAnimeList](https://myanimelist.net/).
 
 Well, it is created to help people get MyAnimeList data without relying on MyAnimeList since they disabled/closed their API. It's working as long as the web is up and we can get its page source.
 
