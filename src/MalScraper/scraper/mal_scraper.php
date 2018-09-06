@@ -1752,7 +1752,7 @@ function getAllMagazine()
 function searchAnime($q, $page=1)
 {
 	if (strlen($q) < 3) {
-		return response(405, "Search query needs at least 3 letters", NULL);
+		return response(400, "Search query needs at least 3 letters", NULL);
 		exit;
 	}
 
@@ -1829,7 +1829,7 @@ function searchAnime($q, $page=1)
 function searchManga($q,$page=1)
 {
 	if (strlen($q) < 3) {
-		return response(405, "Search query needs at least 3 letters", NULL);
+		return response(400, "Search query needs at least 3 letters", NULL);
 		exit;
 	}
 
@@ -1902,7 +1902,7 @@ function searchManga($q,$page=1)
 function searchCharacter($q,$page=1)
 {
 	if (strlen($q) < 3) {
-		return response(405, "Search query needs at least 3 letters", NULL);
+		return response(400, "Search query needs at least 3 letters", NULL);
 		exit;
 	}
 
@@ -1987,7 +1987,7 @@ function searchCharacter($q,$page=1)
 function searchPeople($q,$page=1)
 {
 	if (strlen($q) < 3) {
-		return response(405, "Search query needs at least 3 letters", NULL);
+		return response(400, "Search query needs at least 3 letters", NULL);
 		exit;
 	}
 
