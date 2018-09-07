@@ -1,4 +1,15 @@
 <?php
+/**
+ * rl404 - MalScraper
+ *
+ * Unofficial PHP API which scraps and parses page source of MyAnimeList.
+ * API Documentation: https://github.com/rl404/MAL-Scraper
+ *
+ * @author Axel Oktavian Antonio
+ * @since 26-09-2018
+ * @version 1.1
+ * @license MIT https://opensource.org/licenses/MIT
+ */
 
 namespace MalScraper;
 
@@ -7,38 +18,80 @@ require_once "scraper\cache.php";
 
 use scraper\Cache;
 
+/**
+ * Class MalScraper
+ *
+ * @package MalScraper
+ */
 class MalScraper {
 
-	private $cache;
-	private $cache_time = 86400;
-	private $config;
+	/**
+	 * Cache class
+	 *
+	 * @var class
+	 */
+	private $_cache;
 
+	/**
+	 * Cache feature
+	 *
+	 * @var boolean
+	 */
+	private $_enable_cache = false;
+
+	/**
+	 * Cache expiration time
+	 *
+	 * @var integer
+	 */
+	private $_cache_time = 86400;
+
+	/**
+	 * Default constructor
+	 *
+	 * @param array [optional] $config
+	 * @return void
+	 */
 	function __construct($config=false)
 	{
-		if (!empty($config['cache'])) {
-			$this->config = $config;
+		if (!empty($config['enable_cache'])) {
+			// enable cache function
+			$this->_enable_cache = !empty($config['enable_cache']) ? $config['enable_cache'] : false;
 
-			$this->cache = new Cache();
-			$this->cache->setCache("malScraper");
-			$this->cache->eraseExpired();
+			// create cache class
+			$this->_cache = new Cache();
+			$this->_cache->setCachePath(dirname(__FILE__) . "/cache/");
+			$this->_cache->setCache("malScraper");
+			$this->_cache->eraseExpired();
 
+			// set cache time
 			if (!empty($config['cache_time'])) {
-				$this->cache_time = $config['cache_time'];
-				$this->cache->eraseExpired($this->cache_time);
+				$this->_cache_time = $config['cache_time'];
+				$this->_cache->eraseExpired($this->_cache_time);
 			}
 		}
 	}
 
+	/**
+	 * Default call
+	 *
+	 * @param string $method
+	 * @param array $arguments
+	 * @return json
+	 */
 	public function __call($method,$arguments)
 	{
-		if ($this->config['cache']) {
+		// if cache function enabled
+		if ($this->_enable_cache === true) {
 			$cacheName = $method . '(' . implode(',', $arguments) . ')';
-	        $isCached = $this->cache->isCached($cacheName);
+	        $isCached = $this->_cache->isCached($cacheName);
+
+	        // if cached
 	        if ($isCached) {
-	        	return $this->cache->retrieve($cacheName);
+	        	return $this->_cache->retrieve($cacheName);
 	        } else {
 	        	$data = call_user_func_array([$this, $method], $arguments);
-	        	$this->cache->store($cacheName, $data, $this->cache_time);
+	        	$this->_cache->store($cacheName, $data, $this->_cache_time);
 	        	return $data;
 	        }
 	    } else {

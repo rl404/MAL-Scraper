@@ -9,8 +9,6 @@ use Sunra\PhpSimple\HtmlDomParser;
 
 function response($status,$status_message,$data)
 {
-	// header("HTTP/1.1 " . $status);
-
 	$response['status'] = $status;
 	$response['status_message'] = $status_message;
 	$response['data'] = $data;

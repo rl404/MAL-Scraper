@@ -7,16 +7,16 @@ header('Content-Type: application/json');
 use MalScraper\MalScraper;
 
 $myscraper = new MalScraper([
-	'cache' => true,
-	// 'cache_time' => 3
+	'enable_cache' => true,
+	'cache_time' => 60
 ]);
 
 // get anime info
-// echo $myscraper->getInfo('anime', 28221);
-echo $myscraper->getInfo('anime', 38150);
+echo $myscraper->getInfo('anime', 28221);
+// echo $myscraper->getInfo('anime', 38150);
 
 // get manga info
-echo $myscraper->getInfo('manga', 12);
+// echo $myscraper->getInfo('manga', 12);
 // echo $myscraper->getInfo('manga', 114470);
 
 // get character
