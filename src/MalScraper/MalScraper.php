@@ -47,6 +47,20 @@ class MalScraper {
 	private $_cache_time = 86400;
 
 	/**
+	 * Convert to array feature
+	 *
+	 * @var boolean
+	 */
+	private $_to_array = false;
+
+	/**
+	 * Data only return
+	 *
+	 * @var boolean
+	 */
+	private $_data_only = false;
+
+	/**
 	 * Default constructor
 	 *
 	 * @param array [optional] $config
@@ -56,7 +70,7 @@ class MalScraper {
 	{
 		if (!empty($config['enable_cache'])) {
 			// enable cache function
-			$this->_enable_cache = !empty($config['enable_cache']) ? $config['enable_cache'] : false;
+			$this->_enable_cache = $config['enable_cache'];
 
 			// create cache class
 			$this->_cache = new Cache();
@@ -70,6 +84,16 @@ class MalScraper {
 				$this->_cache->eraseExpired($this->_cache_time);
 			}
 		}
+
+		// to array function
+		if (!empty($config['to_array'])) {
+			$this->_to_array = $config['to_array'];
+
+			// return data only funtion
+			if (!empty($config['data_only'])) {
+				$this->_data_only = $config['data_only'];
+			}
+		}
 	}
 
 	/**
@@ -80,7 +104,9 @@ class MalScraper {
 	 * @return json
 	 */
 	public function __call($method,$arguments)
-	{
+	{	
+		$result = '';
+
 		// if cache function enabled
 		if ($this->_enable_cache === true) {
 			$cacheName = $method . '(' . implode(',', $arguments) . ')';
@@ -88,15 +114,27 @@ class MalScraper {
 
 	        // if cached
 	        if ($isCached) {
-	        	return $this->_cache->retrieve($cacheName);
+	        	$result = $this->_cache->retrieve($cacheName);
 	        } else {
 	        	$data = call_user_func_array([$this, $method], $arguments);
 	        	$this->_cache->store($cacheName, $data, $this->_cache_time);
-	        	return $data;
+	        	$result = $data;
 	        }
 	    } else {
-	    	return call_user_func_array([$this, $method], $arguments);
+	    	$result = call_user_func_array([$this, $method], $arguments);
 	    }
+
+	    // if to array function enabled
+	    if ($this->_to_array === true) {
+	    	$result = json_decode($result, true);	
+
+	    	// if data only return enabled
+	    	if ($this->_data_only === true) {
+	    		$result = $result['data'];
+	    	}
+	    }
+
+	    return $result;
     }
 
 	/**
