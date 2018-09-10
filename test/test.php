@@ -6,13 +6,15 @@ header('Content-Type: application/json');
 
 use MalScraper\MalScraper;
 
-$myscraper = new MalScraper([
-	'enable_cache' => true,
-	'cache_time' => 60
-]);
+$myscraper = new MalScraper();
+
+// get user info
+echo $myscraper->getUser('rl404');
+// echo $myscraper->getUser('MozillaFennekin');
+// echo $myscraper->getUser('404');
 
 // get anime info
-echo $myscraper->getInfo('anime', 28221);
+// echo $myscraper->getInfo('anime', 28221);
 // echo $myscraper->getInfo('anime', 38150);
 
 // get manga info
