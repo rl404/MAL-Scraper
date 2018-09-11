@@ -2579,23 +2579,139 @@ function getUser($user)
 	// favorite
 	$favorite = [];
 	$favorite_area = $right_area->find('.user-favorites-outer', 0);
+	
+	// favorite anime
+	$favorite['anime'] = [];
 	$anime_area = $favorite_area->find('ul[class="favorites-list anime"]', 0);
-	foreach ($anime_area->find('li') as $each_anime) {
-		$temp_anime = [];
+	if ($anime_area) {
+		foreach ($anime_area->find('li') as $each_anime) {
+			$temp_anime = [];
 
-		// image
-		$image = $each_anime->find('a', 0)->style;
-		preg_match('/\'([^\'])*/', $image, $image);
-		$image = substr($image[0], 1);
-		$temp_anime['image'] = imageUrlCleaner($image);
+			// image
+			$image = $each_anime->find('a', 0)->style;
+			preg_match('/\'([^\'])*/', $image, $image);
+			$image = substr($image[0], 1);
+			$temp_anime['image'] = imageUrlCleaner($image);
 
-		// id
-		$id = $each_anime->find('a', 0)->href;
-		$id = explode('/', $id);
-		$temp_anime['id'] = $id[4];
+			// id
+			$id = $each_anime->find('a', 0)->href;
+			$id = explode('/', $id);
+			$temp_anime['id'] = $id[4];
 
-		$favorite['anime'][] = $temp_anime;
+			// title 
+			$title = $each_anime->find('a', 1)->plaintext;
+			$temp_anime['title'] = $title;
+
+			// type
+			$temp_type = $each_anime->find('span', 0)->plaintext;
+			$temp_type = explode('·', $temp_type);
+			$temp_anime['type'] = trim($temp_type[0]);
+
+			// year
+			$temp_anime['year'] = trim($temp_type[1]);
+
+			$favorite['anime'][] = $temp_anime;
+		}
 	}
+	unset($anime_area);
+
+	// favorite manga
+	$favorite['manga'] = [];
+	$manga_area = $favorite_area->find('ul[class="favorites-list manga"]', 0);
+	if ($manga_area) {
+		foreach ($manga_area->find('li') as $each_manga) {
+			$temp_manga = [];
+
+			// image
+			$image = $each_manga->find('a', 0)->style;
+			preg_match('/\'([^\'])*/', $image, $image);
+			$image = substr($image[0], 1);
+			$temp_manga['image'] = imageUrlCleaner($image);
+
+			// id
+			$id = $each_manga->find('a', 0)->href;
+			$id = explode('/', $id);
+			$temp_manga['id'] = $id[4];
+
+			// title 
+			$title = $each_manga->find('a', 1)->plaintext;
+			$temp_manga['title'] = $title;
+
+			// type
+			$temp_type = $each_manga->find('span', 0)->plaintext;
+			$temp_type = explode('·', $temp_type);
+			$temp_manga['type'] = trim($temp_type[0]);
+
+			// year
+			$temp_manga['year'] = trim($temp_type[1]);
+
+			$favorite['manga'][] = $temp_manga;
+		}
+	}
+	unset($manga_area);
+
+	// favorite character
+	$favorite['character'] = [];
+	$char_area = $favorite_area->find('ul[class="favorites-list characters"]', 0);
+	if ($char_area) {
+		foreach ($char_area->find('li') as $each_char) {
+			$temp_char = [];
+
+			// image
+			$image = $each_char->find('a', 0)->style;
+			preg_match('/\'([^\'])*/', $image, $image);
+			$image = substr($image[0], 1);
+			$temp_char['image'] = imageUrlCleaner($image);
+
+			// id
+			$id = $each_char->find('a', 0)->href;
+			$id = explode('/', $id);
+			$temp_char['id'] = $id[4];
+
+			// name 
+			$name = $each_char->find('a', 1)->plaintext;
+			$temp_char['name'] = $name;
+
+			// anime id
+			$anime_id = $each_char->find('a', 2)->href;
+			$anime_id = explode('/', $anime_id);
+			$temp_char['anime_id'] = $anime_id[2];
+
+			// anime title
+			$anime_title = $each_char->find('a', 2)->plaintext;
+			$temp_char['anime_title'] = trim($anime_title);
+
+			$favorite['character'][] = $temp_char;
+		}
+	}
+	unset($char_area);
+
+	// favorite people
+	$favorite['people'] = [];
+	$people_area = $favorite_area->find('ul[class="favorites-list people"]', 0);
+	if ($people_area) {
+		foreach ($people_area->find('li') as $each_people) {
+			$temp_people = [];
+
+			// image
+			$image = $each_people->find('a', 0)->style;
+			preg_match('/\'([^\'])*/', $image, $image);
+			$image = substr($image[0], 1);
+			$temp_people['image'] = imageUrlCleaner($image);
+
+			// id
+			$id = $each_people->find('a', 0)->href;
+			$id = explode('/', $id);
+			$temp_people['id'] = $id[4];
+
+			// name 
+			$name = $each_people->find('a', 1)->plaintext;
+			$temp_people['name'] = $name;
+
+			$favorite['people'][] = $temp_people;
+		}
+	}
+	unset($people_area);
 
 	$data = [
 		'username' => $user,
@@ -2611,7 +2727,7 @@ function getUser($user)
 		'blog_post' => $blog_post,
 		'club' => $club,
 		'sns' => $sns,
-		// 'about' => $about,
+		'about' => $about,
 		'anime_stat' => $anime_stat,
 		'manga_stat' => $manga_stat,
 		'favorite' => $favorite,
