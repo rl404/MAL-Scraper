@@ -368,6 +368,16 @@ class MalScraper {
 		return call_user_func_array ( '\scraper\getTopManga' , func_get_args() );
 	}
 
+	/**
+	 * Get user information
+	 *
+	 * @param 	string	$user 	username
+	 * @return 	json 	\scraper\getUser
+	 */
+	private function getUser() {
+		return call_user_func_array ( '\scraper\getUser' , func_get_args() );
+	}
+
 	// WIP
 	private function getCover() {
 		header("Content-type: text/css; charset: UTF-8");
