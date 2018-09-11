@@ -14,13 +14,13 @@ $myscraper = new MalScraper([
 ]);
 
 // get user info
-echo $myscraper->getUser('rl404');
-// echo $myscraper->getUser('MozillaFennekin');
-// echo $myscraper->getUser('404');
+$result = $myscraper->getUser('rl404');
+// $result = $myscraper->getUser('MozillaFennekin');
+// $result = $myscraper->getUser('404');
 
 // get anime info
-// echo $myscraper->getInfo('anime', 28221);
-// echo $myscraper->getInfo('anime', 38150
+// $result = $myscraper->getInfo('anime', 28221);
+// $result = $myscraper->getInfo('anime', 38150
 
 // get manga info
 // $result = $myscraper->getInfo('manga', 12);
@@ -74,7 +74,7 @@ echo $myscraper->getUser('rl404');
 // $result = $myscraper->searchAnime('etotama');
 
 // search manga
-$result = $myscraper->searchManga('non');
+// $result = $myscraper->searchManga('non');
 
 // search character
 // $result = $myscraper->searchCharacter('ohu');
