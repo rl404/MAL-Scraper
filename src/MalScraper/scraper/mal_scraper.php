@@ -2329,7 +2329,7 @@ function getCover($user,$status=7)
 
 	$file_headers = @get_headers($url);
 	if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(400, "Page Not Found", NULL);
+	    return response(404, "Page Not Found", NULL);
 	    exit();
 	}
 
@@ -2366,7 +2366,7 @@ function getUser($user)
 
 	$file_headers = @get_headers($url);
 	if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(400, "Page Not Found", NULL);
+	    return response(404, "User Not Found", NULL);
 	    exit();
 	}
 
@@ -2579,7 +2579,7 @@ function getUser($user)
 	// favorite
 	$favorite = [];
 	$favorite_area = $right_area->find('.user-favorites-outer', 0);
-	
+
 	// favorite anime
 	$favorite['anime'] = [];
 	$anime_area = $favorite_area->find('ul[class="favorites-list anime"]', 0);
@@ -2598,7 +2598,7 @@ function getUser($user)
 			$id = explode('/', $id);
 			$temp_anime['id'] = $id[4];
 
-			// title 
+			// title
 			$title = $each_anime->find('a', 1)->plaintext;
 			$temp_anime['title'] = $title;
 
@@ -2633,7 +2633,7 @@ function getUser($user)
 			$id = explode('/', $id);
 			$temp_manga['id'] = $id[4];
 
-			// title 
+			// title
 			$title = $each_manga->find('a', 1)->plaintext;
 			$temp_manga['title'] = $title;
 
@@ -2668,7 +2668,7 @@ function getUser($user)
 			$id = explode('/', $id);
 			$temp_char['id'] = $id[4];
 
-			// name 
+			// name
 			$name = $each_char->find('a', 1)->plaintext;
 			$temp_char['name'] = $name;
 
@@ -2704,7 +2704,7 @@ function getUser($user)
 			$id = explode('/', $id);
 			$temp_people['id'] = $id[4];
 
-			// name 
+			// name
 			$name = $each_people->find('a', 1)->plaintext;
 			$temp_people['name'] = $name;
 
