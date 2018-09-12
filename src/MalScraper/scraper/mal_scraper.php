@@ -9,8 +9,6 @@ use Sunra\PhpSimple\HtmlDomParser;
 
 function response($status,$status_message,$data)
 {
-	// header("HTTP/1.1 " . $status);
-
 	$response['status'] = $status;
 	$response['status_message'] = $status_message;
 	$response['data'] = $data;
@@ -2331,7 +2329,7 @@ function getCover($user,$status=7)
 
 	$file_headers = @get_headers($url);
 	if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(400, "Page Not Found", NULL);
+	    return response(404, "Page Not Found", NULL);
 	    exit();
 	}
 
@@ -2360,4 +2358,381 @@ function getCover($user,$status=7)
 
 	$html->clear();
 	unset($html);
+}
+
+function getUser($user)
+{
+	$url = "https://myanimelist.net/profile/" . $user;
+
+	$file_headers = @get_headers($url);
+	if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+	    return response(404, "User Not Found", NULL);
+	    exit();
+	}
+
+	$html = HtmlDomParser::file_get_html($url)->find('#content', 0)->outertext;
+	$html = str_replace('&quot;', '\"', $html);
+	$html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
+	$html = HtmlDomParser::str_get_html($html);
+
+	$left_area = $html->find('.container-left .user-profile', 0);
+	$right_area = $html->find('.container-right', 0);
+
+	// image
+	$image = $left_area->find('.user-image img', 0);
+	$profile_image = $image ? imageUrlCleaner($image->src) : '';
+
+	// status
+	$last_online = $gender = $birthday = $location = $joined_date = '';
+	$status_area = $left_area->find('.user-status', 0);
+	foreach ($status_area->find('li') as $each_status) {
+		$status_type = trim($each_status->find('span', 0)->plaintext);
+		$status_value = trim($each_status->find('span', 1)->plaintext);
+
+		switch ($status_type) {
+			// last online
+			case "Last Online":
+			$last_online = $status_value;
+			break;
+
+			// gender
+			case "Gender":
+			$gender = $status_value;
+			break;
+
+			// birthday
+			case "Birthday":
+			$birthday = $status_value;
+			break;
+
+			// location
+			case "Location":
+			$location = $status_value;
+			break;
+
+			// joined date
+			case "Joined":
+			$joined_date =$status_value;
+			break;
+
+			default:
+			'';
+		}
+	}
+
+	// forum post
+	$status_area = $left_area->find('.user-status', 2);
+	$forum_post = trim($status_area->find('li', 0)->find('span', 1)->plaintext);
+
+	// review
+	$review = trim($status_area->find('li', 1)->find('span', 1)->plaintext);
+
+	// recommendation
+	$recommendation = trim($status_area->find('li', 2)->find('span', 1)->plaintext);
+
+	// blog post
+	$blog_post = trim($status_area->find('li', 1)->find('span', 1)->plaintext);
+
+	// club
+	$club = trim($status_area->find('li', 1)->find('span', 1)->plaintext);
+
+	// sns
+	$sns = [];
+	$sns_area = $left_area->find('.user-profile-sns', 0);
+	foreach ($sns_area->find('a') as $each_sns) {
+		if ($each_sns->class != 'di-ib mb8') {
+			$sns[] = $each_sns->href;
+		}
+	}
+	unset($sns_area);
+
+	// about
+	$about = $right_area->find('table tr td div[class=word-break]', 0);
+	$about = $about ? trim($about->innertext) : '';
+
+	// anime stats
+	$anime_stat = [];
+	$stat_area = $right_area->find('.user-statistics', 0);
+	$a_stat_area = $stat_area->find('div[class="user-statistics-stats mt16"]', 0);
+	$a_stat_score = $a_stat_area->find('.stat-score', 0);
+
+	// days
+	$days = $a_stat_score->find('div', 0);
+	$temp_days = $days->find('span', 0)->plaintext;
+	$days = str_replace($temp_days, '', $days->plaintext);
+	$anime_stat['days'] = $days;
+
+	// mean score
+	$mean_score = $a_stat_score->find('div', 1);
+	$temp_score = $mean_score->find('span', 0)->plaintext;
+	$mean_score = str_replace($temp_score, '', $mean_score->plaintext);
+	$anime_stat['mean_score'] = $mean_score;
+
+	// anime status
+	$temp_stat = [];
+	$a_stat_status = $a_stat_area->find('ul[class=stats-status]', 0);
+	$temp_stat['watching'] = trim($a_stat_status->find('span', 0)->plaintext);
+	$temp_stat['completed'] = trim($a_stat_status->find('span', 1)->plaintext);
+	$temp_stat['on_hold'] = trim($a_stat_status->find('span', 2)->plaintext);
+	$temp_stat['dropped'] = trim($a_stat_status->find('span', 3)->plaintext);
+	$temp_stat['plan_to_watch'] = trim($a_stat_status->find('span', 4)->plaintext);
+
+	$a_stat_status = $a_stat_area->find('ul[class=stats-data]', 0);
+	$temp_stat['total'] = str_replace(',', '', trim($a_stat_status->find('span', 1)->plaintext));
+	$temp_stat['rewatched'] = str_replace(',', '', trim($a_stat_status->find('span', 3)->plaintext));
+	$temp_stat['episode'] = str_replace(',', '', trim($a_stat_status->find('span', 5)->plaintext));
+
+	$anime_stat['status'] = $temp_stat;
+
+	// history
+	$history = [];
+	$a_history_area = $right_area->find('div[class="updates anime"]', 0);
+	foreach ($a_history_area->find('.statistics-updates') as $each_history) {
+		$temp_history = [];
+
+		// image
+		$image = $each_history->find('img', 0)->src;
+		$temp_history['image'] = imageUrlCleaner($image);
+
+		// id
+		$history_data_area = $each_history->find('.data', 0);
+		$id = $history_data_area->find('a', 0)->href;
+		$id = explode('/', $id);
+		$temp_history['id'] = $id[4];
+
+		// title
+		$title = $history_data_area->find('a', 0)->plaintext;
+		$temp_history['title'] = $title;
+
+		// date
+		$date = $history_data_area->find('span', 0)->plaintext;
+		$temp_history['date'] = trim($date);
+
+		$history[] = $temp_history;
+	}
+
+	$anime_stat['history'] = $history;
+
+	// manga stats
+	$manga_stat = [];
+	$m_stat_area = $stat_area->find('div[class="user-statistics-stats mt16"]', 1);
+	$m_stat_score = $m_stat_area->find('.stat-score', 0);
+
+	// days
+	$days = $m_stat_score->find('div', 0);
+	$temp_days = $days->find('span', 0)->plaintext;
+	$days = str_replace($temp_days, '', $days->plaintext);
+	$manga_stat['days'] = $days;
+
+	// mean score
+	$mean_score = $m_stat_score->find('div', 1);
+	$temp_score = $mean_score->find('span', 0)->plaintext;
+	$mean_score = str_replace($temp_score, '', $mean_score->plaintext);
+	$manga_stat['mean_score'] = $mean_score;
+
+	// manga status
+	$temp_stat = [];
+	$m_stat_status = $m_stat_area->find('ul[class=stats-status]', 0);
+	$temp_stat['reading'] = trim($m_stat_status->find('span', 0)->plaintext);
+	$temp_stat['completed'] = trim($m_stat_status->find('span', 1)->plaintext);
+	$temp_stat['on_hold'] = trim($m_stat_status->find('span', 2)->plaintext);
+	$temp_stat['dropped'] = trim($m_stat_status->find('span', 3)->plaintext);
+	$temp_stat['plan_to_read'] = trim($m_stat_status->find('span', 4)->plaintext);
+
+	$m_stat_status = $m_stat_area->find('ul[class=stats-data]', 0);
+	$temp_stat['total'] = str_replace(',', '', trim($m_stat_status->find('span', 1)->plaintext));
+	$temp_stat['reread'] = str_replace(',', '', trim($m_stat_status->find('span', 3)->plaintext));
+	$temp_stat['chapter'] = str_replace(',', '', trim($m_stat_status->find('span', 5)->plaintext));
+	$temp_stat['volume'] = str_replace(',', '', trim($m_stat_status->find('span', 7)->plaintext));
+
+	$manga_stat['status'] = $temp_stat;
+
+	// history
+	$history = [];
+	$m_history_area = $right_area->find('div[class="updates manga"]', 0);
+	foreach ($m_history_area->find('.statistics-updates') as $each_history) {
+		$temp_history = [];
+
+		// image
+		$image = $each_history->find('img', 0)->src;
+		$temp_history['image'] = imageUrlCleaner($image);
+
+		// id
+		$history_data_area = $each_history->find('.data', 0);
+		$id = $history_data_area->find('a', 0)->href;
+		$id = explode('/', $id);
+		$temp_history['id'] = $id[4];
+
+		// title
+		$title = $history_data_area->find('a', 0)->plaintext;
+		$temp_history['title'] = $title;
+
+		// date
+		$date = $history_data_area->find('span', 0)->plaintext;
+		$temp_history['date'] = trim($date);
+
+		$history[] = $temp_history;
+	}
+
+	$manga_stat['history'] = $history;
+
+	// favorite
+	$favorite = [];
+	$favorite_area = $right_area->find('.user-favorites-outer', 0);
+
+	// favorite anime
+	$favorite['anime'] = [];
+	$anime_area = $favorite_area->find('ul[class="favorites-list anime"]', 0);
+	if ($anime_area) {
+		foreach ($anime_area->find('li') as $each_anime) {
+			$temp_anime = [];
+
+			// image
+			$image = $each_anime->find('a', 0)->style;
+			preg_match('/\'([^\'])*/', $image, $image);
+			$image = substr($image[0], 1);
+			$temp_anime['image'] = imageUrlCleaner($image);
+
+			// id
+			$id = $each_anime->find('a', 0)->href;
+			$id = explode('/', $id);
+			$temp_anime['id'] = $id[4];
+
+			// title
+			$title = $each_anime->find('a', 1)->plaintext;
+			$temp_anime['title'] = $title;
+
+			// type
+			$temp_type = $each_anime->find('span', 0)->plaintext;
+			$temp_type = explode('·', $temp_type);
+			$temp_anime['type'] = trim($temp_type[0]);
+
+			// year
+			$temp_anime['year'] = trim($temp_type[1]);
+
+			$favorite['anime'][] = $temp_anime;
+		}
+	}
+	unset($anime_area);
+
+	// favorite manga
+	$favorite['manga'] = [];
+	$manga_area = $favorite_area->find('ul[class="favorites-list manga"]', 0);
+	if ($manga_area) {
+		foreach ($manga_area->find('li') as $each_manga) {
+			$temp_manga = [];
+
+			// image
+			$image = $each_manga->find('a', 0)->style;
+			preg_match('/\'([^\'])*/', $image, $image);
+			$image = substr($image[0], 1);
+			$temp_manga['image'] = imageUrlCleaner($image);
+
+			// id
+			$id = $each_manga->find('a', 0)->href;
+			$id = explode('/', $id);
+			$temp_manga['id'] = $id[4];
+
+			// title
+			$title = $each_manga->find('a', 1)->plaintext;
+			$temp_manga['title'] = $title;
+
+			// type
+			$temp_type = $each_manga->find('span', 0)->plaintext;
+			$temp_type = explode('·', $temp_type);
+			$temp_manga['type'] = trim($temp_type[0]);
+
+			// year
+			$temp_manga['year'] = trim($temp_type[1]);
+
+			$favorite['manga'][] = $temp_manga;
+		}
+	}
+	unset($manga_area);
+
+	// favorite character
+	$favorite['character'] = [];
+	$char_area = $favorite_area->find('ul[class="favorites-list characters"]', 0);
+	if ($char_area) {
+		foreach ($char_area->find('li') as $each_char) {
+			$temp_char = [];
+
+			// image
+			$image = $each_char->find('a', 0)->style;
+			preg_match('/\'([^\'])*/', $image, $image);
+			$image = substr($image[0], 1);
+			$temp_char['image'] = imageUrlCleaner($image);
+
+			// id
+			$id = $each_char->find('a', 0)->href;
+			$id = explode('/', $id);
+			$temp_char['id'] = $id[4];
+
+			// name
+			$name = $each_char->find('a', 1)->plaintext;
+			$temp_char['name'] = $name;
+
+			// anime id
+			$anime_id = $each_char->find('a', 2)->href;
+			$anime_id = explode('/', $anime_id);
+			$temp_char['anime_id'] = $anime_id[2];
+
+			// anime title
+			$anime_title = $each_char->find('a', 2)->plaintext;
+			$temp_char['anime_title'] = trim($anime_title);
+
+			$favorite['character'][] = $temp_char;
+		}
+	}
+	unset($char_area);
+
+	// favorite people
+	$favorite['people'] = [];
+	$people_area = $favorite_area->find('ul[class="favorites-list people"]', 0);
+	if ($people_area) {
+		foreach ($people_area->find('li') as $each_people) {
+			$temp_people = [];
+
+			// image
+			$image = $each_people->find('a', 0)->style;
+			preg_match('/\'([^\'])*/', $image, $image);
+			$image = substr($image[0], 1);
+			$temp_people['image'] = imageUrlCleaner($image);
+
+			// id
+			$id = $each_people->find('a', 0)->href;
+			$id = explode('/', $id);
+			$temp_people['id'] = $id[4];
+
+			// name
+			$name = $each_people->find('a', 1)->plaintext;
+			$temp_people['name'] = $name;
+
+			$favorite['people'][] = $temp_people;
+		}
+	}
+	unset($people_area);
+
+	$data = [
+		'username' => $user,
+		'image' => $profile_image,
+		'last_online' => $last_online,
+		'gender' => $gender,
+		'birthday' => $birthday,
+		'location' => $location,
+		'joined_date' => $joined_date,
+		'forum_post' => $forum_post,
+		'review' => $review,
+		'recommendation' => $recommendation,
+		'blog_post' => $blog_post,
+		'club' => $club,
+		'sns' => $sns,
+		'about' => $about,
+		'anime_stat' => $anime_stat,
+		'manga_stat' => $manga_stat,
+		'favorite' => $favorite,
+	];
+
+	return response(200, "Success", $data);
+	unset($data);
 }
