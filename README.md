@@ -20,7 +20,7 @@ _Mal-Scraper_ is using [Sunra's](https://github.com/sunra/php-simple-html-dom-pa
 - Get list of top manga from various categories (all, manga, novel, etc) (pagination supported)
 - Get information of user profile
 - JSON or array return type
-- Caching
+- Caching (using [Simple-PHP-Cache library](https://github.com/cosenary/Simple-PHP-Cache))
 
 ## Installation
 1. `composer require rl404/mal-scraper 1.0.0`
@@ -52,6 +52,7 @@ $myMalScraper = new MalScraper([
     'data_only' => true         // (optional) return data only
 ]);
 ```
+For more usage and methods, please go to the [wiki](https://github.com/rl404/MAL-Scraper/wiki)
 
 ## Contributing
 1. Fork it!
@@ -64,7 +65,3 @@ $myMalScraper = new MalScraper([
 MIT License
 
 Copyright (c) rl404
-
----
-
-For more information, please go to the [wiki](https://github.com/rl404/MAL-Scraper/wiki)
