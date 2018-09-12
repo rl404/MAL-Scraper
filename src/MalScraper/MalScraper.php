@@ -7,7 +7,7 @@
  *
  * @author Axel Oktavian Antonio
  * @since 26-09-2018
- * @version 1.1
+ * @version 1.1.0
  * @license MIT https://opensource.org/licenses/MIT
  */
 
@@ -104,7 +104,7 @@ class MalScraper {
 	 * @return json
 	 */
 	public function __call($method,$arguments)
-	{	
+	{
 		$result = '';
 
 		// if cache function enabled
@@ -126,7 +126,7 @@ class MalScraper {
 
 	    // if to array function enabled
 	    if ($this->_to_array === true) {
-	    	$result = json_decode($result, true);	
+	    	$result = json_decode($result, true);
 
 	    	// if data only return enabled
 	    	if ($this->_data_only === true) {

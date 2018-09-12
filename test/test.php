@@ -9,13 +9,11 @@ use MalScraper\MalScraper;
 $myscraper = new MalScraper([
 	'enable_cache' => true,
 	'cache_time' => 300,
-	'to_array' => true,
-	'data_only' => true
 ]);
 
 // get user info
-$result = $myscraper->getUser('rl404');
-// $result = $myscraper->getUser('MozillaFennekin');
+// $result = $myscraper->getUser('rl404');
+$result = $myscraper->getUser('MozillaFennekin');
 // $result = $myscraper->getUser('404');
 
 // get anime info

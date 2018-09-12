@@ -23,7 +23,7 @@ _Mal-Scraper_ is using [Sunra's](https://github.com/sunra/php-simple-html-dom-pa
 - Caching (using [Simple-PHP-Cache library](https://github.com/cosenary/Simple-PHP-Cache))
 
 ## Installation
-1. `composer require rl404/mal-scraper 1.0.0`
+1. `composer require rl404/mal-scraper 1.1.0`
 2. That's it.
 
 #### Dependencies
