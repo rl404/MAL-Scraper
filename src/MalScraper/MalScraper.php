@@ -379,13 +379,23 @@ class MalScraper {
 	}
 
 	/**
-	 * Get user's friend information
+	 * Get user's friend list
 	 *
 	 * @param 	string	$user 	username
 	 * @return 	json 	\scraper\getUserFriend
 	 */
 	private function getUserFriend() {
 		return call_user_func_array ( '\scraper\getUserFriend' , func_get_args() );
+	}
+
+	/**
+	 * Get user's history information
+	 *
+	 * @param 	string	$user 	username
+	 * @return 	json 	\scraper\getUserHistory
+	 */
+	private function getUserHistory() {
+		return call_user_func_array ( '\scraper\getUserHistory' , func_get_args() );
 	}
 
 	// WIP

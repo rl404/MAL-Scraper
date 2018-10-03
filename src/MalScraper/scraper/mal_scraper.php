@@ -2742,13 +2742,15 @@ function getUser($user)
 
 function getUserFriend($user)
 {
-	$url = "https://myanimelist.net/profile/" . $user . "/friends";
+	$url = "https://myanimelist.net/profile/" . $user;
 
 	$file_headers = @get_headers($url);
 	if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
 	    return response(404, "User Not Found", NULL);
 	    exit();
 	}
+
+	$url = "https://myanimelist.net/profile/" . $user . "/friends";
 
 	$html = HtmlDomParser::file_get_html($url)->find('#content', 0)->outertext;
 	$html = str_replace('&quot;', '\"', $html);
@@ -2784,6 +2786,70 @@ function getUserFriend($user)
 	}
 
 	$data = $friend;
+
+	return response(200, "Success", $data);
+	unset($data);
+}
+
+function getUserHistory($user,$type=false)
+{
+	$url = "https://myanimelist.net/profile/" . $user;
+
+	$file_headers = @get_headers($url);
+	if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+	    return response(404, "User Not Found", NULL);
+	    exit();
+	}
+
+	$url = "https://myanimelist.net/history/" . $user;
+
+	if ($type) {
+		$url .= "/" . $type;
+	}
+
+	$html = HtmlDomParser::file_get_html($url)->find('#content', 0)->outertext;
+	$html = str_replace('&quot;', '\"', $html);
+	$html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
+	$html = HtmlDomParser::str_get_html($html);
+
+	$data = [];
+	$history_area = $html->find('table', 0);
+	if ($history_area) {
+		foreach ($history_area->find('tr') as $history) {
+			if ($history->find('td', 0)->class != 'borderClass') continue;
+			$h_temp = [];
+
+			$name_area = $history->find('td', 0);
+
+			// id
+			$temp_id = $name_area->find('a', 0)->href;
+			$temp_id = explode('=', $temp_id);
+			$h_temp['id'] = $temp_id[1];
+
+			// title
+			$h_temp['title'] = $name_area->find('a', 0)->plaintext;
+
+			// type
+			$type = $name_area->find('a', 0)->href;
+			$type = explode('.php', $type);
+			$h_temp['type'] = substr($type[0], 1);
+
+			// number
+			$number = $name_area->find('strong', 0)->plaintext;
+			$h_temp['number'] = $number;
+
+			// date
+			$date = $history->find('td', 1);
+			$useless_date = $date->find('a', 0);
+			$date = $date->plaintext;
+			if ($useless_date) {
+				$date = str_replace($useless_date, '', $date);
+			}
+			$h_temp['date'] = trim($date);
+
+			$data[] = $h_temp;
+		}
+	}
 
 	return response(200, "Success", $data);
 	unset($data);
