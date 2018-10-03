@@ -127,6 +127,8 @@ function imageUrlCleaner($str)
 	preg_match('/(questionmark)|(qm_50)/', $str, $temp_image);
 	$str = $temp_image ? '' : $str;
 	$str = str_replace('v.jpg', '.jpg', $str);
+	$str = str_replace('_thumb.jpg', '.jpg', $str);
+	$str = str_replace('userimages/thumbs', 'userimages', $str);
 	$str = preg_replace('/r\/\d{1,3}x\d{1,3}\//', '', $str);
 	$str = preg_replace('/\?.+/', '', $str);
 
@@ -140,7 +142,7 @@ function getInfo($type,$id)
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
 	    return response(404, "Page Not Found", NULL);
-	    exit();
+	    // exit();
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('#content', 0)->outertext;
@@ -2325,7 +2327,7 @@ function getTopManga($type=0,$page=1)
 
 function getCover($user,$status=7)
 {
-	$url = "https://myanimelist.net/animelist/" . $user . "?status=" . $status;
+	$url = "https://myanimelist.net/mangalist/" . $user . "?status=" . $status;
 
 	$file_headers = @get_headers($url);
 	if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
@@ -2343,21 +2345,22 @@ function getCover($user,$status=7)
 			$separated_link = explode("/", $anime->find('.animetitle', 0)->href);
 			$anime_id = $separated_link[2];
 
-			$image = getInfo('anime', $anime_id);
-			// $image = file_get_contents($info_url);
-			$image = json_decode($image, true);
-			$image = $image['data']['cover'];
+			// $image = getInfo('anime', $anime_id);
+			// $image = json_decode($image, true);
+			// $image = $image['data']['cover'];
 
-			$style0 = "tr:hover .animetitle[href*='/" . $anime_id;
-			$style1 = "/']:before{background-image: url(" . $image . ")}";
+			// $style0 = "tr:hover .animetitle[href*='/" . $anime_id;
+			// $style1 = "/']:before{background-image: url(" . $image . ")}";
 
-			$style = $style0 . $style1;
-			echo $style . "\n";
+			// $style = $style0 . $style1;
+			// echo $style . "\n";
+			$data[] = $anime_id;
 		}
 	}
-
 	$html->clear();
 	unset($html);
+
+	return $data;
 }
 
 function getUser($user)
@@ -2732,6 +2735,55 @@ function getUser($user)
 		'manga_stat' => $manga_stat,
 		'favorite' => $favorite,
 	];
+
+	return response(200, "Success", $data);
+	unset($data);
+}
+
+function getUserFriend($user)
+{
+	$url = "https://myanimelist.net/profile/" . $user . "/friends";
+
+	$file_headers = @get_headers($url);
+	if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+	    return response(404, "User Not Found", NULL);
+	    exit();
+	}
+
+	$html = HtmlDomParser::file_get_html($url)->find('#content', 0)->outertext;
+	$html = str_replace('&quot;', '\"', $html);
+	$html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
+	$html = HtmlDomParser::str_get_html($html);
+
+	$friend = [];
+	$friend_area = $html->find('.majorPad', 0);
+	if ($friend_area) {
+		foreach ($friend_area->find('.friendHolder') as $f) {
+			$f_dump = [];
+			$f = $f->find('.friendBlock', 0);
+
+			// picture
+			$f_dump['image'] = imageUrlCleaner($f->find('a img', 0)->src);
+
+			// name
+			$name_temp = $f->find('a',0)->href;
+			$name_temp = explode('/', $name_temp);
+			$f_dump['name'] = $name_temp[4];
+
+			// last online
+			$last_online = $f->find('strong', 0)->parent()->parent()->next_sibling();
+			$f_dump['last_online'] = trim($last_online->plaintext);
+
+			// friend since
+			$friend_since = $last_online->next_sibling();
+			$friend_since = str_replace('Friends since', '', $friend_since->plaintext);
+			$f_dump['friend_since'] = trim($friend_since);
+
+			$friend[] = $f_dump;
+		}
+	}
+
+	$data = $friend;
 
 	return response(200, "Success", $data);
 	unset($data);

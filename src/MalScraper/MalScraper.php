@@ -378,6 +378,16 @@ class MalScraper {
 		return call_user_func_array ( '\scraper\getUser' , func_get_args() );
 	}
 
+	/**
+	 * Get user's friend information
+	 *
+	 * @param 	string	$user 	username
+	 * @return 	json 	\scraper\getUserFriend
+	 */
+	private function getUserFriend() {
+		return call_user_func_array ( '\scraper\getUserFriend' , func_get_args() );
+	}
+
 	// WIP
 	private function getCover() {
 		header("Content-type: text/css; charset: UTF-8");
