@@ -11,11 +11,27 @@ function response($status,$status_message,$data)
 {
 	$response['status'] = $status;
 	$response['status_message'] = $status_message;
-	$response['data'] = $data;
+	$response['data'] = superEncode($data);
 
 	$json_response = json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 	$json_response = str_replace("\\\\", "", $json_response);
+
 	return $json_response;
+}
+
+function superEncode($array)
+{
+	if ($array) {
+	    foreach ($array as $key => $value) {
+	        if (is_array($value)) {
+	            $array[$key] = superEncode($value);
+	        } else {
+	            $array[$key] = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
+	        }
+	    }
+	}
+
+    return $array;
 }
 
 function getTopAnimeType($type)
@@ -2835,8 +2851,8 @@ function getUserHistory($user,$type=false)
 			$h_temp['type'] = substr($type[0], 1);
 
 			// number
-			$number = $name_area->find('strong', 0)->plaintext;
-			$h_temp['number'] = $number;
+			$progress = $name_area->find('strong', 0)->plaintext;
+			$h_temp['progress'] = $progress;
 
 			// date
 			$date = $history->find('td', 1);
@@ -2853,4 +2869,93 @@ function getUserHistory($user,$type=false)
 
 	return response(200, "Success", $data);
 	unset($data);
+}
+
+function getUserList($user,$type='anime',$status=7)
+{
+	$url = "https://myanimelist.net/" . $type . "list/" . $user . "?status=" . $status;
+
+	$file_headers = @get_headers($url);
+	if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+	    return response(404, "User Not Found", NULL);
+	    exit();
+	}
+
+	$html = HtmlDomParser::file_get_html($url)->find('#list_surround', 0);
+
+	if ($html) {
+		$html = $html->outertext;
+		$html = str_replace('&quot;', '\"', $html);
+		$html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
+		$html = HtmlDomParser::str_get_html($html);
+		return getOldList($html);
+	} else {
+		return response(409, "New Design List can't be parsed at the moment", NULL);
+	}
+}
+
+function getOldList($html)
+{
+	// get table header
+	$table_header = [];
+	foreach ($html->find('td[class=table_header]') as $each_header) {
+		$th = $each_header->find('strong', 0);
+
+		if (!$th) {
+			$th = $each_header->find('b', 0);
+		}
+
+		$th = trim(strtolower($th->plaintext));
+		if (!in_array($th, $table_header)) {
+			$table_header[] = $th;
+		} else {
+			break;
+		}
+	}
+
+	$data['header'] = $table_header;
+
+	$data['data'] = [];
+	foreach ($html->find('table') as $each_anime) {
+		$anime_dump = [];
+
+		$anime_row = $each_anime->find('a[class=animetitle]', 0);
+		if (!$anime_row) continue;
+
+		foreach ($each_anime->find('td[class^=td]') as $each_column) {
+
+			// title
+			$anime_title = $each_column->find('a[class=animetitle]', 0);
+			if ($anime_title) {
+				$each_column = $each_column->find('span', 0);
+			}
+
+			// tag
+			$anime_tag = $each_column->find('span[id^=tagLinks]', 0);
+			if ($anime_tag) {
+				$each_column = $each_column->find('span[id^=tagLinks]', 0);
+			}
+
+			$column_value = preg_replace('/\s+/', ' ', $each_column->plaintext);
+
+			// progress
+			$anime_prog = $each_column->find('span[id^=output]', 0);
+			$chap_prog = $each_column->find('span[id^=chap]', 0);
+			$vol_prog = $each_column->find('span[id^=vol]', 0);
+			if ($anime_prog || $chap_prog || $vol_prog) {
+				$column_value = str_replace(' /', '/', $column_value);
+			}
+
+			$anime_dump[] = trim($column_value);
+		}
+
+		$data['data'][] = $anime_dump;
+	}
+
+	return response(200, "Success", $data);
+}
+
+function getNewList($html)
+{
+
 }

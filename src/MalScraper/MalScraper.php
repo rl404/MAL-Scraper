@@ -392,10 +392,23 @@ class MalScraper {
 	 * Get user's history information
 	 *
 	 * @param 	string	$user 	username
+	 * @param 	string	$type 	anime or manga (optional) (both for default)
 	 * @return 	json 	\scraper\getUserHistory
 	 */
 	private function getUserHistory() {
 		return call_user_func_array ( '\scraper\getUserHistory' , func_get_args() );
+	}
+
+	/**
+	 * Get user's anime or manga list
+	 *
+	 * @param 	string	$user 	username
+	 * @param 	string	$type 	anime or manga (optional) (anime for default)
+	 * @param 	integer	$status watching,completed,on hold, etc
+	 * @return 	json 	\scraper\getUserList
+	 */
+	private function getUserList() {
+		return call_user_func_array ( '\scraper\getUserList' , func_get_args() );
 	}
 
 	// WIP

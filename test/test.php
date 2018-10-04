@@ -10,6 +10,7 @@ ini_set('max_execution_time', 0);
 
 $myscraper = new MalScraper([
 	'enable_cache' => false,
+	// 'to_array' => true
 ]);
 
 // get user info
@@ -21,7 +22,11 @@ $myscraper = new MalScraper([
 // $result = $myscraper->getUserFriend('rl404');
 
 // get user history
-$result = $myscraper->getUserHistory('rl404');
+// $result = $myscraper->getUserHistory('rl404');
+// $result = $myscraper->getUserHistory('rl404','manga');
+
+// get user list
+$result = $myscraper->getUserList('EquinoX7', 'anime');
 
 // get anime info
 // $result = $myscraper->getInfo('anime', 28221);
