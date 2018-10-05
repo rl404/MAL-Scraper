@@ -2881,21 +2881,27 @@ function getUserList($user,$type='anime',$status=7)
 	    exit();
 	}
 
+	if(!$file_headers || $file_headers[0] == 'HTTP/1.1 403 Forbidden') {
+	    return response(403, "Private User List", NULL);
+	    exit();
+	}
+
 	$html = HtmlDomParser::file_get_html($url)->find('#list_surround', 0);
 
 	if ($html) {
-		$html = $html->outertext;
-		$html = str_replace('&quot;', '\"', $html);
-		$html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
-		$html = HtmlDomParser::str_get_html($html);
 		return getOldList($html);
 	} else {
-		return response(409, "New Design List can't be parsed at the moment", NULL);
+		return getNewList($user,$type,$status);
 	}
 }
 
 function getOldList($html)
 {
+	$html = $html->outertext;
+	$html = str_replace('&quot;', '\"', $html);
+	$html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
+	$html = HtmlDomParser::str_get_html($html);
+
 	// get table header
 	$table_header = [];
 	foreach ($html->find('td[class=table_header]') as $each_header) {
@@ -2955,7 +2961,31 @@ function getOldList($html)
 	return response(200, "Success", $data);
 }
 
-function getNewList($html)
+function getNewList($user,$type,$status)
 {
+	$data = [];
+	$offset = 0;
+	while (true) {
+		$url = "https://myanimelist.net/" . $type . "list/" . $user . "/load.json?offset=" . $offset . "&status=" . $status;
 
+		$content = json_decode(file_get_contents($url), true);
+
+		if ($content) {
+			for ($i = 0; $i < count($content); $i++) {
+				if (!empty($content[$i]['anime_image_path'])) {
+					$content[$i]['anime_image_path'] = imageUrlCleaner($content[$i]['anime_image_path']);
+				} else {
+					$content[$i]['manga_image_path'] = imageUrlCleaner($content[$i]['manga_image_path']);
+				}
+			}
+
+			$data = array_merge($data, $content);
+
+			$offset += 300;
+		} else {
+			break;
+		}
+	}
+
+	return response(200, "Success", $data);
 }

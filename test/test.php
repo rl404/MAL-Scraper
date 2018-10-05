@@ -26,7 +26,7 @@ $myscraper = new MalScraper([
 // $result = $myscraper->getUserHistory('rl404','manga');
 
 // get user list
-$result = $myscraper->getUserList('EquinoX7', 'anime');
+$result = $myscraper->getUserList('rl404', 'anime', 1);
 
 // get anime info
 // $result = $myscraper->getInfo('anime', 28221);
