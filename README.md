@@ -19,8 +19,8 @@ _Mal-Scraper_ is using [Sunra's](https://github.com/sunra/php-simple-html-dom-pa
 - Get list of top anime from various categories (all, airing, upcoming, etc) (pagination supported)
 - Get list of top manga from various categories (all, manga, novel, etc) (pagination supported)
 - Get information of user profile, friends, history, and anime/manga list
-- JSON or array return type
 - Caching (using [Simple-PHP-Cache library](https://github.com/cosenary/Simple-PHP-Cache))
+- Convertable return to http response (for API)
 
 ## Installation
 1. `composer require rl404/mal-scraper 1.1.0`
@@ -46,10 +46,9 @@ $myMalScraper = new MalScraper([
     'cache_time' => 3600        // (optional) caching time in seconds (1 day as default)
 ]);
 
-// Return array
+// Return http response
 $myMalScraper = new MalScraper([
-    'to_array' => true,         // convert return to array
-    'data_only' => true         // (optional) return data only
+    'to_api' => true,         	// convert return to http response
 ]);
 ```
 For more usage and methods, please go to the [wiki](https://github.com/rl404/MAL-Scraper/wiki)
