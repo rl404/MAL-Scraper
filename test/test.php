@@ -9,8 +9,9 @@ use MalScraper\MalScraper;
 ini_set('max_execution_time', 0);
 
 $myscraper = new MalScraper([
-	'enable_cache' => false,
-	// 'to_array' => true
+	'enable_cache' => true,
+	'cache_time' => 3600,
+	'to_api' => true
 ]);
 
 // get user info
@@ -19,14 +20,14 @@ $myscraper = new MalScraper([
 // $result = $myscraper->getUser('404');
 
 // get user friend
-// $result = $myscraper->getUserFriend('rl404');
+$result = $myscraper->getUserFriend('rl404');
 
 // get user history
 // $result = $myscraper->getUserHistory('rl404');
 // $result = $myscraper->getUserHistory('rl404','manga');
 
 // get user list
-$result = $myscraper->getUserList('rl404', 'anime', 1);
+// $result = $myscraper->getUserList('rl404');
 
 // get anime info
 // $result = $myscraper->getInfo('anime', 28221);

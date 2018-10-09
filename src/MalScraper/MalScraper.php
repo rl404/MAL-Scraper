@@ -47,18 +47,11 @@ class MalScraper {
 	private $_cache_time = 86400;
 
 	/**
-	 * Convert to array feature
+	 * Convert to http response
 	 *
 	 * @var boolean
 	 */
-	private $_to_array = false;
-
-	/**
-	 * Data only return
-	 *
-	 * @var boolean
-	 */
-	private $_data_only = false;
+	private $_to_api = false;
 
 	/**
 	 * Default constructor
@@ -85,14 +78,9 @@ class MalScraper {
 			}
 		}
 
-		// to array function
-		if (!empty($config['to_array'])) {
-			$this->_to_array = $config['to_array'];
-
-			// return data only funtion
-			if (!empty($config['data_only'])) {
-				$this->_data_only = $config['data_only'];
-			}
+		// to http response function
+		if (!empty($config['to_api'])) {
+			$this->_to_api = $config['to_api'];
 		}
 	}
 
@@ -124,18 +112,79 @@ class MalScraper {
 	    	$result = call_user_func_array([$this, $method], $arguments);
 	    }
 
-	    // if to array function enabled
-	    if ($this->_to_array === true) {
-	    	$result = json_decode($result, true);
-
-	    	// if data only return enabled
-	    	if ($this->_data_only === true) {
-	    		$result = $result['data'];
-	    	}
+	    // if to api function enabled
+	    if ($this->_to_api === true) {
+	    	$result = self::response($result);
+	    } else {
+	    	$result = self::toResponse($result);
 	    }
 
 	    return $result;
     }
+
+    /**
+	 * Convert return result into easy-to-read result
+	 *
+	 * @param 	string/array $response
+	 * @return 	string/array
+	 */
+    private function toResponse($response) {
+    	switch ($response) {
+    		case 400:
+    			return "Search query needs at least 3 letters";
+    		case 403:
+    			return "Private user list";
+    		case 404:
+    			return "User not found";
+    		default:
+    			return $response;
+		}
+    }
+
+    /**
+	 * Convert return result into http response
+	 *
+	 * @param 	string/array $response
+	 * @return 	json
+	 */
+    private function response($response) {
+    	if (is_numeric($response)) {
+    		header("HTTP/1.1 " . $response);
+    		$result['status'] = $response;
+			$result['status_message'] = self::toResponse($response);
+			$result['data'] = [];
+    	} else {
+    		header("HTTP/1.1 " . 200);
+    		$result['status'] = 200;
+			$result['status_message'] = 'Success';
+			$result['data'] = self::superEncode($response);
+    	}
+
+		$json_response = json_encode($result, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+		$json_response = str_replace("\\\\", "", $json_response);
+
+		return $json_response;
+	}
+
+	/**
+	 * Convert characters to UTF-8
+	 *
+	 * @param 	array 	$array
+	 * @return 	array
+	 */
+	private function superEncode($array) {
+		if ($array) {
+		    foreach ($array as $key => $value) {
+		        if (is_array($value)) {
+		            $array[$key] = self::superEncode($value);
+		        } else {
+		            $array[$key] = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
+		        }
+		    }
+		}
+
+	    return $array;
+	}
 
 	/**
 	 * Get anime/manga information
