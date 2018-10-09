@@ -404,7 +404,7 @@ class MalScraper {
 	 *
 	 * @param 	string	$user 	username
 	 * @param 	string	$type 	anime or manga (optional) (anime for default)
-	 * @param 	integer	$status watching,completed,on hold, etc
+	 * @param 	integer	$status watching,completed,on hold, etc (optional)
 	 * @return 	json 	\scraper\getUserList
 	 */
 	private function getUserList() {
