@@ -37,7 +37,7 @@ _Mal-Scraper_ is using [Sunra's](https://github.com/sunra/php-simple-html-dom-pa
 require "vendor/autoload.php";
 use MalScraper\MalScraper;
 
-// Default (no caching, return json)
+// Default (no caching, return array)
 $myMalScraper = new MalScraper();
 
 // Caching feature
@@ -46,7 +46,7 @@ $myMalScraper = new MalScraper([
     'cache_time' => 3600        // (optional) caching time in seconds (1 day as default)
 ]);
 
-// Return http response
+// Return http response json
 $myMalScraper = new MalScraper([
     'to_api' => true,         	// convert return to http response
 ]);
