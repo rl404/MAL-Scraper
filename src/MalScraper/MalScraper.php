@@ -7,7 +7,7 @@
  *
  * @author Axel Oktavian Antonio
  * @since 26-09-2018
- * @version 1.1.0
+ * @version 1.2.0
  * @license MIT https://opensource.org/licenses/MIT
  */
 
@@ -458,11 +458,5 @@ class MalScraper {
 	 */
 	private function getUserList() {
 		return call_user_func_array ( '\scraper\getUserList' , func_get_args() );
-	}
-
-	// WIP
-	private function getCover() {
-		header("Content-type: text/css; charset: UTF-8");
-		return call_user_func_array ( '\scraper\getCover' , func_get_args() );
 	}
 }

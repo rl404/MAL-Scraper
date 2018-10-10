@@ -2266,44 +2266,6 @@ function getTopManga($type=0,$page=1)
 	return $data;
 }
 
-function getCover($user,$status=7)
-{
-	$url = "https://myanimelist.net/mangalist/" . $user . "?status=" . $status;
-
-	$file_headers = @get_headers($url);
-	if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
-	}
-
-	$html = HtmlDomParser::file_get_html($url);
-
-	$data = [];
-	$anime_list = $html->find('#list_surround', 0);
-	foreach ($anime_list->find('table') as $anime) {
-		$is_anime = $anime->find('tr td[class^=td]', 1);
-		if ($is_anime) {
-			$separated_link = explode("/", $anime->find('.animetitle', 0)->href);
-			$anime_id = $separated_link[2];
-
-			// $image = getInfo('anime', $anime_id);
-			// $image = json_decode($image, true);
-			// $image = $image['data']['cover'];
-
-			// $style0 = "tr:hover .animetitle[href*='/" . $anime_id;
-			// $style1 = "/']:before{background-image: url(" . $image . ")}";
-
-			// $style = $style0 . $style1;
-			// echo $style . "\n";
-			$data[] = $anime_id;
-		}
-	}
-	$html->clear();
-	unset($html);
-
-	return $data;
-}
-
 function getUser($user)
 {
 	$url = "https://myanimelist.net/profile/" . $user;

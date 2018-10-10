@@ -1,6 +1,6 @@
 ## Changelog
 
-### v1....
+### v1.2.0 - Oct 10, 2018
 - `Add` Feature: Get user friend list
 - `Add` Feature: Get user update history
 - `Add` Feature: Get user anime or manga list
