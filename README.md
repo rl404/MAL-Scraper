@@ -23,7 +23,7 @@ _Mal-Scraper_ is using [Sunra's](https://github.com/sunra/php-simple-html-dom-pa
 - Convertable return to http response (for API)
 
 ## Installation
-1. `composer require rl404/mal-scraper 1.1.0`
+1. `composer require rl404/mal-scraper 1.2.0`
 2. That's it.
 
 #### Dependencies
