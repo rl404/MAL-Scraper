@@ -7,17 +7,6 @@ define('MAX_FILE_SIZE', 100000000);
 use \DateTime;
 use Sunra\PhpSimple\HtmlDomParser;
 
-function response($status,$status_message,$data)
-{
-	$response['status'] = $status;
-	$response['status_message'] = $status_message;
-	$response['data'] = $data;
-
-	$json_response = json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-	$json_response = str_replace("\\\\", "", $json_response);
-	return $json_response;
-}
-
 function getTopAnimeType($type)
 {
 	$converted_type = '';
@@ -127,6 +116,8 @@ function imageUrlCleaner($str)
 	preg_match('/(questionmark)|(qm_50)/', $str, $temp_image);
 	$str = $temp_image ? '' : $str;
 	$str = str_replace('v.jpg', '.jpg', $str);
+	$str = str_replace('_thumb.jpg', '.jpg', $str);
+	$str = str_replace('userimages/thumbs', 'userimages', $str);
 	$str = preg_replace('/r\/\d{1,3}x\d{1,3}\//', '', $str);
 	$str = preg_replace('/\?.+/', '', $str);
 
@@ -139,8 +130,7 @@ function getInfo($type,$id)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('#content', 0)->outertext;
@@ -503,8 +493,7 @@ function getInfo($type,$id)
 
 	$data = array_merge($data, $data2);
 
-	return response(200, "Success", $data);
-	unset($data);
+	return $data;
 }
 
 function getCharacter($id)
@@ -513,8 +502,7 @@ function getCharacter($id)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('#contentWrapper', 0)->outertext;
@@ -687,8 +675,7 @@ function getCharacter($id)
 		'va' => $va,
 	];
 
-	return response(200, "Success", $data);
-	unset($data);
+	return $data;
 }
 
 function getPeople($id)
@@ -697,8 +684,7 @@ function getPeople($id)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('#contentWrapper', 0)->outertext;
@@ -914,8 +900,7 @@ function getPeople($id)
 		'published_manga' => $published_manga,
 	];
 
-	return response(200, "Success", $data);
-	unset($data);
+	return $data;
 }
 
 function getCharacterStaff($type,$id)
@@ -924,8 +909,7 @@ function getCharacterStaff($type,$id)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('li a[href$=characters]', 0)->href;
@@ -1054,8 +1038,7 @@ function getCharacterStaff($type,$id)
 		'staff' => $staff
 	];
 
-	return response(200, "Success", $data);
-	unset($data);
+	return $data;
 }
 
 function getStat($type,$id)
@@ -1064,8 +1047,7 @@ function getStat($type,$id)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('li a[href$=stats]', 0)->href;
@@ -1139,8 +1121,7 @@ function getStat($type,$id)
 		'score' => $score,
 	];
 
-	return response(200, "Success", $data);
-	unset($data);
+	return $data;
 }
 
 function getPicture($type,$id)
@@ -1149,8 +1130,7 @@ function getPicture($type,$id)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('li a[href$=pics]', 0)->href;
@@ -1176,8 +1156,7 @@ function getPicture($type,$id)
 		}
 	}
 
-	return response(200, "Success", $data);
-	unset($data);
+	return $data;
 }
 
 function getCharacterPicture($id)
@@ -1186,8 +1165,7 @@ function getCharacterPicture($id)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('li a[href$=pictures]', 0)->href;
@@ -1206,8 +1184,7 @@ function getCharacterPicture($id)
 		}
 	}
 
-	return response(200, "Success", $data);
-	unset($data);
+	return $data;
 }
 
 function getPeoplePicture($id)
@@ -1216,8 +1193,7 @@ function getPeoplePicture($id)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('li a[href$=pictures]', 0)->href;
@@ -1236,8 +1212,7 @@ function getPeoplePicture($id)
 		}
 	}
 
-	return response(200, "Success", $data);
-	unset($data);
+	return $data;
 }
 
 function getStudioProducer($id,$page=1)
@@ -1246,8 +1221,7 @@ function getStudioProducer($id,$page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('#content', 0)->find('.js-categories-seasonal', 0)->outertext;
@@ -1345,8 +1319,7 @@ function getStudioProducer($id,$page=1)
 		$data[] = $result;
 	}
 
-	return response(200, "Success", $data);
-	unset($data);
+	return $data;
 }
 
 function getMagazine($id,$page=1)
@@ -1355,8 +1328,7 @@ function getMagazine($id,$page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('#content', 0)->find('.js-categories-seasonal', 0)->outertext;
@@ -1447,8 +1419,7 @@ function getMagazine($id,$page=1)
 		$data[] = $result;
 	}
 
-	return response(200, "Success", $data);
-	unset($data);
+	return $data;
 }
 
 function getGenre($type,$id,$page=1)
@@ -1457,8 +1428,7 @@ function getGenre($type,$id,$page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('#content', 0)->find('.js-categories-seasonal', 0)->outertext;
@@ -1575,8 +1545,7 @@ function getGenre($type,$id,$page=1)
 		$data[] = $result;
 	}
 
-	return response(200, "Success", $data);
-	unset($data);
+	return $data;
 }
 
 function getAllAnimeGenre()
@@ -1585,8 +1554,7 @@ function getAllAnimeGenre()
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('.anime-manga-search', 0)->find('.genre-link', 0)->outertext;
@@ -1617,8 +1585,7 @@ function getAllAnimeGenre()
 		$data[] = $genre;
  	}
 
-	return response(200, "Success", $data);
-	unset($data);
+	return $data;
 }
 
 function getAllMangaGenre()
@@ -1627,8 +1594,7 @@ function getAllMangaGenre()
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('.anime-manga-search', 0)->find('.genre-link', 0)->outertext;
@@ -1659,8 +1625,7 @@ function getAllMangaGenre()
 		$data[] = $genre;
  	}
 
-	return response(200, "Success", $data);
-	unset($data);
+	return $data;
 }
 
 function getAllStudioProducer()
@@ -1669,8 +1634,7 @@ function getAllStudioProducer()
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('.anime-manga-search', 0)->outertext;
@@ -1701,8 +1665,7 @@ function getAllStudioProducer()
 		$data[] = $studio;
  	}
 
-	return response(200, "Success", $data);
-	unset($data);
+	return $data;
 }
 
 function getAllMagazine()
@@ -1711,8 +1674,7 @@ function getAllMagazine()
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('.anime-manga-search', 0)->outertext;
@@ -1743,15 +1705,13 @@ function getAllMagazine()
 		$data[] = $magazine;
  	}
 
-	return response(200, "Success", $data);
-	unset($data);
+	return $data;
 }
 
 function searchAnime($q, $page=1)
 {
 	if (strlen($q) < 3) {
-		return response(400, "Search query needs at least 3 letters", NULL);
-		exit;
+		return 400;
 	}
 
 	$page = 50*($page-1);
@@ -1760,8 +1720,7 @@ function searchAnime($q, $page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit;
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('div[class^=js-categories-seasonal]', 0)->outertext;
@@ -1820,15 +1779,13 @@ function searchAnime($q, $page=1)
 	unset($result_table);
 	unset($result_area);
 
-	return response(200, "Success", $data);
-	unset($data);
+	return $data;
 }
 
 function searchManga($q,$page=1)
 {
 	if (strlen($q) < 3) {
-		return response(400, "Search query needs at least 3 letters", NULL);
-		exit;
+		return 400;
 	}
 
 	$page = 50*($page-1);
@@ -1837,8 +1794,7 @@ function searchManga($q,$page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('div[class^=js-categories-seasonal]', 0)->outertext;
@@ -1893,23 +1849,20 @@ function searchManga($q,$page=1)
 	unset($result_table);
 	unset($result_area);
 
-	return response(200, "Success", $data);
-	unset($data);
+	return $data;
 }
 
 function searchCharacter($q,$page=1)
 {
 	if (strlen($q) < 3) {
-		return response(400, "Search query needs at least 3 letters", NULL);
-		exit;
+		return 400;
 	}
 
 	$url = "https://myanimelist.net/character.php?q=" . $q . "&show=" . $page;
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('#content', 0)->outertext;
@@ -1978,15 +1931,13 @@ function searchCharacter($q,$page=1)
 		}
 	}
 
-	return response(200, "Success", $data);
-	unset($data);
+	return $data;
 }
 
 function searchPeople($q,$page=1)
 {
 	if (strlen($q) < 3) {
-		return response(400, "Search query needs at least 3 letters", NULL);
-		exit;
+		return 400;
 	}
 
 	$page = 50*($page-1);
@@ -1995,8 +1946,7 @@ function searchPeople($q,$page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('#content', 0)->outertext;
@@ -2041,8 +1991,7 @@ function searchPeople($q,$page=1)
 	unset($result_table);
 	unset($result_area);
 
-	return response(200, "Success", $data);
-	unset($data);
+	return $data;
 }
 
 function getSeason($year=false,$season=false)
@@ -2056,8 +2005,7 @@ function getSeason($year=false,$season=false)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('#content', 0)->find('.js-categories-seasonal', 0)->outertext;
@@ -2165,8 +2113,7 @@ function getSeason($year=false,$season=false)
 		$data[] = $result;
 	}
 
-	return response(200, "Success", $data);
-	unset($data);
+	return $data;
 }
 
 function getTopAnime($type=0,$page=1)
@@ -2178,8 +2125,7 @@ function getTopAnime($type=0,$page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('#content', 0)->outertext;
@@ -2242,8 +2188,7 @@ function getTopAnime($type=0,$page=1)
 	}
 	unset($top_table);
 
-	return response(200, "Success", $data);
-	unset($data);
+	return $data;
 }
 
 function getTopManga($type=0,$page=1)
@@ -2255,8 +2200,7 @@ function getTopManga($type=0,$page=1)
 
 	$file_headers = @get_headers($url);
 	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('#content', 0)->outertext;
@@ -2319,45 +2263,7 @@ function getTopManga($type=0,$page=1)
 	}
 	unset($top_table);
 
-	return response(200, "Success", $data);
-	unset($data);
-}
-
-function getCover($user,$status=7)
-{
-	$url = "https://myanimelist.net/animelist/" . $user . "?status=" . $status;
-
-	$file_headers = @get_headers($url);
-	if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "Page Not Found", NULL);
-	    exit();
-	}
-
-	$html = HtmlDomParser::file_get_html($url);
-
-	$data = [];
-	$anime_list = $html->find('#list_surround', 0);
-	foreach ($anime_list->find('table') as $anime) {
-		$is_anime = $anime->find('tr td[class^=td]', 1);
-		if ($is_anime) {
-			$separated_link = explode("/", $anime->find('.animetitle', 0)->href);
-			$anime_id = $separated_link[2];
-
-			$image = getInfo('anime', $anime_id);
-			// $image = file_get_contents($info_url);
-			$image = json_decode($image, true);
-			$image = $image['data']['cover'];
-
-			$style0 = "tr:hover .animetitle[href*='/" . $anime_id;
-			$style1 = "/']:before{background-image: url(" . $image . ")}";
-
-			$style = $style0 . $style1;
-			echo $style . "\n";
-		}
-	}
-
-	$html->clear();
-	unset($html);
+	return $data;
 }
 
 function getUser($user)
@@ -2366,8 +2272,7 @@ function getUser($user)
 
 	$file_headers = @get_headers($url);
 	if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-	    return response(404, "User Not Found", NULL);
-	    exit();
+	    return 404;
 	}
 
 	$html = HtmlDomParser::file_get_html($url)->find('#content', 0)->outertext;
@@ -2733,6 +2638,156 @@ function getUser($user)
 		'favorite' => $favorite,
 	];
 
-	return response(200, "Success", $data);
-	unset($data);
+	return $data;
+}
+
+function getUserFriend($user)
+{
+	$url = "https://myanimelist.net/profile/" . $user;
+
+	$file_headers = @get_headers($url);
+	if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+	    return 404;
+	}
+
+	$url = "https://myanimelist.net/profile/" . $user . "/friends";
+
+	$html = HtmlDomParser::file_get_html($url)->find('#content', 0)->outertext;
+	$html = str_replace('&quot;', '\"', $html);
+	$html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
+	$html = HtmlDomParser::str_get_html($html);
+
+	$friend = [];
+	$friend_area = $html->find('.majorPad', 0);
+	if ($friend_area) {
+		foreach ($friend_area->find('.friendHolder') as $f) {
+			$f_dump = [];
+			$f = $f->find('.friendBlock', 0);
+
+			// picture
+			$f_dump['image'] = imageUrlCleaner($f->find('a img', 0)->src);
+
+			// name
+			$name_temp = $f->find('a',0)->href;
+			$name_temp = explode('/', $name_temp);
+			$f_dump['name'] = $name_temp[4];
+
+			// last online
+			$last_online = $f->find('strong', 0)->parent()->parent()->next_sibling();
+			$f_dump['last_online'] = trim($last_online->plaintext);
+
+			// friend since
+			$friend_since = $last_online->next_sibling();
+			$friend_since = str_replace('Friends since', '', $friend_since->plaintext);
+			$f_dump['friend_since'] = trim($friend_since);
+
+			$friend[] = $f_dump;
+		}
+	}
+
+	$data = $friend;
+
+	return $data;
+}
+
+function getUserHistory($user,$type=false)
+{
+	$url = "https://myanimelist.net/profile/" . $user;
+
+	$file_headers = @get_headers($url);
+	if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+	    return 404;
+	}
+
+	$url = "https://myanimelist.net/history/" . $user;
+
+	if ($type) {
+		$url .= "/" . $type;
+	}
+
+	$html = HtmlDomParser::file_get_html($url)->find('#content', 0)->outertext;
+	$html = str_replace('&quot;', '\"', $html);
+	$html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
+	$html = HtmlDomParser::str_get_html($html);
+
+	$data = [];
+	$history_area = $html->find('table', 0);
+	if ($history_area) {
+		foreach ($history_area->find('tr') as $history) {
+			if ($history->find('td', 0)->class != 'borderClass') continue;
+			$h_temp = [];
+
+			$name_area = $history->find('td', 0);
+
+			// id
+			$temp_id = $name_area->find('a', 0)->href;
+			$temp_id = explode('=', $temp_id);
+			$h_temp['id'] = $temp_id[1];
+
+			// title
+			$h_temp['title'] = $name_area->find('a', 0)->plaintext;
+
+			// type
+			$type = $name_area->find('a', 0)->href;
+			$type = explode('.php', $type);
+			$h_temp['type'] = substr($type[0], 1);
+
+			// number
+			$progress = $name_area->find('strong', 0)->plaintext;
+			$h_temp['progress'] = $progress;
+
+			// date
+			$date = $history->find('td', 1);
+			$useless_date = $date->find('a', 0);
+			$date = $date->plaintext;
+			if ($useless_date) {
+				$date = str_replace($useless_date, '', $date);
+			}
+			$h_temp['date'] = trim($date);
+
+			$data[] = $h_temp;
+		}
+	}
+
+	return $data;
+}
+
+function getUserList($user,$type='anime',$status=7)
+{
+	$url = "https://myanimelist.net/" . $type . "list/" . $user . "?status=" . $status;
+
+	$file_headers = @get_headers($url);
+	if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+	    return 404;
+	}
+
+	if(!$file_headers || $file_headers[0] == 'HTTP/1.1 403 Forbidden') {
+	    return 403;
+	}
+
+	$data = [];
+	$offset = 0;
+	while (true) {
+		$url = "https://myanimelist.net/" . $type . "list/" . $user . "/load.json?offset=" . $offset . "&status=" . $status;
+
+		$content = json_decode(file_get_contents($url), true);
+
+		if ($content) {
+			for ($i = 0; $i < count($content); $i++) {
+				if (!empty($content[$i]['anime_image_path'])) {
+					$content[$i]['anime_image_path'] = imageUrlCleaner($content[$i]['anime_image_path']);
+				} else {
+					$content[$i]['manga_image_path'] = imageUrlCleaner($content[$i]['manga_image_path']);
+				}
+			}
+
+			$data = array_merge($data, $content);
+
+			$offset += 300;
+		} else {
+			break;
+		}
+	}
+
+	return $data;
 }

@@ -6,22 +6,35 @@ header('Content-Type: application/json');
 
 use MalScraper\MalScraper;
 
+ini_set('max_execution_time', 0);
+
 $myscraper = new MalScraper([
 	'enable_cache' => true,
-	'cache_time' => 300,
+	'cache_time' => 3600,
+	'to_api' => true
 ]);
 
 // get user info
-$result = $myscraper->getUser('rl404');
+// $result = $myscraper->getUser('rl404');
 // $result = $myscraper->getUser('MozillaFennekin');
 // $result = $myscraper->getUser('404');
+
+// get user friend
+$result = $myscraper->getUserFriend('rl404');
+
+// get user history
+// $result = $myscraper->getUserHistory('rl404');
+// $result = $myscraper->getUserHistory('rl404','manga');
+
+// get user list
+// $result = $myscraper->getUserList('rl404');
 
 // get anime info
 // $result = $myscraper->getInfo('anime', 28221);
 // $result = $myscraper->getInfo('anime', 38150
 
 // get manga info
-// $result = $myscraper->getInfo('manga', 12);
+// $result = $myscraper->getInfo('manga', 66499);
 // $result = $myscraper->getInfo('manga', 114470);
 
 // get character
