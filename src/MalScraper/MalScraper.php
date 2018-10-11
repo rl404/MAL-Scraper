@@ -135,7 +135,7 @@ class MalScraper {
     		case 403:
     			return "Private user list";
     		case 404:
-    			return "User not found";
+    			return "Page not found";
     		default:
     			return $response;
 		}
