@@ -1994,6 +1994,47 @@ function searchPeople($q,$page=1)
 	return $data;
 }
 
+function searchUser($q,$page=1)
+{
+	if (strlen($q) < 3) {
+		return 400;
+	}
+
+	$page = 24*($page-1);
+
+	$url = "https://myanimelist.net/users.php?q=" . $q . "&show=" . $page;
+
+	$file_headers = @get_headers($url);
+	if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+	    return 404;
+	}
+
+	$html = HtmlDomParser::file_get_html($url)->find('#content', 0)->outertext;
+	$html = str_replace('&quot;', '\"', $html);
+	$html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
+	$html = HtmlDomParser::str_get_html($html);
+
+	$data = [];
+	foreach ($html->find('.borderClass') as $user) {
+		if ($user->align != 'center') continue;
+
+		$temp_user = [];
+
+		// username
+		$temp_user['name'] = $user->find('a', 0)->plaintext;
+
+		// image
+		$temp_user['image'] = imageUrlCleaner($user->find('img', 0)->src);
+
+		// last online
+		$temp_user['last_online'] = $user->find('small', 0)->plaintext;
+
+		$data[] = $temp_user;
+	}
+
+	return $data;
+}
+
 function getSeason($year=false,$season=false)
 {
 	$year = !$year ? date('Y') : $year;
