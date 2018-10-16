@@ -1,5 +1,8 @@
 ## Changelog
 
+### v1.3...
+- `Add` Feature: Search user
+
 ### v1.2.0 - Oct 10, 2018
 - `Add` Feature: Get user friend list
 - `Add` Feature: Get user update history
