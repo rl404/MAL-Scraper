@@ -13,8 +13,8 @@
 
 namespace MalScraper;
 
-require "scraper\mal_scraper.php";
-require_once "scraper\cache.php";
+require "scraper/mal_scraper.php";
+require_once "scraper/cache.php";
 
 use scraper\Cache;
 
