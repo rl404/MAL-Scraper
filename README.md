@@ -14,16 +14,17 @@ _Mal-Scraper_ is using [Sunra's](https://github.com/sunra/php-simple-html-dom-pa
 - Get list of anime or manga of selected studio/producer, magazine, or genre
 - Get list of all anime or manga genre, anime studio/producer or manga magazine
 - Get list of character and staff involved in an anime or manga
-- Get result of searching, anime, manga, character, or people (pagination supported)
+- Get result of searching, anime, manga, character, people or user (pagination supported)
 - Get seasonal anime
 - Get list of top anime from various categories (all, airing, upcoming, etc) (pagination supported)
 - Get list of top manga from various categories (all, manga, novel, etc) (pagination supported)
 - Get information of user profile, friends, history, and anime/manga list
+- Get all anime/manga cover from user list
 - Caching (using [Simple-PHP-Cache library](https://github.com/cosenary/Simple-PHP-Cache))
 - Convertable return to http response (for API)
 
 ## Installation
-1. `composer require rl404/mal-scraper 1.2.0`
+1. `composer require rl404/mal-scraper 1.3.0`
 2. That's it.
 
 #### Dependencies
@@ -37,7 +38,7 @@ _Mal-Scraper_ is using [Sunra's](https://github.com/sunra/php-simple-html-dom-pa
 require "vendor/autoload.php";
 use MalScraper\MalScraper;
 
-// Default (no caching, return array)
+// Default (no caching, return json)
 $myMalScraper = new MalScraper();
 
 // Caching feature
@@ -46,7 +47,7 @@ $myMalScraper = new MalScraper([
     'cache_time' => 3600        // (optional) caching time in seconds (1 day as default)
 ]);
 
-// Return http response json
+// Return http response
 $myMalScraper = new MalScraper([
     'to_api' => true,         	// convert return to http response
 ]);
