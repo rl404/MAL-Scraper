@@ -173,7 +173,7 @@ class MalScraper {
 	 * @return 	array
 	 */
 	private function superEncode($array) {
-		if ($array) {
+		if (is_array($array) && $array) {
 		    foreach ($array as $key => $value) {
 		        if (is_array($value)) {
 		            $array[$key] = self::superEncode($value);
@@ -458,5 +458,16 @@ class MalScraper {
 	 */
 	private function getUserList() {
 		return call_user_func_array ( '\scraper\getUserList' , func_get_args() );
+	}
+
+	/**
+	 * Get user's anime or manga list cover
+	 *
+	 * @param 	string	$user 	username
+	 * @param 	string	$type 	anime or manga (optional) (anime for default)
+	 * @return 	json 	\scraper\getUserList
+	 */
+	private function getUserCover() {
+		return call_user_func_array ( '\scraper\getUserCover' , func_get_args() );
 	}
 }

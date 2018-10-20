@@ -2791,3 +2791,25 @@ function getUserList($user,$type='anime',$status=7)
 
 	return $data;
 }
+
+function getUserCover($user,$type='anime',$style=false)
+{	
+	if (!$style) {
+		$style = "tr:hover .animetitle[href*='/{id}/']:before{background-image:url({url})}";
+	}
+
+	$list = getUserList($user,$type);
+
+	$cover = '';
+	foreach ($list as $c) {
+		if ($type == 'anime') {
+			$temp = str_replace(['{id}', '{url}'], [$c['anime_id'], $c['anime_image_path']], $style);
+		} else {
+			$temp = str_replace(['{id}', '{url}'], [$c['manga_id'], $c['manga_image_path']], $style);
+		}
+
+		$cover .= $temp . "\n";
+	}
+
+	return $cover;
+}
