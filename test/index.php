@@ -2,16 +2,17 @@
 
 require_once '../vendor/autoload.php'; // Autoload files using Composer autoload
 
-header('Content-Type: application/json');
+// header('Content-Type: application/json');
+header("Content-type: text/css; charset: UTF-8");
 
 use MalScraper\MalScraper;
 
 ini_set('max_execution_time', 0);
 
 $myscraper = new MalScraper([
-	'enable_cache' => true,
-	'cache_time' => 3600,
-	'to_api' => true
+	// 'enable_cache' => true,
+	// 'cache_time' => 3599,
+	// 'to_api' => true
 ]);
 
 // get user info
@@ -20,14 +21,16 @@ $myscraper = new MalScraper([
 // $result = $myscraper->getUser('404');
 
 // get user friend
-$result = $myscraper->getUserFriend('rl404');
+// $result = $myscraper->getUserFriend('rl404');
 
 // get user history
 // $result = $myscraper->getUserHistory('rl404');
 // $result = $myscraper->getUserHistory('rl404','manga');
 
 // get user list
-// $result = $myscraper->getUserList('rl404');
+// $result = $myscraper->getUserList('rl404', 'manga');
+$result = $myscraper->getUserCover('rl404','manga',".data.image a[href*='/{id}/']{background-image: url({url})}");
+// $result = $myscraper->getUserCover('rl404');
 
 // get anime info
 // $result = $myscraper->getInfo('anime', 28221);
