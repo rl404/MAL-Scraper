@@ -1,5 +1,8 @@
 ## Changelog
 
+### v1.2.1 - Oct 20, 2018
+- `Add` Feature: Get all anime/manga cover in user list
+
 ### v1.2.0 - Oct 10, 2018
 - `Add` Feature: Get user friend list
 - `Add` Feature: Get user update history

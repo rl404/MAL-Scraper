@@ -7,14 +7,14 @@
  *
  * @author Axel Oktavian Antonio
  * @since 26-09-2018
- * @version 1.2.0
+ * @version 1.2.1
  * @license MIT https://opensource.org/licenses/MIT
  */
 
 namespace MalScraper;
 
-require "scraper\mal_scraper.php";
-require_once "scraper\cache.php";
+require "scraper/mal_scraper.php";
+require_once "scraper/cache.php";
 
 use scraper\Cache;
 
@@ -465,6 +465,7 @@ class MalScraper {
 	 *
 	 * @param 	string	$user 	username
 	 * @param 	string	$type 	anime or manga (optional) (anime for default)
+	 * @param 	string	$style 	css for each cover (optional)
 	 * @return 	json 	\scraper\getUserList
 	 */
 	private function getUserCover() {
