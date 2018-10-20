@@ -1,6 +1,7 @@
 ## Changelog
 
-### v1.2.1 - Oct 20, 2018
+### v1.3.0 - Oct 20, 2018
+- `Add` Feature: Search user
 - `Add` Feature: Get all anime/manga cover in user list
 
 ### v1.2.0 - Oct 10, 2018

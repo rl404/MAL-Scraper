@@ -7,7 +7,7 @@
  *
  * @author Axel Oktavian Antonio
  * @since 26-09-2018
- * @version 1.2.1
+ * @version 1.3.0
  * @license MIT https://opensource.org/licenses/MIT
  */
 
