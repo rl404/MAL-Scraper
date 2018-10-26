@@ -1,0 +1,6 @@
+<testsuites>
+	<testsuite name="Unit">
+		<directory>./test</directory>
+		<file>./test/index.php</file>
+	</testsuite>
+</testsuites>

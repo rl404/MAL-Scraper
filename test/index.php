@@ -16,7 +16,7 @@ $myscraper = new MalScraper([
 ]);
 
 // get user info
-// $result = $myscraper->getUser('rl404');
+$result = $myscraper->getUser('rl404');
 // $result = $myscraper->getUser('equinox7');
 // $result = $myscraper->getUser('MozillaFennekin');
 // $result = $myscraper->getUser('404');
@@ -25,7 +25,7 @@ $myscraper = new MalScraper([
 // $result = $myscraper->getUserFriend('rl404');
 
 // get user history
-$result = $myscraper->getUserHistory('rl404');
+// $result = $myscraper->getUserHistory('rl404');
 // $result = $myscraper->getUserHistory('rl404','manga');
 
 // get user list

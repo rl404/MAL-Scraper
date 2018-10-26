@@ -1,4 +1,5 @@
 # MAL-Scraper
+[![Build Status](https://travis-ci.org/rl404/MAL-Scraper.svg?branch=develop)](https://travis-ci.org/rl404/MAL-Scraper)
 
 > Scrap everything from MyAnimeList website
 
