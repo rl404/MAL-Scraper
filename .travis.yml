@@ -1,0 +1,12 @@
+language: php
+
+php:
+  - 5.3
+  - 7.1
+  - nightly
+
+matrix:
+  fast_finish: true
+
+install:
+  - composer install
