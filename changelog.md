@@ -1,13 +1,12 @@
 ## Changelog
 
-<<<<<<< HEAD
-### v1.3...
-- `Add` Feature: Search user
-=======
+### v1.3.1 - Oct 26, 2018
+- `Fix` Missing friend in user profile
+- `Fix` Missing progress history update in user profile
+
 ### v1.3.0 - Oct 20, 2018
 - `Add` Feature: Search user
 - `Add` Feature: Get all anime/manga cover in user list
->>>>>>> ec2affd2ce5b7560667e32d815ab9b32a2cd4657
 
 ### v1.2.0 - Oct 10, 2018
 - `Add` Feature: Get user friend list
