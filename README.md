@@ -19,12 +19,12 @@ _Mal-Scraper_ is using [Sunra's](https://github.com/sunra/php-simple-html-dom-pa
 - Get list of top anime from various categories (all, airing, upcoming, etc) (pagination supported)
 - Get list of top manga from various categories (all, manga, novel, etc) (pagination supported)
 - Get information of user profile, friends, history, and anime/manga list
-- Get all anime/manga cover from user list
 - Caching (using [Simple-PHP-Cache library](https://github.com/cosenary/Simple-PHP-Cache))
 - Convertable return to http response (for API)
+- (Bonus) Get all anime/manga cover from user list
 
 ## Installation
-1. `composer require rl404/mal-scraper 1.3.0`
+1. `composer require rl404/mal-scraper 1.3.1`
 2. That's it.
 
 #### Dependencies
