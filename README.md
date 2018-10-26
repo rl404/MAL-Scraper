@@ -31,8 +31,6 @@ _Mal-Scraper_ is using [Sunra's](https://github.com/sunra/php-simple-html-dom-pa
 - PHP 5.3+
 - [HTML DOM Parser](https://github.com/sunra/php-simple-html-dom-parser)
 
- > If you are using PHP 7.1+, please fix the DOM parser in `vendor\sunra\php-simple-html-dom-parser\Src\Sunra\PhpSimple\simplehtmldom_1_5\simple_html_dom.php` like [this](https://github.com/sunra/php-simple-html-dom-parser/issues/59)
-
 ## Usage
 ```php
 require "vendor/autoload.php";
