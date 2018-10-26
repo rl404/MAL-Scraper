@@ -161,7 +161,7 @@ class MalScraper
             $result['status_message'] = self::toResponse($response);
             $result['data'] = [];
         } else {
-            header('HTTP/1.1 '.200);
+            header('HTTP/1.1 '. 200);
             $result['status'] = 200;
             $result['status_message'] = 'Success';
             $result['data'] = self::superEncode($response);
