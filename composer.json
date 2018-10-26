@@ -12,15 +12,11 @@
     "minimum-stability": "dev",
     "require": {
     	"php": ">=5.3.0",
-    	"sunra/php-simple-html-dom-parser": "dev-master",
-        "phpunit/phpunit": "^5.0.0"
+    	"sunra/php-simple-html-dom-parser": "dev-master"
     },
     "autoload": {
         "psr-0": {
             "MalScraper": "src/"
         }
-    },
-    "scripts": {
-        "test": "phpunit"
     }
 }
