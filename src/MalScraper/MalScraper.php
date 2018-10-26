@@ -132,7 +132,7 @@ class MalScraper
      *
      * @return string/array
      */
-    private function toResponse($response)
+    static private function toResponse($response)
     {
         switch ($response) {
             case 400:
@@ -153,7 +153,7 @@ class MalScraper
      *
      * @return json
      */
-    private function response($response)
+    static private function response($response)
     {
         if (is_numeric($response)) {
             header('HTTP/1.1 '.$response);

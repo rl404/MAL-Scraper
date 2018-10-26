@@ -2,6 +2,7 @@
 <a href="https://styleci.io/repos/146173202"><img src="https://styleci.io/repos/146173202/shield?branch=master&style=flat" alt="StyleCI Status"></a>
 <a href="https://www.codacy.com/app/rl404/MAL-Scraper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rl404/MAL-Scraper&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/b91bdd9108c14b7bb434337d16bfde9b" alt="Codacy Status"></a>
 <a href="https://packagist.org/packages/rl404/mal-scraper"><img src="https://poser.pugx.org/rl404/mal-scraper/v/stable" alt="Stable Version"></a>
+<a href="https://packagist.org/packages/rl404/mal-scraper"><img src="https://poser.pugx.org/rl404/mal-scraper/downloads" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/rl404/mal-scraper"><img src="https://poser.pugx.org/rl404/mal-scraper/license" alt="License"></a>
 
 > Scrap everything from MyAnimeList website
