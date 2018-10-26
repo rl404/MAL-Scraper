@@ -2467,6 +2467,16 @@ function getUser($user)
 		$date = $history_data_area->find('span', 0)->plaintext;
 		$temp_history['date'] = trim($date);
 
+		// progress
+		$progress = $history_data_area->find('.graph-content', 0)->next_sibling()->innertext;
+		$progress = trim(preg_replace("/([\s])+/", " ", strip_tags($progress)));
+		$progress = explode('·', $progress);
+		$p1 = explode(' ', $progress[0]);
+
+		$temp_history['status'] = strtolower(count($p1) > 3 ? $progress[0] : $p1[0]);
+		$temp_history['progress'] = count($p1) > 3 ? '-' : $p1[1];
+		$temp_history['score'] = trim(str_replace('Scored', '', $progress[1]));
+
 		$history[] = $temp_history;
 	}
 
@@ -2529,6 +2539,16 @@ function getUser($user)
 		// date
 		$date = $history_data_area->find('span', 0)->plaintext;
 		$temp_history['date'] = trim($date);
+
+		// progress
+		$progress = $history_data_area->find('.graph-content', 0)->next_sibling()->innertext;
+		$progress = trim(preg_replace("/([\s])+/", " ", strip_tags($progress)));
+		$progress = explode('·', $progress);
+		$p1 = explode(' ', $progress[0]);
+
+		$temp_history['status'] = strtolower(count($p1) > 3 ? $progress[0] : $p1[0]);
+		$temp_history['progress'] = count($p1) > 3 ? '-' : $p1[1];
+		$temp_history['score'] = trim(str_replace('Scored', '', $progress[1]));
 
 		$history[] = $temp_history;
 	}
