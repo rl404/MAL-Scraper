@@ -2392,6 +2392,19 @@ function getUser($user)
 	}
 	unset($sns_area);
 
+	// friend
+	$friend = [];
+	$friend_area = $left_area->find('.user-friends', 0);
+	foreach ($friend_area->find('a') as $f) {
+		$temp_friend = [];
+
+		$temp_friend['name'] = $f->plaintext;
+		$temp_friend['image'] = imageUrlCleaner($f->getAttribute('data-bg'));
+
+		$friend[] = $temp_friend;
+	}
+	unset($friend_area);
+
 	// about
 	$about = $right_area->find('table tr td div[class=word-break]', 0);
 	$about = $about ? trim($about->innertext) : '';
@@ -2673,6 +2686,7 @@ function getUser($user)
 		'blog_post' => $blog_post,
 		'club' => $club,
 		'sns' => $sns,
+		'friend' => $friend,
 		'about' => $about,
 		'anime_stat' => $anime_stat,
 		'manga_stat' => $manga_stat,
@@ -2834,7 +2848,7 @@ function getUserList($user,$type='anime',$status=7)
 }
 
 function getUserCover($user,$type='anime',$style=false)
-{	
+{
 	if (!$style) {
 		$style = "tr:hover .animetitle[href*='/{id}/']:before{background-image:url({url})}";
 	}
