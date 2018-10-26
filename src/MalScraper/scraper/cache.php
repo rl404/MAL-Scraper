@@ -87,10 +87,10 @@ class cache
     public function store($key, $data, $expiration = 0)
     {
         $storeData = [
-      'time'   => time(),
-      'expire' => $expiration,
-      'data'   => serialize($data),
-    ];
+          'time'   => time(),
+          'expire' => $expiration,
+          'data'   => serialize($data),
+        ];
         $dataArray = $this->_loadCache();
         if (true === is_array($dataArray)) {
             $dataArray[$key] = $storeData;

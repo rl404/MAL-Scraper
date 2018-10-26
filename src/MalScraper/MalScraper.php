@@ -132,7 +132,7 @@ class MalScraper
      *
      * @return string/array
      */
-    static private function toResponse($response)
+    private function toResponse($response)
     {
         switch ($response) {
             case 400:
@@ -153,7 +153,7 @@ class MalScraper
      *
      * @return json
      */
-    static private function response($response)
+    private function response($response)
     {
         if (is_numeric($response)) {
             header('HTTP/1.1 '.$response);
@@ -161,7 +161,7 @@ class MalScraper
             $result['status_message'] = self::toResponse($response);
             $result['data'] = [];
         } else {
-            header('HTTP/1.1 '. 200);
+            header('HTTP/1.1 '.200);
             $result['status'] = 200;
             $result['status_message'] = 'Success';
             $result['data'] = self::superEncode($response);
