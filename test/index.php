@@ -2,21 +2,22 @@
 
 require_once '../vendor/autoload.php'; // Autoload files using Composer autoload
 
-// header('Content-Type: application/json');
-header("Content-type: text/css; charset: UTF-8");
+header('Content-Type: application/json');
+// header("Content-type: text/css; charset: UTF-8");
 
 use MalScraper\MalScraper;
 
 ini_set('max_execution_time', 0);
 
 $myscraper = new MalScraper([
-	'enable_cache' => true,
+	// 'enable_cache' => true,
 	// 'cache_time' => 3599,
 	// 'to_api' => true
 ]);
 
 // get user info
 // $result = $myscraper->getUser('rl404');
+// $result = $myscraper->getUser('equinox7');
 // $result = $myscraper->getUser('MozillaFennekin');
 // $result = $myscraper->getUser('404');
 
@@ -24,14 +25,14 @@ $myscraper = new MalScraper([
 // $result = $myscraper->getUserFriend('rl404');
 
 // get user history
-// $result = $myscraper->getUserHistory('rl404');
+$result = $myscraper->getUserHistory('rl404');
 // $result = $myscraper->getUserHistory('rl404','manga');
 
 // get user list
 // $result = $myscraper->getUserList('rl404', 'manga');
 
 // get user cover
-$result = $myscraper->getUserCover('rl404','manga',".data.image a[href*='/{id}/']{background-image: url({url})}");
+// $result = $myscraper->getUserCover('rl404','manga',".data.image a[href*='/{id}/']{background-image: url({url})}");
 
 // get anime info
 // $result = $myscraper->getInfo('anime', 28221);
@@ -98,7 +99,7 @@ $result = $myscraper->getUserCover('rl404','manga',".data.image a[href*='/{id}/'
 // $result = $myscraper->searchPeople('mas');
 
 // search user
-$result = $myscraper->searchUser('rl4');
+// $result = $myscraper->searchUser('rl4');
 
 // get seasonal anime
 // $result = $myscraper->getSeason(2019,'winter');
