@@ -1,5 +1,6 @@
 # MAL-Scraper
 <a href="https://styleci.io/repos/146173202"><img src="https://styleci.io/repos/146173202/shield?branch=master&style=flat" alt="StyleCI Status"></a>
+<a class="badge-align" href="https://www.codacy.com/app/rl404/MAL-Scraper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rl404/MAL-Scraper&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/b91bdd9108c14b7bb434337d16bfde9b"/></a>
 
 > Scrap everything from MyAnimeList website
 
@@ -10,27 +11,27 @@ Well, it is created to help people get MyAnimeList data without relying on MyAni
 _Mal-Scraper_ is using [Sunra's](https://github.com/sunra/php-simple-html-dom-parser) HTML DOM parser and inspired by [Kylart's](https://github.com/Kylart/MalScraper) and  [Jikan's](https://github.com/jikan-me/jikan) API.
 
 ### Features
-- Get general information of anime, manga, charater (from anime and manga), or people (voice actor, author, staff, etc)
-- Get additional information of anime or manga character and staff, statistic and score, or picture
-- Get list of anime or manga of selected studio/producer, magazine, or genre
-- Get list of all anime or manga genre, anime studio/producer or manga magazine
-- Get list of character and staff involved in an anime or manga
-- Get result of searching, anime, manga, character, people or user (pagination supported)
-- Get seasonal anime
-- Get list of top anime from various categories (all, airing, upcoming, etc) (pagination supported)
-- Get list of top manga from various categories (all, manga, novel, etc) (pagination supported)
-- Get information of user profile, friends, history, and anime/manga list
-- Caching (using [Simple-PHP-Cache library](https://github.com/cosenary/Simple-PHP-Cache))
-- Convertable return to http response (for API)
-- (Bonus) Get all anime/manga cover from user list
+  - Get general information of anime, manga, charater (from anime and manga), or people (voice actor, author, staff, etc)
+  - Get additional information of anime or manga character and staff, statistic and score, or picture
+  - Get list of anime or manga of selected studio/producer, magazine, or genre
+  - Get list of all anime or manga genre, anime studio/producer or manga magazine
+  - Get list of character and staff involved in an anime or manga
+  - Get result of searching, anime, manga, character, people or user (pagination supported)
+  - Get seasonal anime
+  - Get list of top anime from various categories (all, airing, upcoming, etc) (pagination supported)
+  - Get list of top manga from various categories (all, manga, novel, etc) (pagination supported)
+  - Get information of user profile, friends, history, and anime/manga list
+  - Caching (using [Simple-PHP-Cache library](https://github.com/cosenary/Simple-PHP-Cache))
+  - Convertable return to http response (for API)
+  - (Bonus) Get all anime/manga cover from user list
 
 ## Installation
-1. `composer require rl404/mal-scraper 1.3.1`
-2. That's it.
+  1. `composer require rl404/mal-scraper 1.3.1`
+  2. That's it.
 
 #### Dependencies
-- PHP 5.3+
-- [HTML DOM Parser](https://github.com/sunra/php-simple-html-dom-parser)
+  - PHP 5.3+
+  - [HTML DOM Parser](https://github.com/sunra/php-simple-html-dom-parser)
 
 ## Usage
 ```php
@@ -54,11 +55,11 @@ $myMalScraper = new MalScraper([
 For more usage and methods, please go to the [wiki](https://github.com/rl404/MAL-Scraper/wiki)
 
 ## Contributing
-1. Fork it!
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request.
+  1. Fork it!
+  2. Create your feature branch: `git checkout -b my-new-feature`
+  3. Commit your changes: `git commit -am 'Add some feature'`
+  4. Push to the branch: `git push origin my-new-feature`
+  5. Submit a pull request.
 
 ## License
 MIT License
