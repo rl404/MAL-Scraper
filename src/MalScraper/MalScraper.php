@@ -7,7 +7,7 @@
  *
  * @author Axel Oktavian Antonio
  * @since 26-09-2018
- * @version 1.2.0
+ * @version 1.3.0
  * @license MIT https://opensource.org/licenses/MIT
  */
 
@@ -173,7 +173,7 @@ class MalScraper {
 	 * @return 	array
 	 */
 	private function superEncode($array) {
-		if ($array) {
+		if (is_array($array) && $array) {
 		    foreach ($array as $key => $value) {
 		        if (is_array($value)) {
 		            $array[$key] = self::superEncode($value);
@@ -469,5 +469,17 @@ class MalScraper {
 	 */
 	private function getUserList() {
 		return call_user_func_array ( '\scraper\getUserList' , func_get_args() );
+	}
+
+	/**
+	 * Get user's anime or manga list cover
+	 *
+	 * @param 	string	$user 	username
+	 * @param 	string	$type 	anime or manga (optional) (anime for default)
+	 * @param 	string	$style 	css for each cover (optional)
+	 * @return 	json 	\scraper\getUserList
+	 */
+	private function getUserCover() {
+		return call_user_func_array ( '\scraper\getUserCover' , func_get_args() );
 	}
 }
