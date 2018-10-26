@@ -1,4 +1,5 @@
 # MAL-Scraper
+<a href="https://styleci.io/repos/146173202"><img src="https://styleci.io/repos/146173202/shield?branch=master&style=flat" alt="StyleCI Status"></a>
 
 > Scrap everything from MyAnimeList website
 
