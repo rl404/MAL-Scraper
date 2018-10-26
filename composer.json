@@ -1,6 +1,8 @@
 {
     "name": "rl404/mal-scraper",
     "description": "Scrap everything from MyAnimeList web into json",
+    "type": "library",
+    "license": "MIT",
     "authors": [
         {
             "name": "Axel Oktavian Antonio",
