@@ -1,6 +1,6 @@
 {
     "name": "rl404/mal-scraper",
-    "description": "Scrap everything from MyAnimeList web into array and json",
+    "description": "Unofficial MyAnimeList API that scrap and parse everything from MyAnimeList web into array and json",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -9,8 +9,10 @@
             "email": "axel.rl.404@gmail.com"
         }
     ],
+    "minimum-stability": "dev",
     "require": {
-    	"sunra/php-simple-html-dom-parser": "dev-master"
+        "php": ">=5.4",
+        "sunra/php-simple-html-dom-parser": "1.5.2"
     },
     "autoload": {
         "psr-0": {
