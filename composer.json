@@ -10,7 +10,6 @@
         }
     ],
     "minimum-stability": "dev",
-    "prefer-stable": true,
     "require": {
     	"sunra/php-simple-html-dom-parser": "dev-master"
     },
