@@ -1,13 +1,11 @@
-# MAL-Scraper
+<p align=center><img src="https://raw.githubusercontent.com/rl404/MyAnimeList/master/Images/malscraper-logo.png">
 <a href="https://php.net/"><img src="https://img.shields.io/badge/php-%3E%3D5.3-8892BF.svg"></a>
 <a href="https://styleci.io/repos/146173202"><img src="https://styleci.io/repos/146173202/shield?branch=master&style=flat" alt="StyleCI Status"></a>
 <a href="https://www.codacy.com/app/rl404/MAL-Scraper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rl404/MAL-Scraper&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/b91bdd9108c14b7bb434337d16bfde9b" alt="Codacy Status"></a>
 <a href="https://scrutinizer-ci.com/g/rl404/MAL-Scraper/?branch=master"><img src="https://scrutinizer-ci.com/g/rl404/MAL-Scraper/badges/quality-score.png?b=master" alt="Scrutinizer Score"></a>
 <a href="https://packagist.org/packages/rl404/mal-scraper"><img src="https://poser.pugx.org/rl404/mal-scraper/v/stable" alt="Stable Version"></a>
 <a href="https://packagist.org/packages/rl404/mal-scraper"><img src="https://poser.pugx.org/rl404/mal-scraper/downloads" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/rl404/mal-scraper"><img src="https://poser.pugx.org/rl404/mal-scraper/license" alt="License"></a>
-
-> Scrap everything from MyAnimeList website
+<a href="https://packagist.org/packages/rl404/mal-scraper"><img src="https://poser.pugx.org/rl404/mal-scraper/license" alt="License"></a></p>
 
 _Mal-Scraper_ is an unofficial PHP API which scraps and parses page source of [MyAnimeList](https://myanimelist.net/).
 
@@ -29,6 +27,8 @@ _Mal-Scraper_ is using [Sunra's](https://github.com/sunra/php-simple-html-dom-pa
 - Caching (using [Simple-PHP-Cache library](https://github.com/cosenary/Simple-PHP-Cache))
 - Convertable return to http response (for API)
 - (Bonus) Get all anime/manga cover from user list
+
+_More will be coming soon..._
 
 ## Installation
 1. `composer require rl404/mal-scraper 1.3.1`
@@ -65,6 +65,9 @@ For more usage and methods, please go to the [wiki](https://github.com/rl404/MAL
 3. Commit your changes: `git commit -am 'Add some feature'`
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request.
+
+## Disclamer
+All data (including anime, manga, people, etc) and MyAnimeList logos belong to their respective copyrights owners. Mal-Scraper does not have any affliation with content providers.
 
 ## License
 MIT License
