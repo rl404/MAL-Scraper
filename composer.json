@@ -10,9 +10,9 @@
         }
     ],
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
-    	"php": ">=5.3",
-    	"sunra/php-simple-html-dom-parser": "@dev"
+    	"sunra/php-simple-html-dom-parser": "dev-master"
     },
     "autoload": {
         "psr-0": {
