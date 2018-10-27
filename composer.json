@@ -11,7 +11,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-    	"php": ">=5.3.0",
+    	"php": ">=5.4",
     	"sunra/php-simple-html-dom-parser": "dev-master"
     },
     "autoload": {
