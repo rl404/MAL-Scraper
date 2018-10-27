@@ -31,11 +31,11 @@ _Mal-Scraper_ is using [Sunra's](https://github.com/sunra/php-simple-html-dom-pa
 _More will be coming soon..._
 
 ## Installation
-1. `composer require rl404/mal-scraper 1.3.1`
+1. `composer require rl404/mal-scraper 1.3.2`
 2. That's it.
 
 #### Dependencies
-- PHP 5.3+
+- PHP 5.4+
 - [HTML DOM Parser](https://github.com/sunra/php-simple-html-dom-parser)
 
 ## Usage

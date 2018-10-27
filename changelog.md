@@ -1,5 +1,10 @@
 ## Changelog
 
+### v1.3.2 - Oct 27, 2018
+- `Add` New library logo
+- `Update` Improve Readme file 
+- `Update` Increase minimum PHP version from 5.3 to 5.4
+
 ### v1.3.1 - Oct 26, 2018
 - `Fix` Missing friend in user profile
 - `Fix` Missing progress history update in user profile
