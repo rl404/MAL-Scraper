@@ -9,7 +9,6 @@
             "email": "axel.rl.404@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
     	"sunra/php-simple-html-dom-parser": "dev-master"
     },
