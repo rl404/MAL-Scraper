@@ -1,8 +1,11 @@
 ## Changelog
 
+### v.1.3.3 -
+- `Fix` Missing friend count in user profile
+
 ### v1.3.2 - Oct 27, 2018
 - `Add` New library logo
-- `Update` Improve Readme file 
+- `Update` Improve Readme file
 - `Update` Increase minimum PHP version from 5.3 to 5.4
 
 ### v1.3.1 - Oct 26, 2018

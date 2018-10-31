@@ -9,7 +9,7 @@
  *
  * @since 26-09-2018
  *
- * @version 1.3.2
+ * @version 1.3.3
  *
  * @license MIT https://opensource.org/licenses/MIT
  */

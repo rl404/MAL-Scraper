@@ -2399,7 +2399,7 @@ function getUser($user)
 
     $friend_count = $friend_area->prev_sibling()->find('a', 0)->plaintext;
     preg_match('/\(\d+\)/', $friend_count, $friend_count);
-    $friend['count'] = str_replace(['(',')'], '', $friend_count[0]);
+    $friend['count'] = str_replace(['(', ')'], '', $friend_count[0]);
 
     $friend['data'] = [];
     foreach ($friend_area->find('a') as $f) {
