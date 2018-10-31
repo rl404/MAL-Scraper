@@ -2396,13 +2396,19 @@ function getUser($user)
     // friend
     $friend = [];
     $friend_area = $left_area->find('.user-friends', 0);
+
+    $friend_count = $friend_area->prev_sibling()->find('a', 0)->plaintext;
+    preg_match('/\(\d+\)/', $friend_count, $friend_count);
+    $friend['count'] = str_replace(['(',')'], '', $friend_count[0]);
+
+    $friend['data'] = [];
     foreach ($friend_area->find('a') as $f) {
         $temp_friend = [];
 
         $temp_friend['name'] = $f->plaintext;
         $temp_friend['image'] = imageUrlCleaner($f->getAttribute('data-bg'));
 
-        $friend[] = $temp_friend;
+        $friend['data'][] = $temp_friend;
     }
     unset($friend_area);
 
