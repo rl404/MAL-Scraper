@@ -1,6 +1,6 @@
 ## Changelog
 
-### v.1.3.3 -
+### v1.3.3 - Nov 7, 2018
 - `Fix` Missing friend count in `getUser()`
 - `Fix` Missing user update in `getStat()`
 - `Fix` Summary array in `getStat()`
