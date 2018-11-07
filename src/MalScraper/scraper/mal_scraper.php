@@ -1057,7 +1057,7 @@ function getStat($type, $id)
         $url = $html;
     }
 
-    $url .= "?m=all&show=1";
+    $url .= '?m=all&show=1';
 
     $html = HtmlDomParser::file_get_html($url)->find('.js-scrollfix-bottom-rel', 0)->outertext;
     $html = str_replace('&quot;', '\"', $html);
@@ -1119,14 +1119,16 @@ function getStat($type, $id)
     $user_area = $html->find('.table-recently-updated', 0);
     if ($user_area) {
         foreach ($user_area->find('tr') as $each_user) {
-            if (!$each_user->find('td', 0)->find('div', 0)) continue;
+            if (!$each_user->find('td', 0)->find('div', 0)) {
+                continue;
+            }
             $temp_user = [];
 
             // username + image
             $username_area = $each_user->find('td', 0);
 
             $user_image = $username_area->find('a', 0)->style;
-            $user_image = substr($user_image, 21, strlen($user_image)-22);
+            $user_image = substr($user_image, 21, strlen($user_image) - 22);
             $temp_user['image'] = imageUrlCleaner($user_image);
 
             $username = $username_area->find('a', 1)->plaintext;
@@ -1169,7 +1171,7 @@ function getStat($type, $id)
     $data = [
         'summary' => $summary,
         'score'   => $score,
-        'user'   => $user,
+        'user'    => $user,
     ];
 
     return $data;
