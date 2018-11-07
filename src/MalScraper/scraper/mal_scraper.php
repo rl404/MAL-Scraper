@@ -1057,6 +1057,8 @@ function getStat($type, $id)
         $url = $html;
     }
 
+    $url .= "?m=all&show=1";
+
     $html = HtmlDomParser::file_get_html($url)->find('.js-scrollfix-bottom-rel', 0)->outertext;
     $html = str_replace('&quot;', '\"', $html);
     $html = str_replace('&nbsp;', ' ', $html);
@@ -1069,18 +1071,15 @@ function getStat($type, $id)
     $summary_area = $summary_area->next_sibling();
     if ($summary_area->tag == 'div') {
         while (true) {
-            $each_summary = [];
 
             // status
             $temp_type = $summary_area->find('span', 0)->plaintext;
-            $type = strtolower($temp_type);
+            $summary_type = trim(str_replace(':', '', strtolower($temp_type)));
 
             // count
             $status_area = $summary_area->plaintext;
             $count = str_replace($temp_type, '', $status_area);
-            $each_summary[$type] = trim(str_replace(',', '', $count));
-
-            $summary[] = $each_summary;
+            $summary[$summary_type] = trim(str_replace(',', '', $count));
 
             $summary_area = $summary_area->next_sibling();
             if ($summary_area->tag != 'div') {
@@ -1098,8 +1097,8 @@ function getStat($type, $id)
             $temp_score = [];
 
             // type
-            $type = $each_score->find('td', 0)->plaintext;
-            $temp_score['type'] = $type;
+            $score_type = $each_score->find('td', 0)->plaintext;
+            $temp_score['type'] = $score_type;
 
             // vote
             $temp_vote = $each_score->find('td', 1)->find('span small', 0)->plaintext;
@@ -1115,9 +1114,62 @@ function getStat($type, $id)
         }
     }
 
+    // user
+    $user = [];
+    $user_area = $html->find('.table-recently-updated', 0);
+    if ($user_area) {
+        foreach ($user_area->find('tr') as $each_user) {
+            if (!$each_user->find('td', 0)->find('div', 0)) continue;
+            $temp_user = [];
+
+            // username + image
+            $username_area = $each_user->find('td', 0);
+
+            $user_image = $username_area->find('a', 0)->style;
+            $user_image = substr($user_image, 21, strlen($user_image)-22);
+            $temp_user['image'] = imageUrlCleaner($user_image);
+
+            $username = $username_area->find('a', 1)->plaintext;
+            $temp_user['username'] = $username;
+
+            // score
+            $user_score = $each_user->find('td', 1)->plaintext;
+            $temp_user['score'] = $user_score;
+
+            // status
+            $status = $each_user->find('td', 2)->plaintext;
+            $temp_user['status'] = strtolower($status);
+
+            if ($type == 'anime') {
+                // episode
+                $episode = $each_user->find('td', 3)->plaintext;
+                $temp_user['episode'] = str_replace(' ', '', $episode);
+
+                // date
+                $date = $each_user->find('td', 4)->plaintext;
+                $temp_user['date'] = $date;
+            } else {
+                // volume
+                $volume = $each_user->find('td', 3)->plaintext;
+                $temp_user['volume'] = str_replace(' ', '', $volume);
+
+                // chapter
+                $chapter = $each_user->find('td', 4)->plaintext;
+                $temp_user['chapter'] = str_replace(' ', '', $chapter);
+
+                // date
+                $date = $each_user->find('td', 5)->plaintext;
+                $temp_user['date'] = $date;
+            }
+
+            $user[] = $temp_user;
+        }
+    }
+
     $data = [
         'summary' => $summary,
         'score'   => $score,
+        'user'   => $user,
     ];
 
     return $data;

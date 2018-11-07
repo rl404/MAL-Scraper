@@ -16,7 +16,7 @@ $myscraper = new MalScraper([
 ]);
 
 // get user info
-$result = $myscraper->getUser('rl404');
+// $result = $myscraper->getUser('rl404');
 // $result = $myscraper->getUser('equinox7');
 // $result = $myscraper->getUser('MozillaFennekin');
 // $result = $myscraper->getUser('404');
@@ -35,7 +35,7 @@ $result = $myscraper->getUser('rl404');
 // $result = $myscraper->getUserCover('rl404','manga',".data.image a[href*='/{id}/']{background-image: url({url})}");
 
 // get anime info
-// $result = $myscraper->getInfo('anime', 28221);
+// $result = $myscraper->getInfo('anime', 37430);
 // $result = $myscraper->getInfo('anime', 38150
 
 // get manga info
@@ -54,7 +54,8 @@ $result = $myscraper->getUser('rl404');
 // $result = $myscraper->getCharacterStaff('anime', 1);
 
 // get detail stat
-// $result = $myscraper->getStat('manga', 3850);
+// $result = $myscraper->getStat('anime', 37430);
+$result = $myscraper->getStat('manga', 2);
 
 // get additional pic
 // $result = $myscraper->getPicture('manga', 3850);
