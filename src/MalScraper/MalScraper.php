@@ -18,6 +18,7 @@ namespace MalScraper;
 
 require 'scraper/mal_scraper.php';
 require_once 'scraper/cache.php';
+require_once 'scraper/HtmlDomParser.php';
 
 use scraper\Cache;
 

@@ -9,10 +9,8 @@
             "email": "axel.rl.404@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
-        "php": ">=5.4",
-        "sunra/php-simple-html-dom-parser": "1.5.2"
+        "php": ">=5.4"
     },
     "autoload": {
         "psr-0": {
