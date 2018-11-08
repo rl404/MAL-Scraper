@@ -12,7 +12,7 @@ ini_set('max_execution_time', 0);
 $myscraper = new MalScraper([
     // 'enable_cache' => true,
     // 'cache_time' => 3599,
-    'to_api' => true
+    'to_api' => true,
 ]);
 
 // get user info

@@ -303,7 +303,7 @@ class simple_html_dom_node
         $idx = 0;
         $count = count($this->parent->children);
         while ($idx < $count && $this !== $this->parent->children[$idx]) {
-            ++$idx;
+            $idx++;
         }
         if (--$idx < 0) {
             return;
