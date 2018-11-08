@@ -11,7 +11,7 @@ _Mal-Scraper_ is an unofficial PHP API which scraps and parses page source of [M
 
 Well, it is created to help people get MyAnimeList data without relying on MyAnimeList since they disabled/closed their API. It's working as long as the web is up and we can get its page source.
 
-_Mal-Scraper_ is using [Sunra's](https://github.com/sunra/php-simple-html-dom-parser) HTML DOM parser and inspired by [Kylart's](https://github.com/Kylart/MalScraper) and  [Jikan's](https://github.com/jikan-me/jikan) API.
+_Mal-Scraper_ is using [Sunra's](https://github.com/sunra/php-simple-html-dom-parser) HTML DOM parser and inspired by [Kylart's](https://github.com/Kylart/MalScraper) and [Jikan's](https://github.com/jikan-me/jikan) API.
 
 ### Features
 - Get general information of anime, manga, charater (from anime and manga), or people (voice actor, author, staff, etc)
@@ -36,9 +36,6 @@ _More will be coming soon..._
 
 #### Dependencies
 - PHP 5.4+
-- [HTML DOM Parser](https://github.com/sunra/php-simple-html-dom-parser)
-
-> If you are using PHP 7.1+, please fix the DOM parser in `vendor\sunra\php-simple-html-dom-parser\Src\Sunra\PhpSimple\simplehtmldom_1_5\simple_html_dom.php` like [this](https://github.com/sunra/php-simple-html-dom-parser/issues/59)
 
 ## Usage
 ```php

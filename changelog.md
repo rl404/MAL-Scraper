@@ -1,9 +1,10 @@
 ## Changelog
 
-### v.1.3.3 -
+### v.1.3.3 - Nov 08, 2018
 - `Fix` Missing friend count in `getUser()`
 - `Fix` Missing user update in `getStat()`
 - `Fix` Summary array in `getStat()`
+- `Update` Localize HtmlDomParser class
 
 ### v1.3.2 - Oct 27, 2018
 - `Add` New library logo

@@ -12,11 +12,11 @@ ini_set('max_execution_time', 0);
 $myscraper = new MalScraper([
     // 'enable_cache' => true,
     // 'cache_time' => 3599,
-    // 'to_api' => true
+    'to_api' => true
 ]);
 
 // get user info
-// $result = $myscraper->getUser('rl404');
+$result = $myscraper->getUser('rl404');
 // $result = $myscraper->getUser('equinox7');
 // $result = $myscraper->getUser('MozillaFennekin');
 // $result = $myscraper->getUser('404');
@@ -55,7 +55,7 @@ $myscraper = new MalScraper([
 
 // get detail stat
 // $result = $myscraper->getStat('anime', 37430);
-$result = $myscraper->getStat('manga', 2);
+// $result = $myscraper->getStat('manga', 2);
 
 // get additional pic
 // $result = $myscraper->getPicture('manga', 3850);
