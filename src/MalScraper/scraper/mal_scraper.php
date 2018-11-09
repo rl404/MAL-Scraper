@@ -5,7 +5,7 @@ namespace scraper;
 define('MAX_FILE_SIZE', 100000000);
 
 use DateTime;
-use Sunra\PhpSimple\HtmlDomParser;
+use HtmlDomParser;
 
 function getTopAnimeType($type)
 {

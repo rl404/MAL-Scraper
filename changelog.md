@@ -1,5 +1,8 @@
 ## Changelog
 
+### v1.3.4 - Nov 9, 2018
+- `Update` Remove Cache and HTMLDomParser class
+
 ### v1.3.3 - Nov 8, 2018
 - `Fix` Missing friend count in `getUser()`
 - `Fix` Missing user update in `getStat()`

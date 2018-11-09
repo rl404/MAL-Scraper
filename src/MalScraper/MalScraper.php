@@ -9,7 +9,7 @@
  *
  * @since 26-09-2018
  *
- * @version 1.3.3
+ * @version 1.3.4
  *
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -17,10 +17,8 @@
 namespace MalScraper;
 
 require 'scraper/mal_scraper.php';
-require_once 'scraper/cache.php';
-require_once 'scraper/HtmlDomParser.php';
 
-use scraper\Cache;
+use Cache;
 
 /**
  * Class MalScraper.
@@ -156,6 +154,7 @@ class MalScraper
      */
     private function response($response)
     {
+        $result = [];
         if (is_numeric($response)) {
             header('HTTP/1.1 '.$response);
             $result['status'] = $response;
