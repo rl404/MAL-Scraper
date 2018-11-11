@@ -10,13 +10,13 @@ use MalScraper\MalScraper;
 ini_set('max_execution_time', 0);
 
 $myscraper = new MalScraper([
-    'enable_cache' => true,
+    // 'enable_cache' => true,
     // 'cache_time' => 3599,
-    'to_api' => true,
+    // 'to_api' => true,
 ]);
 
 // get user info
-$result = $myscraper->getUser('rl404');
+// $result = $myscraper->getUser('rl404');
 // $result = $myscraper->getUser('equinox7');
 // $result = $myscraper->getUser('MozillaFennekin');
 // $result = $myscraper->getUser('404');
@@ -35,7 +35,7 @@ $result = $myscraper->getUser('rl404');
 // $result = $myscraper->getUserCover('rl404','manga',".data.image a[href*='/{id}/']{background-image: url({url})}");
 
 // get anime info
-// $result = $myscraper->getInfo('anime', 37430);
+$result = $myscraper->getInfo('anime', 37430);
 // $result = $myscraper->getInfo('anime', 38150
 
 // get manga info
