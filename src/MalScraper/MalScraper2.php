@@ -17,7 +17,7 @@
 namespace MalScraper;
 
 use Cache;
-use Helper;
+use MalScraper\Helper\Helper;
 use MalScraper\Model\InfoModel as Info;
 
 /**
@@ -62,25 +62,22 @@ class MalScraper2
      */
     public function __construct($config = false)
     {
-        if (!empty($config['enable_cache'])) {
+        if (!empty($config['enable_cache']) && $config['enable_cache'] === true) {
             // enable cache function
             $this->_enable_cache = $config['enable_cache'];
 
             // create cache class
             $this->_cache = new Cache();
-            $this->_cache->setCachePath(dirname(__FILE__).'/cache/');
-            $this->_cache->setCache('malScraper');
-            $this->_cache->eraseExpired();
+            $this->_cache->setCachePath(dirname(__FILE__).'/Cache/');
 
             // set cache time
             if (!empty($config['cache_time'])) {
                 $this->_cache_time = $config['cache_time'];
-                $this->_cache->eraseExpired($this->_cache_time);
             }
         }
 
         // to http response function
-        if (!empty($config['to_api'])) {
+        if (!empty($config['to_api']) && $config['to_api'] === true) {
             $this->_to_api = $config['to_api'];
         }
     }
@@ -99,6 +96,9 @@ class MalScraper2
 
         // if cache function enabled
         if ($this->_enable_cache === true) {
+        	$this->_cache->setCache(str_replace('get', '', $method));
+        	$this->_cache->eraseExpired($this->_cache_time);
+
             $cacheName = $method.'('.implode(',', $arguments).')';
             $isCached = $this->_cache->isCached($cacheName);
 
@@ -115,13 +115,9 @@ class MalScraper2
         }
 
         // if to api function enabled
-        if ($this->_to_api === true) {
-            $result = Helper::response($result);
-        } else {
-            $result = Helper::toResponse($result);
-        }
-
-        return $result;
+        if ($this->_to_api === true)
+            return Helper::response($result);
+        return Helper::toResponse($result);
     }
 
     /**
@@ -132,10 +128,8 @@ class MalScraper2
      *
      * @return array
      */
-	public function getInfo($type, $id)
+	private function getInfo($type, $id)
 	{
-		$model = new Info($type, $id);
-		return $model->getAllInfo();
+		return (new Info($type,$id))->getAllInfo();
 	}
-
 }

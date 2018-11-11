@@ -1,7 +1,10 @@
 <?php
 
-namespace Helper;
+namespace MalScraper\Helper;
 
+/**
+ *	Helper class.
+ */
 class Helper
 {
 	/**

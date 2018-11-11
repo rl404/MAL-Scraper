@@ -49,7 +49,6 @@ class MainModel
      */
     protected $_error;
 
-
     /**
      * Get URL header.
      *

@@ -2,13 +2,13 @@
 
 namespace MalScraper\Model;
 
-use Helper\Helper;
+use MalScraper\Helper\Helper;
 
 /**
  * InfoModel class.
  */
 class InfoModel extends MainModel
-{   
+{
     /**
      * Type of info. Either anime or manga.
      *
@@ -69,7 +69,7 @@ class InfoModel extends MainModel
      */
     private function getId()
     {
-    	return $this->_parser->find('#myinfo_anime_id', 0)->value;  
+    	return $this->_parser->find('#myinfo_anime_id', 0)->value;
     }
 
     /**
