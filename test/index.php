@@ -35,7 +35,7 @@ $myscraper = new MalScraper([
 // $result = $myscraper->getUserCover('rl404','manga',".data.image a[href*='/{id}/']{background-image: url({url})}");
 
 // get anime info
-$result = $myscraper->getInfo('anime', 37430);
+// $result = $myscraper->getInfo('anime', 37430);
 // $result = $myscraper->getInfo('anime', 38150
 
 // get manga info
@@ -47,11 +47,11 @@ $result = $myscraper->getInfo('anime', 37430);
 // $result = $myscraper->getCharacter(163216);
 
 // get people
-// $result = $myscraper->getPeople(2009);
+// $result = $myscraper->getPeople(1123);
 // $result = $myscraper->getPeople(37418);
 
 // get list of all character + staff
-// $result = $myscraper->getCharacterStaff('anime', 1);
+$result = $myscraper->getCharacterStaff('anime', 1);
 
 // get detail stat
 // $result = $myscraper->getStat('anime', 37430);
@@ -111,4 +111,5 @@ $result = $myscraper->getInfo('anime', 37430);
 // get top manga
 // $result = $myscraper->getTopManga();
 
+print_r(memory_get_usage()."\n");
 print_r($result);

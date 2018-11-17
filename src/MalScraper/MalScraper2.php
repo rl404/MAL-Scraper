@@ -19,6 +19,9 @@ namespace MalScraper;
 use Cache;
 use MalScraper\Helper\Helper;
 use MalScraper\Model\InfoModel as Info;
+use MalScraper\Model\CharacterModel as Character;
+use MalScraper\Model\PeopleModel as People;
+use MalScraper\Model\CharacterStaffModel as CharacterStaff;
 
 /**
  * Class MalScraper.
@@ -130,6 +133,43 @@ class MalScraper2
      */
 	private function getInfo($type, $id)
 	{
-		return (new Info($type,$id))->getAllInfo();
+		return (new Info($type, $id))->getAllInfo();
 	}
+
+    /**
+     * Get character information.
+     *
+     * @param int    $id   id of the character
+     *
+     * @return array
+     */
+    private function getCharacter($id)
+    {
+        return (new Character($id))->getAllInfo();
+    }
+
+    /**
+     * Get people information.
+     *
+     * @param int    $id   id of the people
+     *
+     * @return array
+     */
+    private function getPeople($id)
+    {
+        return (new People($id))->getAllInfo();
+    }
+
+    /**
+     * Get anime/manga character + staff complete list.
+     *
+     * @param string    $type   Either anime or manga
+     * @param int    $id   id of the anime or manga
+     *
+     * @return array
+     */
+    private function getCharacterStaff($type, $id)
+    {
+        return (new CharacterStaff($type, $id))->getAllInfo();
+    }
 }

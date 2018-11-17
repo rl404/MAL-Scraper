@@ -39,12 +39,7 @@ class InfoModel extends MainModel
         $this->_url = $this->_myAnimeListUrl.'/'.$type.'/'.$id;
     	$this->_parserArea = $parserArea;
 
-        $header = parent::getHeader($this->_url);
-        if ($header == 200) {
-            $this->_parser = parent::getParser($this->_url, $this->_parserArea);
-        } else {
-            $this->_error = $header;
-        }
+        parent::errorCheck($this);
     }
 
     /**
@@ -69,7 +64,7 @@ class InfoModel extends MainModel
      */
     private function getId()
     {
-    	return $this->_parser->find('#myinfo_anime_id', 0)->value;
+    	return $this->_id;
     }
 
     /**
