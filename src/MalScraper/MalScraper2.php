@@ -22,6 +22,8 @@ use MalScraper\Model\InfoModel as Info;
 use MalScraper\Model\CharacterModel as Character;
 use MalScraper\Model\PeopleModel as People;
 use MalScraper\Model\CharacterStaffModel as CharacterStaff;
+use MalScraper\Model\StatModel as Stat;
+use MalScraper\Model\PictureModel as Picture;
 
 /**
  * Class MalScraper.
@@ -171,5 +173,31 @@ class MalScraper2
     private function getCharacterStaff($type, $id)
     {
         return (new CharacterStaff($type, $id))->getAllInfo();
+    }
+
+    /**
+     * Get anime/manga detail stat.
+     *
+     * @param string    $type   Either anime or manga
+     * @param int    $id   id of the anime or manga
+     *
+     * @return array
+     */
+    private function getStat($type, $id)
+    {
+        return (new Stat($type, $id))->getAllInfo();
+    }
+
+    /**
+     * Get anime/manga additional pictures.
+     *
+     * @param string    $type   Either anime or manga
+     * @param int    $id   id of the anime or manga
+     *
+     * @return array
+     */
+    private function getPicture($type, $id)
+    {
+        return (new Picture($type, $id))->getAllInfo();
     }
 }

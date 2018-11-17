@@ -51,10 +51,10 @@ $myscraper = new MalScraper([
 // $result = $myscraper->getPeople(37418);
 
 // get list of all character + staff
-$result = $myscraper->getCharacterStaff('anime', 1);
+// $result = $myscraper->getCharacterStaff('anime', 1);
 
 // get detail stat
-// $result = $myscraper->getStat('anime', 37430);
+$result = $myscraper->getStat('anime', 1);
 // $result = $myscraper->getStat('manga', 2);
 
 // get additional pic

@@ -109,13 +109,28 @@ class MainModel
      */
     static function getAbsoluteUrl($model)
     {
-        if ($model->getClassName() == 'MalScraper\Model\CharacterStaffModel') {
-            $html = HtmlDomParser::file_get_html($model->_url)->find('li a[href$=characters]', 0)->href;
+    	$className = substr(get_class($model), 17);
+    	$additionalUrl = '';
 
-            if ($model->getType() == 'manga')
-                return 'https://myanimelist.net'.$html;
-            return $html;
-        }
-        return $model->_url;
+    	switch ($className) {
+    		case 'CharacterStaffModel':
+    			$area = 'li a[href$=characters]';
+    			break;
+    		case 'StatModel':
+    			$area = 'li a[href$=stats]';
+    			$additionalUrl = '?m=all&show=1';
+    			break;
+    		case 'PictureModel':
+    			$area = 'li a[href$=pics]';
+    			break;
+    		default:
+    			return $model->_url;
+    	}
+
+    	$html = HtmlDomParser::file_get_html($model->_url)->find($area, 0)->href;
+
+    	if ($model->getType() == 'manga')
+    		return 'https://myanimelist.net'.$html.$additionalUrl;
+        return $html.$additionalUrl;
     }
 }

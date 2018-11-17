@@ -57,11 +57,6 @@ class CharacterStaffModel extends MainModel
         return call_user_func_array([$this, $method], $arguments);
     }
 
-    public function getClassName()
-    {
-        return get_class($this);
-    }
-
     /**
      * Get type (anime or manga).
      *
@@ -133,6 +128,8 @@ class CharacterStaffModel extends MainModel
     /**
      * Get anime/manga character image.
      *
+     * @param \simplehtmldom_1_5\simple_html_dom $char_table
+     *
      * @return string
      */
     static private function getCharacterImage($char_table)
@@ -143,6 +140,8 @@ class CharacterStaffModel extends MainModel
 
     /**
      * Get anime/manga character id.
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $char_name_area
      *
      * @return string
      */
@@ -156,6 +155,8 @@ class CharacterStaffModel extends MainModel
     /**
      * Get anime/manga character name.
      *
+     * @param \simplehtmldom_1_5\simple_html_dom $char_name_area
+     *
      * @return string
      */
     static private function getCharacterName($char_name_area)
@@ -166,6 +167,8 @@ class CharacterStaffModel extends MainModel
     /**
      * Get anime/manga character role.
      *
+     * @param \simplehtmldom_1_5\simple_html_dom $char_name_area
+     *
      * @return string
      */
     static private function getCharacterRole($char_name_area)
@@ -175,6 +178,8 @@ class CharacterStaffModel extends MainModel
 
     /**
      * Get anime/manga character va id.
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $va_name_area
      *
      * @return string
      */
@@ -188,6 +193,8 @@ class CharacterStaffModel extends MainModel
     /**
      * Get anime/manga character va name.
      *
+     * @param \simplehtmldom_1_5\simple_html_dom $va_name_area
+     *
      * @return string
      */
     static private function getCharacterVaName($va_name_area)
@@ -197,6 +204,8 @@ class CharacterStaffModel extends MainModel
 
     /**
      * Get anime/manga character va image.
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $each_va
      *
      * @return string
      */
@@ -208,6 +217,8 @@ class CharacterStaffModel extends MainModel
 
     /**
      * Get anime/manga character va role.
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $va_name_area
      *
      * @return string
      */
@@ -250,6 +261,8 @@ class CharacterStaffModel extends MainModel
     /**
      * Get anime/manga staff image.
      *
+     * @param \simplehtmldom_1_5\simple_html_dom $staff_table
+     *
      * @return string
      */
     static private function getStaffImage($staff_table)
@@ -260,6 +273,8 @@ class CharacterStaffModel extends MainModel
 
     /**
      * Get anime/manga staff id.
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $staff_name_area
      *
      * @return string
      */
@@ -273,6 +288,8 @@ class CharacterStaffModel extends MainModel
     /**
      * Get anime/manga staff name.
      *
+     * @param \simplehtmldom_1_5\simple_html_dom $staff_name_area
+     *
      * @return string
      */
     static private function getStaffName($staff_name_area)
@@ -282,6 +299,8 @@ class CharacterStaffModel extends MainModel
 
     /**
      * Get anime/manga staff role.
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $staff_name_area
      *
      * @return string
      */
