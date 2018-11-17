@@ -73,9 +73,11 @@ class MainModel
      *
      * @return \simplehtmldom_1_5\simple_html_dom
      */
-	static function getParser($url,$contentDiv)
+	static function getParser($url,$contentDiv, $additionalSetting = false)
 	{
-		$html = HtmlDomParser::file_get_html($url)->find($contentDiv, 0)->outertext;
+		$html = HtmlDomParser::file_get_html($url)->find($contentDiv, 0);
+		$html = !$additionalSetting ? $html : $html->next_sibling();
+		$html = $html->outertext;
 	    $html = str_replace('&quot;', '\"', $html);
 	    $html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
 	    $html = HtmlDomParser::str_get_html($html);
@@ -94,7 +96,9 @@ class MainModel
     {
         $header = self::getHeader($model->_url);
         if ($header == 200) {
-            $model->_parser = self::getParser(self::getAbsoluteUrl($model), $model->_parserArea);
+        	$className = substr(get_class($model), 17);
+        	$additionalSetting = ($className == 'CharacterPictureModel') || ($className == 'PeoplePictureModel');
+            $model->_parser = self::getParser(self::getAbsoluteUrl($model), $model->_parserArea, $additionalSetting);
         } else {
             $model->_error = $header;
         }
@@ -122,6 +126,10 @@ class MainModel
     			break;
     		case 'PictureModel':
     			$area = 'li a[href$=pics]';
+    			break;
+    		case 'CharacterPictureModel':
+    		case 'PeoplePictureModel':
+    			$area = 'li a[href$=pictures]';
     			break;
     		default:
     			return $model->_url;

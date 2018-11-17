@@ -24,6 +24,9 @@ use MalScraper\Model\PeopleModel as People;
 use MalScraper\Model\CharacterStaffModel as CharacterStaff;
 use MalScraper\Model\StatModel as Stat;
 use MalScraper\Model\PictureModel as Picture;
+use MalScraper\Model\CharacterPictureModel as CharacterPicture;
+use MalScraper\Model\PeoplePictureModel as PeoplePicture;
+use MalScraper\Model\StudioProducerModel as StudioProducer;
 
 /**
  * Class MalScraper.
@@ -199,5 +202,42 @@ class MalScraper2
     private function getPicture($type, $id)
     {
         return (new Picture($type, $id))->getAllInfo();
+    }
+
+    /**
+     * Get character additional pictures.
+     *
+     * @param int    $id   id of the character
+     *
+     * @return array
+     */
+    private function getCharacterPicture($id)
+    {
+        return (new CharacterPicture($id))->getAllInfo();
+    }
+
+    /**
+     * Get people additional pictures.
+     *
+     * @param int    $id   id of the people
+     *
+     * @return array
+     */
+    private function getPeoplePicture($id)
+    {
+        return (new PeoplePicture($id))->getAllInfo();
+    }
+
+    /**
+     * Get all anime produced by the studio/producer.
+     *
+     * @param int    $id   id of the studio/producer
+     * @param int    $page   (Optional) Page number
+     *
+     * @return array
+     */
+    private function getStudioProducer($id, $page = 1)
+    {
+        return (new StudioProducer($id, $page))->getAllInfo();
     }
 }

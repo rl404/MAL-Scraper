@@ -54,20 +54,20 @@ $myscraper = new MalScraper([
 // $result = $myscraper->getCharacterStaff('anime', 1);
 
 // get detail stat
-$result = $myscraper->getStat('anime', 1);
+// $result = $myscraper->getStat('anime', 1);
 // $result = $myscraper->getStat('manga', 2);
 
 // get additional pic
-// $result = $myscraper->getPicture('manga', 3850);
+// $result = $myscraper->getPicture('anime', 1);
 
 // get additional char pic
-// $result = $myscraper->getCharacterPicture(3850);
+// $result = $myscraper->getCharacterPicture(1);
 
 // get additional people pic
 // $result = $myscraper->getPeoplePicture(1);
 
 // get what studio/producer produced
-// $result = $myscraper->getStudioProducer(1);
+$result = $myscraper->getStudioProducer(1);
 
 // get what magazine produced
 // $result = $myscraper->getMagazine(1);
