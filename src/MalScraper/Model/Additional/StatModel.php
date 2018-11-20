@@ -1,8 +1,9 @@
 <?php
 
-namespace MalScraper\Model;
+namespace MalScraper\Model\Additional;
 
 use MalScraper\Helper\Helper;
+use MalScraper\Model\MainModel;
 
 /**
  * StatModel class.

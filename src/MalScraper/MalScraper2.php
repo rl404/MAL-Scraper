@@ -18,15 +18,17 @@ namespace MalScraper;
 
 use Cache;
 use MalScraper\Helper\Helper;
-use MalScraper\Model\InfoModel as Info;
-use MalScraper\Model\CharacterModel as Character;
-use MalScraper\Model\PeopleModel as People;
-use MalScraper\Model\CharacterStaffModel as CharacterStaff;
-use MalScraper\Model\StatModel as Stat;
-use MalScraper\Model\PictureModel as Picture;
-use MalScraper\Model\CharacterPictureModel as CharacterPicture;
-use MalScraper\Model\PeoplePictureModel as PeoplePicture;
-use MalScraper\Model\StudioProducerModel as StudioProducer;
+
+use MalScraper\Model\General\InfoModel as Info;
+use MalScraper\Model\General\CharacterModel as Character;
+use MalScraper\Model\General\PeopleModel as People;
+use MalScraper\Model\General\ProducerModel as Producer;
+
+use MalScraper\Model\Additional\CharacterStaffModel as CharacterStaff;
+use MalScraper\Model\Additional\StatModel as Stat;
+use MalScraper\Model\Additional\PictureModel as Picture;
+use MalScraper\Model\Additional\CharacterPictureModel as CharacterPicture;
+use MalScraper\Model\Additional\PeoplePictureModel as PeoplePicture;
 
 /**
  * Class MalScraper.
@@ -238,6 +240,19 @@ class MalScraper2
      */
     private function getStudioProducer($id, $page = 1)
     {
-        return (new StudioProducer($id, $page))->getAllInfo();
+        return (new Producer('anime', $id, $page))->getAllInfo();
+    }
+
+    /**
+     * Get all manga serialized by the magazine.
+     *
+     * @param int    $id   id of the magazine
+     * @param int    $page   (Optional) Page number
+     *
+     * @return array
+     */
+    private function getMagazine($id, $page = 1)
+    {
+        return (new Producer('manga', $id, $page))->getAllInfo();
     }
 }

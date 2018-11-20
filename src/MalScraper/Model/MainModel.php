@@ -96,7 +96,7 @@ class MainModel
     {
         $header = self::getHeader($model->_url);
         if ($header == 200) {
-        	$className = substr(get_class($model), 17);
+        	$className = self::getCleanClassName($model);
         	$additionalSetting = ($className == 'CharacterPictureModel') || ($className == 'PeoplePictureModel');
             $model->_parser = self::getParser(self::getAbsoluteUrl($model), $model->_parserArea, $additionalSetting);
         } else {
@@ -113,7 +113,7 @@ class MainModel
      */
     static function getAbsoluteUrl($model)
     {
-    	$className = substr(get_class($model), 17);
+    	$className = self::getCleanClassName($model);
     	$additionalUrl = '';
 
     	switch ($className) {
@@ -140,5 +140,19 @@ class MainModel
     	if ($model->getType() == 'manga')
     		return 'https://myanimelist.net'.$html.$additionalUrl;
         return $html.$additionalUrl;
+    }
+
+    /**
+     * Get clean class name.
+     *
+     * @param MainModel $model Any model
+     *
+     * @return string
+     */
+    function getCleanClassName($model)
+    {
+        $className = get_class($model);
+        $className = explode('\\', $className);
+        return $className[count($className)-1];
     }
 }

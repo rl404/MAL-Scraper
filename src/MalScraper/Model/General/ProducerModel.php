@@ -1,16 +1,24 @@
 <?php
 
-namespace MalScraper\Model;
+namespace MalScraper\Model\General;
 
 use MalScraper\Helper\Helper;
+use MalScraper\Model\MainModel;
 
 /**
  * StudioProducerModel class.
  */
-class StudioProducerModel extends MainModel
+class ProducerModel extends MainModel
 {
     /**
-     * Id of the studio.
+     * Either anime or manga.
+     *
+     * @var string
+     */
+    private $_type;
+
+    /**
+     * Id of the producer.
      *
      * @var string|int
      */
@@ -31,12 +39,17 @@ class StudioProducerModel extends MainModel
      *
      * @return void
      */
-	public function __construct($id, $page = 1, $parserArea = '#content .js-categories-seasonal')
+	public function __construct($type, $id, $page = 1, $parserArea = '#content .js-categories-seasonal')
     {
+        $this->_type = $type;
         $this->_id = $id;
     	$this->_page = $page;
-        $this->_url = $this->_myAnimeListUrl.'/anime/producer/'.$id.'/?page='.$page;
-    	$this->_parserArea = $parserArea;
+        if ($type == 'anime') {
+            $this->_url = $this->_myAnimeListUrl.'/anime/producer/'.$id.'/?page='.$page;
+        } else {
+            $this->_url = $this->_myAnimeListUrl.'/manga/magazine/'.$id.'/?page='.$page;
+        }
+        $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);
     }
@@ -63,7 +76,7 @@ class StudioProducerModel extends MainModel
      *
      * @return string
      */
-    static private function getAnimeImage($each_anime)
+    private function getAnimeImage($each_anime)
     {
         $image = $each_anime->find('div[class=image]', 0)->find('img', 0)->getAttribute('data-src');
         return  Helper::imageUrlCleaner($image);
@@ -76,7 +89,7 @@ class StudioProducerModel extends MainModel
      *
      * @return string
      */
-    static private function getAnimeId($name_area)
+    private function getAnimeId($name_area)
     {
         $anime_id = $name_area->find('p a', 0)->href;
         $anime_id = explode('/', $anime_id);
@@ -90,7 +103,7 @@ class StudioProducerModel extends MainModel
      *
      * @return string
      */
-    static private function getAnimeTitle($name_area)
+    private function getAnimeTitle($name_area)
     {
         return $name_area->find('p a', 0)->plaintext;
     }
@@ -102,15 +115,15 @@ class StudioProducerModel extends MainModel
      *
      * @return array
      */
-    static private function getAnimeProducer($producer_area)
+    private function getAnimeProducer($producer_area)
     {
         $producer = [];
         $producer_area = $producer_area->find('span[class=producer]', 0);
         foreach ($producer_area->find('a') as $each_producer) {
             $temp_prod = [];
 
-            $temp_prod['id'] = self::getAnimeProducerId($each_producer);
-            $temp_prod['name'] = self::getAnimeProducerName($each_producer);
+            $temp_prod['id'] = $this->getAnimeProducerId($each_producer);
+            $temp_prod['name'] = $this->getAnimeProducerName($each_producer);
 
             $producer[] = $temp_prod;
         }
@@ -124,11 +137,13 @@ class StudioProducerModel extends MainModel
      *
      * @return string
      */
-    static private function getAnimeProducerId($each_producer)
+    private function getAnimeProducerId($each_producer)
     {
         $prod_id = $each_producer->href;
         $prod_id = explode('/', $prod_id);
-        return $prod_id[3];
+        if ($this->_type == 'anime')
+            return $prod_id[3];
+        return $prod_id[4];
     }
 
     /**
@@ -138,7 +153,7 @@ class StudioProducerModel extends MainModel
      *
      * @return string
      */
-    static private function getAnimeProducerName($each_producer)
+    private function getAnimeProducerName($each_producer)
     {
         return $each_producer->plaintext;
     }
@@ -150,10 +165,10 @@ class StudioProducerModel extends MainModel
      *
      * @return string
      */
-    static private function getAnimeEpisode($producer_area)
+    private function getAnimeEpisode($producer_area)
     {
         $episode = $producer_area->find('div[class=eps]', 0)->plaintext;
-        return trim(str_replace(['eps', 'ep'], '', $episode));
+        return trim(str_replace(['eps', 'ep', 'vols', 'vol'], '', $episode));
     }
 
     /**
@@ -163,7 +178,7 @@ class StudioProducerModel extends MainModel
      *
      * @return string
      */
-    static private function getAnimeSource($producer_area)
+    private function getAnimeSource($producer_area)
     {
         $source = $producer_area->find('span[class=source]', 0)->plaintext;
         return trim($source);
@@ -176,7 +191,7 @@ class StudioProducerModel extends MainModel
      *
      * @return array
      */
-    static private function getAnimeGenre($each_anime)
+    private function getAnimeGenre($each_anime)
     {
         $genre = [];
         $genre_area = $each_anime->find('div[class="genres js-genre"]', 0);
@@ -193,7 +208,7 @@ class StudioProducerModel extends MainModel
      *
      * @return string
      */
-    static private function getAnimeSynopsis($each_anime)
+    private function getAnimeSynopsis($each_anime)
     {
         $synopsis = $each_anime->find('div[class="synopsis js-synopsis"]', 0)->plaintext;
         return trim(preg_replace("/([\s])+/", ' ', $synopsis));
@@ -206,11 +221,16 @@ class StudioProducerModel extends MainModel
      *
      * @return array
      */
-    static private function getAnimeLicensor($each_anime)
+    private function getAnimeLicensor($each_anime)
     {
-        $licensor = $each_anime->find('div[class="synopsis js-synopsis"] .licensors', 0)->getAttribute('data-licensors');
-        $licensor = explode(',', $licensor);
-        return array_filter($licensor);
+        if ($this->_type == 'anime') {
+            $licensor = $each_anime->find('div[class="synopsis js-synopsis"] .licensors', 0)->getAttribute('data-licensors');
+            $licensor = explode(',', $licensor);
+            return array_filter($licensor);
+        } else {
+            $serialization = $each_anime->find('div[class="synopsis js-synopsis"] .serialization a', 0);
+            return $serialization ? $serialization->plaintext : '';
+        }
     }
 
     /**
@@ -220,7 +240,7 @@ class StudioProducerModel extends MainModel
      *
      * @return string
      */
-    static private function getAnimeType($info_area)
+    private function getAnimeType($info_area)
     {
         $type = $info_area->find('.info', 0)->plaintext;
         $type = explode('-', $type);
@@ -234,7 +254,7 @@ class StudioProducerModel extends MainModel
      *
      * @return string
      */
-    static private function getAnimeStart($info_area)
+    private function getAnimeStart($info_area)
     {
         $airing_start = $info_area->find('.info .remain-time', 0)->plaintext;
         return trim($airing_start);
@@ -247,7 +267,7 @@ class StudioProducerModel extends MainModel
      *
      * @return string
      */
-    static private function getAnimeScore($info_area)
+    private function getAnimeScore($info_area)
     {
         $score = $info_area->find('.scormem .score', 0)->plaintext;
         return trim($score);
@@ -260,7 +280,7 @@ class StudioProducerModel extends MainModel
      *
      * @return string
      */
-    static private function getAnimeMember($info_area)
+    private function getAnimeMember($info_area)
     {
         $member = $info_area->find('.scormem span[class^=member]', 0)->plaintext;
         return trim(str_replace(',', '', $member));
@@ -282,19 +302,27 @@ class StudioProducerModel extends MainModel
             $producer_area = $each_anime->find('div[class=prodsrc]', 0);
             $info_area = $each_anime->find('.information', 0);
 
-            $result['image'] = self::getAnimeImage($each_anime);
-            $result['id'] = self::getAnimeId($name_area);
-            $result['title'] = self::getAnimeTitle($name_area);
-            $result['producer'] = self::getAnimeProducer($producer_area);
-            $result['episode'] = self::getAnimeEpisode($producer_area);
-            $result['source'] = self::getAnimeSource($producer_area);
-            $result['genre'] = self::getAnimeGenre($each_anime);
-            $result['synopsis'] = self::getAnimeSynopsis($each_anime);
-            $result['licensor'] = self::getAnimeLicensor($each_anime);
-            $result['type'] = self::getAnimeType($info_area);
-            $result['airing_start'] = self::getAnimeStart($info_area);
-            $result['member'] = self::getAnimeMember($info_area);
-            $result['score'] = self::getAnimeScore($info_area);
+            $result['image'] = $this->getAnimeImage($each_anime);
+            $result['id'] = $this->getAnimeId($name_area);
+            $result['title'] = $this->getAnimeTitle($name_area);
+            $result['genre'] = $this->getAnimeGenre($each_anime);
+            $result['synopsis'] = $this->getAnimeSynopsis($each_anime);
+            $result['source'] = $this->getAnimeSource($producer_area);
+
+            if ($this->_type == 'anime') {
+                $result['producer'] = $this->getAnimeProducer($producer_area);
+                $result['episode'] = $this->getAnimeEpisode($producer_area);
+                $result['licensor'] = $this->getAnimeLicensor($each_anime);
+                $result['type'] = $this->getAnimeType($info_area);
+            } else {
+                $result['author'] = $this->getAnimeProducer($producer_area);
+                $result['volume'] = $this->getAnimeEpisode($producer_area);
+                $result['serialization'] = $this->getAnimeLicensor($each_anime);
+            }
+
+            $result['airing_start'] = $this->getAnimeStart($info_area);
+            $result['member'] = $this->getAnimeMember($info_area);
+            $result['score'] = $this->getAnimeScore($info_area);
 
             $data[] = $result;
         }

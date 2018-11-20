@@ -1,16 +1,17 @@
 <?php
 
-namespace MalScraper\Model;
+namespace MalScraper\Model\Additional;
 
 use MalScraper\Helper\Helper;
+use MalScraper\Model\MainModel;
 
 /**
- * PeoplePictureModel class.
+ * CharacterPictureModel class.
  */
-class PeoplePictureModel extends MainModel
+class CharacterPictureModel extends MainModel
 {
     /**
-     * Id of the people.
+     * Id of the character.
      *
      * @var string|int
      */
@@ -27,7 +28,7 @@ class PeoplePictureModel extends MainModel
 	public function __construct($id, $parserArea = '#content table tr td')
     {
     	$this->_id = $id;
-        $this->_url = $this->_myAnimeListUrl.'/people/'.$id;
+        $this->_url = $this->_myAnimeListUrl.'/character/'.$id;
     	$this->_parserArea = $parserArea;
 
         parent::errorCheck($this);
@@ -59,7 +60,7 @@ class PeoplePictureModel extends MainModel
     }
 
     /**
-     * Get people id.
+     * Get character id.
      *
      * @return string
      */
@@ -69,7 +70,7 @@ class PeoplePictureModel extends MainModel
     }
 
     /**
-     * Get people additional pictures.
+     * Get character additional pictures.
      *
      * @return array
      */
