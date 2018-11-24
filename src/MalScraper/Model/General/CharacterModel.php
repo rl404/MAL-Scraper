@@ -162,25 +162,14 @@ class CharacterModel extends MainModel
         $mediaography_area = $mediaography_area->find('tr');
         if ($mediaography_area) {
             foreach ($mediaography_area as $each_media) {
-                $media_image = $each_media->find('td', 0)->find('img', 0)->src;
-                $media_image = Helper::imageUrlCleaner($media_image);
-                $mediaography[$mediaography_index]['image'] = $media_image;
 
-                $each_media = $each_media->find('td', 1);
+                $media_image = $each_media->find('td', 0);
+                $media_area = $each_media->find('td', 1);
 
-                // id
-                $media_id = $each_media->find('a', 0)->href;
-                $parsed_media_id = explode('/', $media_id);
-                $media_id = $parsed_media_id[4];
-                $mediaography[$mediaography_index]['id'] = $media_id;
-
-                // title
-                $media_title = $each_media->find('a', 0)->plaintext;
-                $mediaography[$mediaography_index]['title'] = $media_title;
-
-                // role
-                $media_role = $each_media->find('div small', 0)->plaintext;
-                $mediaography[$mediaography_index]['role'] = $media_role;
+                $mediaography[$mediaography_index]['image'] = $this->getVaImage($media_image);
+                $mediaography[$mediaography_index]['id'] = $this->getVaId($media_area);
+                $mediaography[$mediaography_index]['title'] = $this->getVaName($media_area);
+                $mediaography[$mediaography_index]['role'] = $this->getVaRole($media_area);
 
                 $mediaography_index++;
             }
@@ -198,30 +187,15 @@ class CharacterModel extends MainModel
         $va = [];
         $va_index = 0;
         $html = $this->_parser->find('#content table tr', 0)->find('td', 0)->next_sibling();
-        $va_area = $html->find('div[class=normal_header]', 1);
-        $va_area = $va_area->next_sibling();
+        $va_area = $html->find('div[class=normal_header]', 1)->next_sibling();
         if ($va_area->tag == 'table') {
             while (true) {
 
-                // id
                 $va_name_area = $va_area->find('td', 1);
-                $va_id = $va_name_area->find('a', 0)->href;
-                $parsed_va_id = explode('/', $va_id);
-                $va_id = $parsed_va_id[4];
-                $va[$va_index]['id'] = $va_id;
-
-                // name
-                $va_name = $va_name_area->find('a', 0)->plaintext;
-                $va[$va_index]['name'] = $va_name;
-
-                // role
-                $va_role = $va_name_area->find('small', 0)->plaintext;
-                $va[$va_index]['role'] = $va_role;
-
-                // image
-                $va_image = $va_area->find('img', 0)->src;
-                $va_image = Helper::imageUrlCleaner($va_image);
-                $va[$va_index]['image'] = $va_image;
+                $va[$va_index]['id'] = $this->getVaId($va_name_area);
+                $va[$va_index]['name'] = $this->getVaName($va_name_area);
+                $va[$va_index]['role'] = $this->getVaRole($va_name_area);
+                $va[$va_index]['image'] = $this->getVaImage($va_area);
 
                 $va_area = $va_area->next_sibling();
                 if ($va_area->tag != 'table') {
@@ -235,6 +209,57 @@ class CharacterModel extends MainModel
     }
 
     /**
+     * Get Va Id
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $va_name_area
+     *
+     * @return string
+     */
+    private function getVaId($va_name_area)
+    {
+        $va_id = $va_name_area->find('a', 0)->href;
+        $parsed_va_id = explode('/', $va_id);
+        return $parsed_va_id[4];
+    }
+
+    /**
+     * Get Va Name
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $va_name_area
+     *
+     * @return string
+     */
+    private function getVaName($va_name_area)
+    {
+        return $va_name_area->find('a', 0)->plaintext;
+    }
+
+    /**
+     * Get Va role
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $va_name_area
+     *
+     * @return string
+     */
+    private function getVaRole($va_name_area)
+    {
+        return $va_name_area->find('div small', 0)->plaintext;
+    }
+
+    /**
+     * Get Va image
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $va_area
+     *
+     * @return string
+     */
+    private function getVaImage($va_area)
+    {
+        $va_image = $va_area->find('img', 0)->src;
+        return Helper::imageUrlCleaner($va_image);
+    }
+
+    /**
      * Get character all information.
      *
      * @return array
@@ -242,16 +267,16 @@ class CharacterModel extends MainModel
     private function getAllInfo()
     {
         $data = [
-            'id'           => self::getId(),
-            'image'        => self::getImage(),
-            'nickname'     => self::getNickname(),
-            'name'         => self::getName(),
-            'name_kanji'   => self::getName(true),
-            'favorite'     => self::getFavorite(),
-            'about'        => self::getAbout(),
-            'animeography' => self::getMedia('anime'),
-            'mangaography' => self::getMedia('manga'),
-            'va'           => self::getVa(),
+            'id'           => $this->getId(),
+            'image'        => $this->getImage(),
+            'nickname'     => $this->getNickname(),
+            'name'         => $this->getName(),
+            'name_kanji'   => $this->getName(true),
+            'favorite'     => $this->getFavorite(),
+            'about'        => $this->getAbout(),
+            'animeography' => $this->getMedia('anime'),
+            'mangaography' => $this->getMedia('manga'),
+            'va'           => $this->getVa(),
         ];
 
         return $data;

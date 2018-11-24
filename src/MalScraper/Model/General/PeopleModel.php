@@ -41,7 +41,7 @@ class PeopleModel extends MainModel
         parent::errorCheck($this);
 
         if (!$this->_error)
-            self::setBiodata();
+            $this->setBiodata();
     }
 
     /**
@@ -192,41 +192,23 @@ class PeopleModel extends MainModel
         if ($va_area->tag == 'table') {
             if ($va_area->find('tr')) {
                 foreach ($va_area->find('tr') as $each_va) {
-                    // anime image
-                    $anime_image = $each_va->find('td', 0)->find('img', 0)->getAttribute('data-src');
-                    $va[$va_index]['anime']['image'] = Helper::imageUrlCleaner($anime_image);
 
+                    // anime
+                    $anime_image_area = $each_va->find('td', 0);
                     $anime_area = $each_va->find('td', 1);
 
-                    // anime id
-                    $anime_id = $anime_area->find('a', 0)->href;
-                    $parsed_anime_id = explode('/', $anime_id);
-                    $anime_id = $parsed_anime_id[4];
-                    $va[$va_index]['anime']['id'] = $anime_id;
+                    $va[$va_index]['anime']['image'] = $this->getAnimeImage($anime_image_area);
+                    $va[$va_index]['anime']['id'] = $this->getAnimeId($anime_area);
+                    $va[$va_index]['anime']['title'] = $this->getAnimeTitle($anime_area);
 
-                    // anime title
-                    $anime_title = $anime_area->find('a', 0)->plaintext;
-                    $va[$va_index]['anime']['title'] = $anime_title;
-
-                    // character image
-                    $character_image = $each_va->find('td', 3)->find('img', 0)->getAttribute('data-src');
-                    $va[$va_index]['character']['image'] = Helper::imageUrlCleaner($character_image);
-
+                    // character
+                    $character_image_area = $each_va->find('td', 3);
                     $character_area = $each_va->find('td', 2);
 
-                    // character id
-                    $character_id = $character_area->find('a', 0)->href;
-                    $parsed_character_id = explode('/', $character_id);
-                    $character_id = $parsed_character_id[4];
-                    $va[$va_index]['character']['id'] = $character_id;
-
-                    // character name
-                    $character_name = $character_area->find('a', 0)->plaintext;
-                    $va[$va_index]['character']['name'] = $character_name;
-
-                    // character role
-                    $character_role = $character_area->find('div', 0)->plaintext;
-                    $va[$va_index]['character']['role'] = $character_role;
+                    $va[$va_index]['character']['image'] = $this->getAnimeImage($character_image_area);
+                    $va[$va_index]['character']['id'] = $this->getAnimeId($character_area);
+                    $va[$va_index]['character']['name'] = $this->getAnimeTitle($character_area);
+                    $va[$va_index]['character']['role'] = $this->getAnimeRole($character_area);
 
                     $va_index++;
                 }
@@ -236,79 +218,91 @@ class PeopleModel extends MainModel
     }
 
     /**
+     * Get anime id
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $anime_area
+     *
+     * @return string
+     */
+    private function getAnimeId($anime_area)
+    {
+        $anime_id = $anime_area->find('a', 0)->href;
+        $parsed_anime_id = explode('/', $anime_id);
+        return $parsed_anime_id[4];
+    }
+
+    /**
+     * Get anime title
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $anime_area
+     *
+     * @return string
+     */
+    private function getAnimeTitle($anime_area)
+    {
+        return $anime_area->find('a', 0)->plaintext;
+    }
+
+    /**
+     * Get anime image
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $anime_image_area
+     *
+     * @return string
+     */
+    private function getAnimeImage($anime_image_area)
+    {
+        $anime_image_area = $anime_image_area->find('img', 0)->getAttribute('data-src');
+        return Helper::imageUrlCleaner($anime_image_area);
+    }
+
+    /**
+     * Get anime role
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $anime_area
+     * @param bool $staff (Optional)
+     *
+     * @return string
+     */
+    private function getAnimeRole($anime_area, $staff = false)
+    {
+        if ($staff) {
+            return $anime_area->find('small', 0)->plaintext;
+        }
+        return $anime_area->find('div', 0)->plaintext;
+    }
+
+    /**
      * Get people staff list.
+     *
+     * @param bool $staff (Optional)
      *
      * @return array
      */
-    private function getStaff()
+    private function getStaff($manga = false)
     {
         $staff = [];
         $staff_index = 0;
         $html = $this->_parser->find('#content table tr', 0)->find('td', 0)->next_sibling();
-        $staff_area = $html->find('.normal_header', 1)->next_sibling();
+        if ($manga) {
+            $staff_area = $html->find('.normal_header', 2)->next_sibling();
+        } else {
+            $staff_area = $html->find('.normal_header', 1)->next_sibling();
+        }
         if ($staff_area->tag == 'table') {
             foreach ($staff_area->find('tr') as $each_staff) {
-                $anime_image = $each_staff->find('td', 0)->find('img', 0)->getAttribute('data-src');
-                $staff[$staff_index]['image'] = Helper::imageUrlCleaner($anime_image);
+                $anime_image_area = $each_staff->find('td', 0);
+                $staff_area = $each_staff->find('td', 1);
 
-                $each_staff = $each_staff->find('td', 1);
-
-                // anime id
-                $anime_id = $each_staff->find('a', 0)->href;
-                $parsed_anime_id = explode('/', $anime_id);
-                $anime_id = $parsed_anime_id[4];
-                $staff[$staff_index]['id'] = $anime_id;
-
-                // anime title
-                $anime_title = $each_staff->find('a', 0)->plaintext;
-                $staff[$staff_index]['title'] = $anime_title;
-
-                // role
-                $role = $each_staff->find('small', 0)->plaintext;
-                $staff[$staff_index]['role'] = $role;
+                $staff[$staff_index]['image'] = $this->getAnimeImage($anime_image_area);
+                $staff[$staff_index]['id'] = $this->getAnimeId($staff_area);
+                $staff[$staff_index]['title'] = $this->getAnimeTitle($staff_area);
+                $staff[$staff_index]['role'] = $this->getAnimeRole($staff_area, true);
 
                 $staff_index++;
             }
         }
         return $staff;
-    }
-
-    /**
-     * Get people published manga list.
-     *
-     * @return array
-     */
-    private function getManga()
-    {
-        $published_manga = [];
-        $manga_index = 0;
-        $html = $this->_parser->find('#content table tr', 0)->find('td', 0)->next_sibling();
-        $manga_area = $html->find('.normal_header', 2)->next_sibling();
-        if ($manga_area->tag == 'table') {
-            foreach ($manga_area->find('tr') as $each_manga) {
-                $manga_image = $each_manga->find('td', 0)->find('img', 0)->getAttribute('data-src');
-                $published_manga[$manga_index]['image'] = Helper::imageUrlCleaner($manga_image);
-
-                $each_manga = $each_manga->find('td', 1);
-
-                // manga id
-                $manga_id = $each_manga->find('a', 0)->href;
-                $parsed_manga_id = explode('/', $manga_id);
-                $manga_id = $parsed_manga_id[4];
-                $published_manga[$manga_index]['id'] = $manga_id;
-
-                // manga title
-                $manga_title = $each_manga->find('a', 0)->plaintext;
-                $published_manga[$manga_index]['title'] = $manga_title;
-
-                // role
-                $role = $each_manga->find('small', 0)->plaintext;
-                $published_manga[$manga_index]['role'] = $role;
-
-                $manga_index++;
-            }
-        }
-        return $published_manga;
     }
 
     /**
@@ -319,19 +313,19 @@ class PeopleModel extends MainModel
     private function getAllInfo()
     {
         $data = [
-            'id'               => self::getId(),
-            'name'             => self::getName(),
-            'image'            => self::getImage(),
-            'given_name'       => self::getBiodata('given_name'),
-            'family_name'      => self::getBiodata('family_name'),
-            'alternative_name' => self::getBiodata('alternative_name'),
-            'birthday'         => self::getBiodata('birthday'),
-            'website'          => self::getBiodata('website'),
-            'favorite'         => self::getBiodata('favorite'),
-            'more'             => self::getMore(),
-            'va'               => self::getVa(),
-            'staff'            => self::getStaff(),
-            'published_manga'  => self::getManga(),
+            'id'               => $this->getId(),
+            'name'             => $this->getName(),
+            'image'            => $this->getImage(),
+            'given_name'       => $this->getBiodata('given_name'),
+            'family_name'      => $this->getBiodata('family_name'),
+            'alternative_name' => $this->getBiodata('alternative_name'),
+            'birthday'         => $this->getBiodata('birthday'),
+            'website'          => $this->getBiodata('website'),
+            'favorite'         => $this->getBiodata('favorite'),
+            'more'             => $this->getMore(),
+            'va'               => $this->getVa(),
+            'staff'            => $this->getStaff(),
+            'published_manga'  => $this->getStaff(true),
         ];
 
         return $data;

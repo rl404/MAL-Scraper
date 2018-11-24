@@ -16,10 +16,10 @@ $myscraper = new MalScraper2([
 	// 'to_api' => true
 ]);
 
-// $result = $myscraper->getInfo('anime', 2123);
+// $result = $myscraper->getInfo('anime', 37349);
 // $result = $myscraper->getCharacter(62);
-// $result = $myscraper->getPeople(1123);
-$result = $myscraper->getStudioProducer(1);
+$result = $myscraper->getPeople(1868);
+// $result = $myscraper->getStudioProducer(1);
 // $result = $myscraper->getMagazine(1);
 
 // $result = $myscraper->getCharacterStaff('anime',1);

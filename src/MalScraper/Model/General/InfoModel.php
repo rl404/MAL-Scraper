@@ -320,40 +320,24 @@ class InfoModel extends MainModel
             foreach ($character_list as $character_side) {
                 if ($character_side) {
                     foreach ($character_side->find('table[width=100%]') as $each_char) {
-                        $char_image = $each_char->find('tr td', 0)->find('img', 0)->getAttribute('data-src');
-                        $char_image = Helper::imageUrlCleaner($char_image);
 
                         $char = $each_char->find('tr td', 1);
-
-                        $char_id = $char->find('a', 0)->href;
-                        $char_id = explode('/', $char_id);
-                        $char_id = $char_id[4];
-
-                        $char_name = trim(preg_replace('/\s+/', ' ', $char->find('a', 0)->plaintext));
-                        $char_role = trim($char->find('small', 0)->plaintext);
-
-                        $character[$char_index]['id'] = $char_id;
-                        $character[$char_index]['name'] = $char_name;
-                        $character[$char_index]['role'] = $char_role;
-                        $character[$char_index]['image'] = $char_image;
-
                         $va = $each_char->find('table td', 0);
+
+                        $character[$char_index]['id'] = $this->getStaffId($char);
+                        $character[$char_index]['name'] = $this->getStaffName($char);
+                        $character[$char_index]['role'] = $this->getStaffRole($char);
+                        $character[$char_index]['image'] = $this->getStaffImage($each_char);
+
+                        $character[$char_index]['va_id'] = $character[$char_index]['va_name'] = '';
+                        $character[$char_index]['va_role'] = $character[$char_index]['va_image'] = '';
+
                         if ($va) {
-                            $va_id = $va->find('a', 0)->href;
-                            $va_id = explode('/', $va_id);
-                            $va_id = $va_id[4];
-
-                            $va_name = $va->find('a', 0)->plaintext;
-                            $va_role = $va->find('small', 0)->plaintext;
-
-                            $va_image = $each_char->find('table td', 1)->find('img', 0)->getAttribute('data-src');
-                            $va_image = Helper::imageUrlCleaner($va_image);
+                            $character[$char_index]['va_id'] = $this->getStaffId($va);
+                            $character[$char_index]['va_name'] = $this->getStaffName($va, true);
+                            $character[$char_index]['va_role'] = $this->getStaffRole($va);
+                            $character[$char_index]['va_image'] = $this->getStaffImage($each_char, true);
                         }
-
-                        $character[$char_index]['va_id'] = isset($va_id) ? $va_id : '';
-                        $character[$char_index]['va_name'] = isset($va_name) ? $va_name : '';
-                        $character[$char_index]['va_role'] = isset($va_role) ? $va_role : '';
-                        $character[$char_index]['va_image'] = isset($va_image) ? $va_image : '';
 
                         $char_index++;
                     }
@@ -381,22 +365,12 @@ class InfoModel extends MainModel
             foreach ($staff_list as $staff_side) {
                 if ($staff_side) {
                     foreach ($staff_side->find('table[width=100%]') as $each_staff) {
-                        $staff_image = $each_staff->find('tr td', 0)->find('img', 0)->getAttribute('data-src');
-                        $staff_image = Helper::imageUrlCleaner($staff_image);
-
                         $st = $each_staff->find('tr td', 1);
 
-                        $staff_id = $st->find('a', 0)->href;
-                        $staff_id = explode('/', $staff_id);
-                        $staff_id = $staff_id[4];
-
-                        $staff_name = trim(preg_replace('/\s+/', ' ', $st->find('a', 0)->plaintext));
-                        $staff_role = trim($st->find('small', 0)->plaintext);
-
-                        $staff[$staff_index]['id'] = $staff_id;
-                        $staff[$staff_index]['name'] = $staff_name;
-                        $staff[$staff_index]['role'] = $staff_role;
-                        $staff[$staff_index]['image'] = $staff_image;
+                        $staff[$staff_index]['id'] = $this->getStaffId($st);
+                        $staff[$staff_index]['name'] = $this->getStaffName($st);
+                        $staff[$staff_index]['role'] = $this->getStaffRole($st);
+                        $staff[$staff_index]['image'] = $this->getStaffImage($each_staff);
 
                         $staff_index++;
                     }
@@ -404,6 +378,66 @@ class InfoModel extends MainModel
             }
         }
         return $staff;
+    }
+
+    /**
+     * Get staff id
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $st
+     *
+     * @return string
+     */
+    private function getStaffId($st)
+    {
+        $staff_id = $st->find('a', 0)->href;
+        $staff_id = explode('/', $staff_id);
+        return $staff_id[4];
+    }
+
+    /**
+     * Get staff name
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $st
+     * @param bool $va (Optional)
+     *
+     * @return string
+     */
+    private function getStaffName($st, $va = false)
+    {
+        if ($va) {
+            return $st->find('a', 0)->plaintext;
+        }
+        return trim(preg_replace('/\s+/', ' ', $st->find('a', 0)->plaintext));
+    }
+
+    /**
+     * Get staff role
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $st
+     *
+     * @return string
+     */
+    private function getStaffRole($st)
+    {
+        return trim($st->find('small', 0)->plaintext);
+    }
+
+    /**
+     * Get staff image
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $each_staff
+     * @param bool $va (Optional)
+     *
+     * @return string
+     */
+    private function getStaffImage($each_staff, $va = false)
+    {
+        if ($va) {
+            $staff_image = $each_staff->find('table td', 1)->find('img', 0)->getAttribute('data-src');
+        } else {
+            $staff_image = $each_staff->find('tr td', 0)->find('img', 0)->getAttribute('data-src');
+        }
+        return Helper::imageUrlCleaner($staff_image);
     }
 
     /**
@@ -440,26 +474,26 @@ class InfoModel extends MainModel
     private function getAllInfo()
     {
         $data = [
-            'id'        => self::getId(),
-            'cover'     => self::getCover(),
-            'title'     => self::getTitle(),
-            'title2'    => self::getTitle2(),
-            'synopsis'  => self::getSynopsis(),
-            'score'     => self::getScore(),
-            'voter'     => self::getVoter(),
-            'rank'      => self::getRank(),
-            'popularity'=> self::getPopularity(),
-            'members'   => self::getMembers(),
-            'favorite'  => self::getFavorite(),
+            'id'        => $this->getId(),
+            'cover'     => $this->getCover(),
+            'title'     => $this->getTitle(),
+            'title2'    => $this->getTitle2(),
+            'synopsis'  => $this->getSynopsis(),
+            'score'     => $this->getScore(),
+            'voter'     => $this->getVoter(),
+            'rank'      => $this->getRank(),
+            'popularity'=> $this->getPopularity(),
+            'members'   => $this->getMembers(),
+            'favorite'  => $this->getFavorite(),
         ];
 
-        $data = array_merge($data, self::getOtherInfo());
+        $data = array_merge($data, $this->getOtherInfo());
 
         $data2 = [
-            'related'   => self::getRelated(),
-            'character' => self::getCharacter(),
-            'staff'     => self::getStaff(),
-            'song'      => self::getSong()
+            'related'   => $this->getRelated(),
+            'character' => $this->getCharacter(),
+            'staff'     => $this->getStaff(),
+            'song'      => $this->getSong()
         ];
 
         $data = array_merge($data, $data2);
