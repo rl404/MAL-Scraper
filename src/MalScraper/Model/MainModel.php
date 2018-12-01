@@ -4,7 +4,6 @@ namespace MalScraper\Model;
 
 define('MAX_FILE_SIZE', 100000000);
 
-use DateTime;
 use HtmlDomParser;
 
 /**
@@ -94,13 +93,22 @@ class MainModel
      */
     static function errorCheck($model)
     {
-        $header = self::getHeader($model->_url);
-        if ($header == 200) {
-        	$className = self::getCleanClassName($model);
-        	$additionalSetting = ($className == 'CharacterPictureModel') || ($className == 'PeoplePictureModel');
-            $model->_parser = self::getParser(self::getAbsoluteUrl($model), $model->_parserArea, $additionalSetting);
-        } else {
-            $model->_error = $header;
+        $className = self::getCleanClassName($model);
+
+        if (strpos($className, 'Search') !== false) {
+            if (strlen($model->_query) < 3) {
+                $model->_error = 400;
+            }
+        }
+
+        if (!$model->_error) {
+            $header = self::getHeader($model->_url);
+            if ($header == 200) {
+            	$additionalSetting = ($className == 'CharacterPeoplePictureModel');
+                $model->_parser = self::getParser(self::getAbsoluteUrl($model), $model->_parserArea, $additionalSetting);
+            } else {
+                $model->_error = $header;
+            }
         }
     }
 
@@ -127,8 +135,7 @@ class MainModel
     		case 'PictureModel':
     			$area = 'li a[href$=pics]';
     			break;
-    		case 'CharacterPictureModel':
-    		case 'PeoplePictureModel':
+    		case 'CharacterPeoplePictureModel':
     			$area = 'li a[href$=pictures]';
     			break;
     		default:

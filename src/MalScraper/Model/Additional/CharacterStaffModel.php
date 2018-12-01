@@ -93,10 +93,10 @@ class CharacterStaffModel extends MainModel
             while (true) {
                 $char_name_area = $char_table->find('td', 1);
 
-                $character[$character_index]['image'] = self::getCharacterImage($char_table);
-                $character[$character_index]['id'] = self::getCharacterId($char_name_area);
-                $character[$character_index]['name'] = self::getCharacterName($char_name_area);
-                $character[$character_index]['role'] = self::getCharacterRole($char_name_area);
+                $character[$character_index]['image'] = $this->getCharacterImage($char_table);
+                $character[$character_index]['id'] = $this->getCharacterId($char_name_area);
+                $character[$character_index]['name'] = $this->getCharacterName($char_name_area);
+                $character[$character_index]['role'] = $this->getCharacterRole($char_name_area);
 
                 // va name + role
                 $va = [];
@@ -107,10 +107,10 @@ class CharacterStaffModel extends MainModel
                     foreach ($char_va_area->find('tr') as $each_va) {
                         $va_name_area = $each_va->find('td', 0);
 
-                        $va[$va_index]['id'] = self::getCharacterVaId($va_name_area);
-                        $va[$va_index]['name'] = self::getCharacterVaName($va_name_area);
-                        $va[$va_index]['role'] = self::getCharacterVaRole($va_name_area);
-                        $va[$va_index]['image'] = self::getCharacterVaImage($each_va);
+                        $va[$va_index]['id'] = $this->getCharacterVaId($va_name_area);
+                        $va[$va_index]['name'] = $this->getCharacterVaName($va_name_area);
+                        $va[$va_index]['role'] = $this->getCharacterVaRole($va_name_area);
+                        $va[$va_index]['image'] = $this->getCharacterVaImage($each_va);
 
                         $va_index++;
                     }
@@ -133,7 +133,7 @@ class CharacterStaffModel extends MainModel
      *
      * @return string
      */
-    static private function getCharacterImage($char_table)
+    private function getCharacterImage($char_table)
     {
         $char_image = $char_table->find('td .picSurround img', 0)->getAttribute('data-src');
         return Helper::imageUrlCleaner($char_image);
@@ -146,7 +146,7 @@ class CharacterStaffModel extends MainModel
      *
      * @return string
      */
-    static private function getCharacterId($char_name_area)
+    private function getCharacterId($char_name_area)
     {
         $char_id = $char_name_area->find('a', 0)->href;
         $char_id = explode('/', $char_id);
@@ -160,7 +160,7 @@ class CharacterStaffModel extends MainModel
      *
      * @return string
      */
-    static private function getCharacterName($char_name_area)
+    private function getCharacterName($char_name_area)
     {
         return $char_name_area->find('a', 0)->plaintext;
     }
@@ -172,7 +172,7 @@ class CharacterStaffModel extends MainModel
      *
      * @return string
      */
-    static private function getCharacterRole($char_name_area)
+    private function getCharacterRole($char_name_area)
     {
         return $char_name_area->find('small', 0)->plaintext;
     }
@@ -184,7 +184,7 @@ class CharacterStaffModel extends MainModel
      *
      * @return string
      */
-    static private function getCharacterVaId($va_name_area)
+    private function getCharacterVaId($va_name_area)
     {
         $va_id = $va_name_area->find('a', 0)->href;
         $va_id = explode('/', $va_id);
@@ -198,7 +198,7 @@ class CharacterStaffModel extends MainModel
      *
      * @return string
      */
-    static private function getCharacterVaName($va_name_area)
+    private function getCharacterVaName($va_name_area)
     {
         return $va_name_area->find('a', 0)->plaintext;
     }
@@ -210,7 +210,7 @@ class CharacterStaffModel extends MainModel
      *
      * @return string
      */
-    static private function getCharacterVaImage($each_va)
+    private function getCharacterVaImage($each_va)
     {
         $va_image = $each_va->find('td', 1)->find('img', 0)->getAttribute('data-src');
         return Helper::imageUrlCleaner($va_image);
@@ -223,7 +223,7 @@ class CharacterStaffModel extends MainModel
      *
      * @return string
      */
-    static private function getCharacterVaRole($va_name_area)
+    private function getCharacterVaRole($va_name_area)
     {
         return $va_name_area->find('small', 0)->plaintext;
     }
@@ -244,10 +244,10 @@ class CharacterStaffModel extends MainModel
                 while (true) {
                     $staff_name_area = $staff_table->find('td', 1);
 
-                    $staff[$staff_index]['image'] = self::getStaffImage($staff_table);
-                    $staff[$staff_index]['id'] = self::getStaffId($staff_name_area);
-                    $staff[$staff_index]['name'] = self::getStaffName($staff_name_area);
-                    $staff[$staff_index]['role'] = self::getStaffRole($staff_name_area);
+                    $staff[$staff_index]['image'] = $this->getCharacterImage($staff_table);
+                    $staff[$staff_index]['id'] = $this->getCharacterId($staff_name_area);
+                    $staff[$staff_index]['name'] = $this->getCharacterName($staff_name_area);
+                    $staff[$staff_index]['role'] = $this->getCharacterRole($staff_name_area);
 
                     $staff_table = $staff_table->next_sibling();
                     if (!$staff_table)
@@ -260,57 +260,6 @@ class CharacterStaffModel extends MainModel
     }
 
     /**
-     * Get anime/manga staff image.
-     *
-     * @param \simplehtmldom_1_5\simple_html_dom $staff_table
-     *
-     * @return string
-     */
-    static private function getStaffImage($staff_table)
-    {
-        $staff_image = $staff_table->find('td .picSurround img', 0)->getAttribute('data-src');
-        return Helper::imageUrlCleaner($staff_image);
-    }
-
-    /**
-     * Get anime/manga staff id.
-     *
-     * @param \simplehtmldom_1_5\simple_html_dom $staff_name_area
-     *
-     * @return string
-     */
-    static private function getStaffId($staff_name_area)
-    {
-        $staff_id = $staff_name_area->find('a', 0)->href;
-        $staff_id = explode('/', $staff_id);
-        return $staff_id[4];
-    }
-
-    /**
-     * Get anime/manga staff name.
-     *
-     * @param \simplehtmldom_1_5\simple_html_dom $staff_name_area
-     *
-     * @return string
-     */
-    static private function getStaffName($staff_name_area)
-    {
-        return $staff_name_area->find('a', 0)->plaintext;
-    }
-
-    /**
-     * Get anime/manga staff role.
-     *
-     * @param \simplehtmldom_1_5\simple_html_dom $staff_name_area
-     *
-     * @return string
-     */
-    static private function getStaffRole($staff_name_area)
-    {
-        return $staff_name_area->find('small', 0)->plaintext;
-    }
-
-    /**
      * Get anime/manga character + staff complete list.
      *
      * @return array
@@ -318,8 +267,8 @@ class CharacterStaffModel extends MainModel
     private function getAllInfo()
     {
         $data = [
-            'character' => self::getCharacter(),
-            'staff'     => self::getStaff(),
+            'character' => $this->getCharacter(),
+            'staff'     => $this->getStaff(),
         ];
 
         return $data;

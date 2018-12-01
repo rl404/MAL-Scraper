@@ -121,24 +121,55 @@ class StatModel extends MainModel
             foreach ($score_area->find('tr') as $each_score) {
                 $temp_score = [];
 
-                // type
-                $score_type = $each_score->find('td', 0)->plaintext;
-                $temp_score['type'] = $score_type;
-
-                // vote
-                $temp_vote = $each_score->find('td', 1)->find('span small', 0)->plaintext;
-                $vote = substr($temp_vote, 1, strlen($temp_vote) - 2);
-                $temp_score['vote'] = str_replace(' votes', '', $vote);
-
-                // percent
-                $percent = $each_score->find('td', 1)->find('span', 0)->plaintext;
-                $percent = str_replace([$temp_vote, '%'], '', $percent);
-                $temp_score['percent'] = trim($percent);
+                $temp_score['type'] = $this->getScoreType($each_score);
+                $temp_score['vote'] = $this->getScoreVote($each_score);
+                $temp_score['percent'] = $this->getScorePercent($each_score);
 
                 $score[] = $temp_score;
             }
         }
         return $score;
+    }
+
+    /**
+     * Get score type.
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $each_score
+     *
+     * @return string
+     */
+    private function getScoreType($each_score)
+    {
+        return $each_score->find('td', 0)->plaintext;
+    }
+
+    /**
+     * Get score vote.
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $each_score
+     *
+     * @return string
+     */
+    private function getScoreVote($each_score)
+    {
+        $vote = $each_score->find('td', 1)->find('span small', 0)->plaintext;
+        $vote = substr($vote, 1, strlen($vote) - 2);
+        return str_replace(' votes', '', $vote);
+    }
+
+    /**
+     * Get score percent.
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $each_score
+     *
+     * @return string
+     */
+    private function getScorePercent($each_score)
+    {
+        $temp_vote = $each_score->find('td', 1)->find('span small', 0)->plaintext;
+        $percent = $each_score->find('td', 1)->find('span', 0)->plaintext;
+        $percent = str_replace([$temp_vote, '%'], '', $percent);
+        return trim($percent);
     }
 
     /**
@@ -159,18 +190,18 @@ class StatModel extends MainModel
 
                 $username_area = $each_user->find('td', 0);
 
-                $temp_user['image'] = self::getUserImage($username_area);
-                $temp_user['username'] = self::getUsername($username_area);
-                $temp_user['score'] = self::getUserScore($each_user);
-                $temp_user['status'] = self::getUserStatus($each_user);
+                $temp_user['image'] = $this->getUserImage($username_area);
+                $temp_user['username'] = $this->getUsername($username_area);
+                $temp_user['score'] = $this->getUserScore($each_user);
+                $temp_user['status'] = $this->getUserStatus($each_user);
 
                 if ($this->_type == 'anime') {
-                    $temp_user['episode'] = self::getUserProgress($each_user, 3);
-                    $temp_user['date'] = self::getUserDate($each_user, 4);
+                    $temp_user['episode'] = $this->getUserProgress($each_user, 3);
+                    $temp_user['date'] = $this->getUserDate($each_user, 4);
                 } else {
-                    $temp_user['volume'] = self::getUserProgress($each_user, 3);
-                    $temp_user['chapter'] = self::getUserProgress($each_user, 4);
-                    $temp_user['date'] = self::getUserDate($each_user, 5);
+                    $temp_user['volume'] = $this->getUserProgress($each_user, 3);
+                    $temp_user['chapter'] = $this->getUserProgress($each_user, 4);
+                    $temp_user['date'] = $this->getUserDate($each_user, 5);
                 }
 
                 $user[] = $temp_user;
@@ -186,7 +217,7 @@ class StatModel extends MainModel
      *
      * @return string
      */
-    static private function getUsername($username_area)
+    private function getUsername($username_area)
     {
         return $username_area->find('a', 1)->plaintext;
     }
@@ -198,7 +229,7 @@ class StatModel extends MainModel
      *
      * @return string
      */
-    static private function getUserImage($username_area)
+    private function getUserImage($username_area)
     {
         $user_image = $username_area->find('a', 0)->style;
         $user_image = substr($user_image, 21, strlen($user_image) - 22);
@@ -212,7 +243,7 @@ class StatModel extends MainModel
      *
      * @return string
      */
-    static private function getUserScore($each_user)
+    private function getUserScore($each_user)
     {
         return $each_user->find('td', 1)->plaintext;
     }
@@ -224,7 +255,7 @@ class StatModel extends MainModel
      *
      * @return string
      */
-    static private function getUserStatus($each_user)
+    private function getUserStatus($each_user)
     {
         return strtolower($each_user->find('td', 2)->plaintext);
     }
@@ -237,7 +268,7 @@ class StatModel extends MainModel
      *
      * @return string
      */
-    static private function getUserProgress($each_user, $count = 3)
+    private function getUserProgress($each_user, $count = 3)
     {
         $progress = $each_user->find('td', $count)->plaintext;
         return str_replace(' ', '', $progress);
@@ -251,7 +282,7 @@ class StatModel extends MainModel
      *
      * @return string
      */
-    static private function getUserDate($each_user, $count = 4)
+    private function getUserDate($each_user, $count = 4)
     {
         return $each_user->find('td', $count)->plaintext;
     }
@@ -264,9 +295,9 @@ class StatModel extends MainModel
     private function getAllInfo()
     {
         $data = [
-            'summary' => self::getSummary(),
-            'score'   => self::getScore(),
-            'user'    => self::getUser(),
+            'summary' => $this->getSummary(),
+            'score'   => $this->getScore(),
+            'user'    => $this->getUser(),
         ];
 
         return $data;

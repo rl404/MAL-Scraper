@@ -6,7 +6,7 @@ use MalScraper\Helper\Helper;
 use MalScraper\Model\MainModel;
 
 /**
- * StudioProducerModel class.
+ * ProducerModel class.
  */
 class ProducerModel extends MainModel
 {
@@ -16,6 +16,13 @@ class ProducerModel extends MainModel
      * @var string
      */
     private $_type;
+
+    /**
+     * Either producer or genre.
+     *
+     * @var string
+     */
+    private $_type2;
 
     /**
      * Id of the producer.
@@ -34,21 +41,30 @@ class ProducerModel extends MainModel
     /**
      * Default constructor.
      *
+     * @param string $type
+     * @param string $type2
      * @param string|int $id
      * @param string $parserArea
      *
      * @return void
      */
-	public function __construct($type, $id, $page = 1, $parserArea = '#content .js-categories-seasonal')
+	public function __construct($type, $type2, $id, $page = 1, $parserArea = '#content .js-categories-seasonal')
     {
         $this->_type = $type;
+        $this->_type2 = $type2;
         $this->_id = $id;
     	$this->_page = $page;
-        if ($type == 'anime') {
-            $this->_url = $this->_myAnimeListUrl.'/anime/producer/'.$id.'/?page='.$page;
+
+        if ($type2 == 'producer') {
+            if ($type == 'anime') {
+                $this->_url = $this->_myAnimeListUrl.'/anime/producer/'.$id.'/?page='.$page;
+            } else {
+                $this->_url = $this->_myAnimeListUrl.'/manga/magazine/'.$id.'/?page='.$page;
+            }
         } else {
-            $this->_url = $this->_myAnimeListUrl.'/manga/magazine/'.$id.'/?page='.$page;
+                $this->_url = $this->_myAnimeListUrl.'/'.$type.'/genre/'.$id.'/?page='.$page;
         }
+
         $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);

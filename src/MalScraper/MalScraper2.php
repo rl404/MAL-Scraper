@@ -27,8 +27,12 @@ use MalScraper\Model\General\ProducerModel as Producer;
 use MalScraper\Model\Additional\CharacterStaffModel as CharacterStaff;
 use MalScraper\Model\Additional\StatModel as Stat;
 use MalScraper\Model\Additional\PictureModel as Picture;
-use MalScraper\Model\Additional\CharacterPictureModel as CharacterPicture;
-use MalScraper\Model\Additional\PeoplePictureModel as PeoplePicture;
+use MalScraper\Model\Additional\CharacterPeoplePictureModel as CharacterPeoplePicture;
+
+use MalScraper\Model\Lists\AllGenreModel as AllGenre;
+use MalScraper\Model\Lists\AllProducerModel as AllProducer;
+
+use MalScraper\Model\Search\SearchAnimeMangaModel as SearchAnimeManga;
 
 /**
  * Class MalScraper.
@@ -215,7 +219,7 @@ class MalScraper2
      */
     private function getCharacterPicture($id)
     {
-        return (new CharacterPicture($id))->getAllInfo();
+        return (new CharacterPeoplePicture('character', $id))->getAllInfo();
     }
 
     /**
@@ -227,7 +231,7 @@ class MalScraper2
      */
     private function getPeoplePicture($id)
     {
-        return (new PeoplePicture($id))->getAllInfo();
+        return (new CharacterPeoplePicture('people', $id))->getAllInfo();
     }
 
     /**
@@ -240,7 +244,7 @@ class MalScraper2
      */
     private function getStudioProducer($id, $page = 1)
     {
-        return (new Producer('anime', $id, $page))->getAllInfo();
+        return (new Producer('anime', 'producer', $id, $page))->getAllInfo();
     }
 
     /**
@@ -253,6 +257,86 @@ class MalScraper2
      */
     private function getMagazine($id, $page = 1)
     {
-        return (new Producer('manga', $id, $page))->getAllInfo();
+        return (new Producer('manga', 'producer', $id, $page))->getAllInfo();
+    }
+
+    /**
+     * Get all anime or manga that has the genre.
+     *
+     * @param string    $type   Either anime or manga
+     * @param int    $id   id of the genre
+     * @param int    $page   (Optional) Page number
+     *
+     * @return array
+     */
+    private function getGenre($type, $id, $page = 1)
+    {
+        return (new Producer($type, 'genre', $id, $page))->getAllInfo();
+    }
+
+    /**
+     * Get list of all anime genre.
+     *
+     * @return array
+     */
+    private function getAllAnimeGenre()
+    {
+        return (new AllGenre('anime'))->getAllInfo();
+    }
+
+    /**
+     * Get list of all manga genre.
+     *
+     * @return array
+     */
+    private function getAllMangaGenre()
+    {
+        return (new AllGenre('manga'))->getAllInfo();
+    }
+
+    /**
+     * Get list of all anime studio/producer.
+     *
+     * @return array
+     */
+    private function getAllStudioProducer()
+    {
+        return (new AllProducer('anime'))->getAllInfo();
+    }
+
+    /**
+     * Get list of all manga magazine.
+     *
+     * @return array
+     */
+    private function getAllMagazine()
+    {
+        return (new AllProducer('manga'))->getAllInfo();
+    }
+
+    /**
+     * Get anime search result.
+     *
+     * @param string    $query   Search query
+     * @param int    $page   (Optional) Page number
+     *
+     * @return array
+     */
+    private function searchAnime($query, $page=1)
+    {
+        return (new searchAnimeManga('anime', $query, $page))->getAllInfo();
+    }
+
+    /**
+     * Get manga search result.
+     *
+     * @param string    $query   Search query
+     * @param int    $page   (Optional) Page number
+     *
+     * @return array
+     */
+    private function searchManga($query, $page=1)
+    {
+        return (new searchAnimeManga('manga', $query, $page))->getAllInfo();
     }
 }

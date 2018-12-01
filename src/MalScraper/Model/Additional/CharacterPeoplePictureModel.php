@@ -6,10 +6,17 @@ use MalScraper\Helper\Helper;
 use MalScraper\Model\MainModel;
 
 /**
- * PeoplePictureModel class.
+ * CharacterPeoplePictureModel class.
  */
-class PeoplePictureModel extends MainModel
+class CharacterPeoplePictureModel extends MainModel
 {
+    /**
+     * Type of the picture (either character or people)
+     *
+     * @var string
+     */
+    private $_type;
+
     /**
      * Id of the people.
      *
@@ -25,11 +32,16 @@ class PeoplePictureModel extends MainModel
      *
      * @return void
      */
-	public function __construct($id, $parserArea = '#content table tr td')
+	public function __construct($type, $id, $parserArea = '#content table tr td')
     {
-    	$this->_id = $id;
-        $this->_url = $this->_myAnimeListUrl.'/people/'.$id;
-    	$this->_parserArea = $parserArea;
+    	$this->_type = $type;
+        $this->_id = $id;
+        if ($this->_type == 'people') {
+            $this->_url = $this->_myAnimeListUrl.'/people/'.$id;
+        } else {
+            $this->_url = $this->_myAnimeListUrl.'/character/'.$id;
+        }
+        $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);
     }
