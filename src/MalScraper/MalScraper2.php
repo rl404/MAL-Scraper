@@ -33,6 +33,8 @@ use MalScraper\Model\Lists\AllGenreModel as AllGenre;
 use MalScraper\Model\Lists\AllProducerModel as AllProducer;
 
 use MalScraper\Model\Search\SearchAnimeMangaModel as SearchAnimeManga;
+use MalScraper\Model\Search\SearchCharacterPeopleModel as SearchCharacterPeople;
+use MalScraper\Model\Search\SearchUserModel as SearchUser;
 
 /**
  * Class MalScraper.
@@ -338,5 +340,44 @@ class MalScraper2
     private function searchManga($query, $page=1)
     {
         return (new searchAnimeManga('manga', $query, $page))->getAllInfo();
+    }
+
+    /**
+     * Get character search result.
+     *
+     * @param string    $query   Search query
+     * @param int    $page   (Optional) Page number
+     *
+     * @return array
+     */
+    private function searchCharacter($query, $page=1)
+    {
+        return (new searchCharacterPeople('character', $query, $page))->getAllInfo();
+    }
+
+    /**
+     * Get people search result.
+     *
+     * @param string    $query   Search query
+     * @param int    $page   (Optional) Page number
+     *
+     * @return array
+     */
+    private function searchPeople($query, $page=1)
+    {
+        return (new searchCharacterPeople('people', $query, $page))->getAllInfo();
+    }
+
+    /**
+     * Get user search result.
+     *
+     * @param string    $query   Search query
+     * @param int    $page   (Optional) Page number
+     *
+     * @return array
+     */
+    private function searchUser($query, $page=1)
+    {
+        return (new searchUser($query, $page))->getAllInfo();
     }
 }

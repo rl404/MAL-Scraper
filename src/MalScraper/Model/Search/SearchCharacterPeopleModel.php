@@ -6,12 +6,12 @@ use MalScraper\Helper\Helper;
 use MalScraper\Model\MainModel;
 
 /**
- * SearchAnimeMangaModel class.
+ * SearchCharacterPeopleModel class.
  */
-class SearchAnimeMangaModel extends MainModel
+class SearchCharacterPeopleModel extends MainModel
 {
     /**
-     * Either anime or manga.
+     * Either character or people.
      *
      * @var string
      */
@@ -41,16 +41,16 @@ class SearchAnimeMangaModel extends MainModel
      *
      * @return void
      */
-	public function __construct($type, $query, $page, $parserArea = 'div[class^=js-categories-seasonal]')
+	public function __construct($type, $query, $page, $parserArea = '#content')
     {
         $this->_type = $type;
     	$this->_query = $query;
         $this->_page = 50 * ($page - 1);
 
-        if ($type == 'anime') {
-            $this->_url = $this->_myAnimeListUrl.'/anime.php?q='.$query.'&show='.$this->_page;
+        if ($type == 'character') {
+            $this->_url = $this->_myAnimeListUrl.'/character.php?q='.$query.'&show='.$this->_page;
         } else {
-            $this->_url = $this->_myAnimeListUrl.'/manga.php?q='.$query.'&show='.$this->_page;
+            $this->_url = $this->_myAnimeListUrl.'/people.php?q='.$query.'&show='.$this->_page;
         }
     	$this->_parserArea = $parserArea;
 
@@ -81,7 +81,7 @@ class SearchAnimeMangaModel extends MainModel
      */
     private function getImage($result_area)
     {
-        $image = $result_area->find('td', 0)->find('a img', 0)->getAttribute('data-src');
+        $image = $result_area->find('td', 0)->find('a img', 0)->src;
         return Helper::imageUrlCleaner($image);
     }
 
@@ -94,74 +94,61 @@ class SearchAnimeMangaModel extends MainModel
      */
     private function getId($name_area)
     {
-        $id = $name_area->find('div[id^=sarea]', 0)->id;
-        return str_replace('sarea', '', $id);
+        $id = $name_area->find('a', 0)->href;
+        $parsed_char_id = explode('/', $id);
+        return $this->_type == 'character' ? $parsed_char_id[4] : $parsed_char_id[2];
     }
 
     /**
-     * Get title.
+     * Get name.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $name_area
      *
      * @return string
      */
-    private function getTitle($name_area)
+    private function getName($name_area)
     {
-        return $name_area->find('strong', 0)->plaintext;
+        return $name_area->find('a', 0)->plaintext;
     }
 
     /**
-     * Get summary.
+     * Get nickname.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $name_area
      *
      * @return string
      */
-    private function getSummary($name_area)
+    private function getNickname($name_area)
     {
-        $summary = $name_area->find('.pt4', 0)->plaintext;
-        return str_replace('read more.', '', $summary);
+        $nickname = $name_area->find('small', 0);
+        return $nickname ? substr($nickname->plaintext, 1, strlen($nickname->plaintext) - 2) : '';
     }
 
     /**
-     * Get type.
+     * Get role.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $result_area
      *
-     * @return string
+     * @return array
      */
-    private function getType($result_area)
+    private function getRole($result_area)
     {
-        $type = $result_area->find('td', 2)->plaintext;
-        return trim($type);
-    }
+        $role = [];
+        $role['manga'] = $role['anime'] = [];
+        $role_area = $result_area->find('td', 2)->find('small', 0);
+        foreach ($role_area->find('a') as $each_role) {
+            $temp_role = [];
+            $parsed_role_id = explode('/', $each_role->href);
 
-    /**
-     * Get episode.
-     *
-     * @param \simplehtmldom_1_5\simple_html_dom $result_area
-     *
-     * @return string
-     */
-    private function getEpisode($result_area)
-    {
-        $episode = $result_area->find('td', 3)->plaintext;
-        $episode = trim($episode);
-        return $episode == '-' ? '' : $episode;
-    }
+            $role_type = $parsed_role_id[1];
+            $temp_role['id'] = $parsed_role_id[2];
+            $temp_role['title'] = $each_role->plaintext;
 
-    /**
-     * Get score.
-     *
-     * @param \simplehtmldom_1_5\simple_html_dom $result_area
-     *
-     * @return string
-     */
-    private function getScore($result_area)
-    {
-        $score = $result_area->find('td', 4)->plaintext;
-        $score = trim($score);
-        return $score == 'N/A' ? '' : $score;
+            if ($temp_role['title']) {
+                $role[$role_type][] = $temp_role;
+            }
+        }
+        return $role;
     }
 
     /**
@@ -181,17 +168,13 @@ class SearchAnimeMangaModel extends MainModel
 
             $result['image'] = $this->getImage($result_area);
             $result['id'] = $this->getId($name_area);
-            $result['title'] = $this->getTitle($name_area);
-            $result['summary'] = $this->getSummary($name_area);
-            $result['type'] = $this->getType($result_area);
+            $result['name'] = $this->getName($name_area);
+            $result['nickname'] = $this->getNickname($name_area);
 
-            if ($this->_type == 'anime') {
-                $result['episode'] = $this->getEpisode($result_area);
-            } else {
-                $result['volume'] = $this->getEpisode($result_area);
+            if ($this->_type == 'character') {
+                $role = $this->getRole($result_area);
+                $result = array_merge($result, $role);
             }
-
-            $result['score'] = $this->getScore($result_area);
 
             $data[] = $result;
 
