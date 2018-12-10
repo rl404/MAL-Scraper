@@ -2,6 +2,8 @@
 
 namespace MalScraper\Helper;
 
+use DateTime;
+
 /**
  *	Helper class.
  */

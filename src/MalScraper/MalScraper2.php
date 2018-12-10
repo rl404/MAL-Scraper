@@ -36,6 +36,9 @@ use MalScraper\Model\Search\SearchAnimeMangaModel as SearchAnimeManga;
 use MalScraper\Model\Search\SearchCharacterPeopleModel as SearchCharacterPeople;
 use MalScraper\Model\Search\SearchUserModel as SearchUser;
 
+use MalScraper\Model\Seasonal\SeasonModel as Season;
+use MalScraper\Model\Top\TopModel as Top;
+
 /**
  * Class MalScraper.
  */
@@ -326,7 +329,7 @@ class MalScraper2
      */
     private function searchAnime($query, $page=1)
     {
-        return (new searchAnimeManga('anime', $query, $page))->getAllInfo();
+        return (new SearchAnimeManga('anime', $query, $page))->getAllInfo();
     }
 
     /**
@@ -339,7 +342,7 @@ class MalScraper2
      */
     private function searchManga($query, $page=1)
     {
-        return (new searchAnimeManga('manga', $query, $page))->getAllInfo();
+        return (new SearchAnimeManga('manga', $query, $page))->getAllInfo();
     }
 
     /**
@@ -352,7 +355,7 @@ class MalScraper2
      */
     private function searchCharacter($query, $page=1)
     {
-        return (new searchCharacterPeople('character', $query, $page))->getAllInfo();
+        return (new SearchCharacterPeople('character', $query, $page))->getAllInfo();
     }
 
     /**
@@ -365,7 +368,7 @@ class MalScraper2
      */
     private function searchPeople($query, $page=1)
     {
-        return (new searchCharacterPeople('people', $query, $page))->getAllInfo();
+        return (new SearchCharacterPeople('people', $query, $page))->getAllInfo();
     }
 
     /**
@@ -378,6 +381,45 @@ class MalScraper2
      */
     private function searchUser($query, $page=1)
     {
-        return (new searchUser($query, $page))->getAllInfo();
+        return (new SearchUser($query, $page))->getAllInfo();
+    }
+
+    /**
+     * Get seasonal anime.
+     *
+     * @param string|int    $year   (Optional) Season year
+     * @param string        $season   (Optional) Season (summer,spring,fall,winter)
+     *
+     * @return array
+     */
+    private function getSeason($year = false, $season = false)
+    {
+        return (new Season($year, $season))->getAllInfo();
+    }
+
+    /**
+     * Get top anime.
+     *
+     * @param string   $type   (Optional) Type of anime
+     * @param int        $page   (Optional) Page number
+     *
+     * @return array
+     */
+    private function getTopAnime($type = 0, $page = 1)
+    {
+        return (new Top('anime', $type, $page))->getAllInfo();
+    }
+
+    /**
+     * Get top manga.
+     *
+     * @param string   $type   (Optional) Type of manga
+     * @param int        $page   (Optional) Page number
+     *
+     * @return array
+     */
+    private function getTopManga($type = 0, $page = 1)
+    {
+        return (new Top('manga', $type, $page))->getAllInfo();
     }
 }

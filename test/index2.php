@@ -38,7 +38,12 @@ $myscraper = new MalScraper2([
 // $result = $myscraper->searchManga('naruto', 2);
 // $result = $myscraper->searchCharacter('naruto');
 // $result = $myscraper->searchPeople('masashi', 2);
-$result = $myscraper->searchUser('rl404');
+// $result = $myscraper->searchUser('rl404');
+
+// $result = $myscraper->getSeason(2017,'summer');
+
+// $result = $myscraper->getTopAnime(2,2);
+$result = $myscraper->getTopManga();
 
 print_r(memory_get_usage()."\n");
 print_r($result);
