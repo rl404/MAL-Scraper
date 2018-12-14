@@ -39,6 +39,8 @@ use MalScraper\Model\Search\SearchUserModel as SearchUser;
 use MalScraper\Model\Seasonal\SeasonModel as Season;
 use MalScraper\Model\Top\TopModel as Top;
 
+use MalScraper\Model\User\UserModel as User;
+
 /**
  * Class MalScraper.
  */
@@ -421,5 +423,17 @@ class MalScraper2
     private function getTopManga($type = 0, $page = 1)
     {
         return (new Top('manga', $type, $page))->getAllInfo();
+    }
+
+    /**
+     * Get user info.
+     *
+     * @param string   $user   Username
+     *
+     * @return array
+     */
+    private function getUser($user)
+    {
+        return (new User($user))->getAllInfo();
     }
 }

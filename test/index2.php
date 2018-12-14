@@ -43,7 +43,9 @@ $myscraper = new MalScraper2([
 // $result = $myscraper->getSeason(2017,'summer');
 
 // $result = $myscraper->getTopAnime(2,2);
-$result = $myscraper->getTopManga();
+// $result = $myscraper->getTopManga();
+
+$result = $myscraper->getUser('MozillaFennekin'); // belom
 
 print_r(memory_get_usage()."\n");
 print_r($result);

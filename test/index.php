@@ -82,7 +82,7 @@ $myscraper = new MalScraper([
 // $result = $myscraper->getAllMangaGenre();
 
 // get all studio/producer
-$result = $myscraper->getAllStudioProducer();
+// $result = $myscraper->getAllStudioProducer();
 
 // get all magazine
 // $result = $myscraper->getAllMagazine();
