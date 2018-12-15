@@ -123,7 +123,7 @@ class PeopleModel extends MainModel
     private function getBiodata($type)
     {
         if ($type == 'Website') {
-            preg_match("/(".$type.":<\/span> <a)[^<]*/", $this->_biodata, $biodata);
+            preg_match('/('.$type.":<\/span> <a)[^<]*/", $this->_biodata, $biodata);
             if ($biodata) {
                 preg_match('/".+"/', $biodata[0], $biodata);
                 if ($biodata[0] != '"http://"') {
@@ -132,7 +132,7 @@ class PeopleModel extends MainModel
             }
         }
 
-        preg_match("/(".$type.":<\/span>)[^<]*/", $this->_biodata, $biodata);
+        preg_match('/('.$type.":<\/span>)[^<]*/", $this->_biodata, $biodata);
 
         if ($biodata) {
             $biodata = strip_tags($biodata[0]);
