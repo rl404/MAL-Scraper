@@ -139,6 +139,7 @@ class CharacterStaffModel extends MainModel
 
             $va_index++;
         }
+
         return $va;
     }
 

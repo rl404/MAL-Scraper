@@ -127,9 +127,16 @@ class Helper
     {
         $currentMonth = date('m');
 
-        if ($currentMonth >= '01' && $currentMonth < '04') return 'winter';
-        if ($currentMonth >= '04' && $currentMonth < '07') return 'spring';
-        if ($currentMonth >= '07' && $currentMonth < '10') return 'summer';
+        if ($currentMonth >= '01' && $currentMonth < '04') {
+            return 'winter';
+        }
+        if ($currentMonth >= '04' && $currentMonth < '07') {
+            return 'spring';
+        }
+        if ($currentMonth >= '07' && $currentMonth < '10') {
+            return 'summer';
+        }
+
         return 'autumn';
     }
 
