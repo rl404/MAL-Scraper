@@ -120,7 +120,7 @@ class FriendModel extends MainModel
     /**
      * Get user friend list.
      *
-     * @return string
+     * @return array
      */
     private function getAllInfo()
     {

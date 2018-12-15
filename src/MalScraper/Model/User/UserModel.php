@@ -275,7 +275,7 @@ class UserModel extends MainModel
      * @param \simplehtmldom_1_5\simple_html_dom $a_stat_area
      * @param int                                $spanNo
      *
-     * @return array
+     * @return string
      */
     private function getStatStatusCount($a_stat_status, $spanNo)
     {
@@ -380,6 +380,7 @@ class UserModel extends MainModel
         $progress = explode('·', $progress);
         $p1 = explode(' ', $progress[0]);
 
+        $temp_history = [];
         $temp_history['status'] = strtolower(count($p1) > 3 ? $progress[0] : $p1[0]);
         $temp_history['progress'] = count($p1) > 3 ? '-' : $p1[1];
         $temp_history['score'] = trim(str_replace('Scored', '', $progress[1]));
@@ -397,6 +398,7 @@ class UserModel extends MainModel
         $right_area = $this->_parser->find('.container-right', 0);
         $favorite_area = $right_area->find('.user-favorites-outer', 0);
 
+        $favorite = [];
         $favorite['anime'] = $this->getFavList($favorite_area, 'anime');
         $favorite['manga'] = $this->getFavList($favorite_area, 'manga');
         $favorite['character'] = $this->getFavList($favorite_area, 'characters');

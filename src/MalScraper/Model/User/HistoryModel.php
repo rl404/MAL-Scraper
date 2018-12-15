@@ -138,7 +138,7 @@ class HistoryModel extends MainModel
     /**
      * Get user history list.
      *
-     * @return string
+     * @return array
      */
     private function getAllInfo()
     {

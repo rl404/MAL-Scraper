@@ -73,7 +73,7 @@ class InfoModel extends MainModel
     /**
      * Get anime/manga cover.
      *
-     * @return string
+     * @return string|bool
      */
     private function getCover()
     {
@@ -85,7 +85,7 @@ class InfoModel extends MainModel
     /**
      * Get anime/manga title.
      *
-     * @return string
+     * @return string|bool
      */
     private function getTitle()
     {

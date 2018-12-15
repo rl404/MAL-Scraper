@@ -107,7 +107,7 @@ class MalScraper
      * @param string $method
      * @param array  $arguments
      *
-     * @return string
+     * @return string|array
      */
     public function __call($method, $arguments)
     {
@@ -483,7 +483,7 @@ class MalScraper
      * @param string $type  (Optional) Either anime or manga
      * @param string $style (Optional) CSS style for the cover
      *
-     * @return array
+     * @return string
      */
     private function getUserCover($user, $type = 'anime', $style = false)
     {

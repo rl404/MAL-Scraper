@@ -35,7 +35,7 @@ class Helper
      *
      * @return string
      */
-    public function response($response)
+    public static function response($response)
     {
         $result = [];
         if (is_numeric($response)) {
@@ -63,7 +63,7 @@ class Helper
      *
      * @return array
      */
-    private function superEncode($array)
+    private static function superEncode($array)
     {
         if (is_array($array) && !empty($array)) {
             foreach ($array as $key => $value) {
@@ -81,7 +81,7 @@ class Helper
     /**
      * Get top anime code.
      *
-     * @return string
+     * @return array
      */
     public static function getTopAnimeType()
     {
@@ -101,7 +101,7 @@ class Helper
     /**
      * Get top manga code.
      *
-     * @return string
+     * @return array
      */
     public static function getTopMangaType()
     {

@@ -64,7 +64,7 @@ class CharacterModel extends MainModel
     /**
      * Get character image.
      *
-     * @return string
+     * @return string|bool
      */
     private function getImage()
     {

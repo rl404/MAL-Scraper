@@ -85,7 +85,7 @@ class PeopleModel extends MainModel
     /**
      * Get people image.
      *
-     * @return string
+     * @return string|bool
      */
     private function getImage()
     {

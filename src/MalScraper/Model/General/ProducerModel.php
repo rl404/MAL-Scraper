@@ -246,7 +246,7 @@ class ProducerModel extends MainModel
      *
      * @param \simplehtmldom_1_5\simple_html_dom $each_anime
      *
-     * @return array
+     * @return string|array
      */
     private function getAnimeLicensor($each_anime)
     {

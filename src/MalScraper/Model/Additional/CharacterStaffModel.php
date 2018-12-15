@@ -118,11 +118,11 @@ class CharacterStaffModel extends MainModel
     }
 
     /**
-     * Get anime/manga character image.
+     * Get anime/manga va character.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $char_va_area
      *
-     * @return string
+     * @return array
      */
     private function getVa($char_va_area)
     {
@@ -143,7 +143,7 @@ class CharacterStaffModel extends MainModel
     }
 
     /**
-     * Get anime/manga va character.
+     * Get anime/manga character image.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $char_table
      *

@@ -72,7 +72,7 @@ class UserListModel extends MainModel
     /**
      * Get user list.
      *
-     * @return string
+     * @return array
      */
     private function getAllInfo()
     {
@@ -84,7 +84,8 @@ class UserListModel extends MainModel
             $content = json_decode(file_get_contents($url), true);
 
             if ($content) {
-                for ($i = 0; $i < count($content); $i++) {
+                $count = count($content);
+                for ($i = 0; $i < $count; $i++) {
                     if (!empty($content[$i]['anime_image_path'])) {
                         $content[$i]['anime_image_path'] = Helper::imageUrlCleaner($content[$i]['anime_image_path']);
                     } else {
