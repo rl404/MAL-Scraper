@@ -226,48 +226,11 @@ class InfoModel extends MainModel
         $next_info = $other_info->next_sibling();
         while (true) {
             $info_type = $next_info->find('span', 0)->plaintext;
+
             $clean_info_type = strtolower(str_replace(': ', '', $info_type));
-
-            $info_value = $next_info->plaintext;
-            $clean_info_value = trim(str_replace($info_type, '', $info_value));
-            $clean_info_value = preg_replace("/([\s])+/", ' ', $clean_info_value);
-            $clean_info_value = str_replace([', add some', '?', 'Not yet aired', 'Unknown'], '', $clean_info_value);
-
-            if ($clean_info_type == 'published' || $clean_info_type == 'aired') {
-                $start_air = '';
-                $end_air = '';
-                if ($clean_info_value != 'Not available') {
-                    $parsed_airing = explode(' to ', $clean_info_value);
-
-                    $start_air = ($parsed_airing[0] != '?') ? date('Y-m-d', strtotime($parsed_airing[0])) : '';
-                    if (count($parsed_airing) > 1) {
-                        $end_air = ($parsed_airing[1] != '?') ? date('Y-m-d', strtotime($parsed_airing[1])) : '';
-                    }
-                }
-
-                $clean_info_value = [];
-                $clean_info_value['start'] = $start_air;
-                $clean_info_value['end'] = $end_air;
-            }
-
-            if ($clean_info_type == 'producers'
-                || $clean_info_type == 'licensors'
-                || $clean_info_type == 'studios'
-                || $clean_info_type == 'genres'
-                || $clean_info_type == 'authors'
-            ) {
-                $info_temp = [];
-                $info_temp_index = 0;
-                if ($clean_info_value != 'None found') {
-                    foreach ($next_info->find('a') as $each_info) {
-                        $temp_id = explode('/', $each_info->href);
-                        $info_temp[$info_temp_index]['id'] = $clean_info_type == 'authors' ? $temp_id[2] : $temp_id[3];
-                        $info_temp[$info_temp_index]['name'] = $each_info->plaintext;
-                        $info_temp_index++;
-                    }
-                }
-                $clean_info_value = $info_temp;
-            }
+            $clean_info_value = $this->getCleanInfo($info_type, $next_info);
+            $clean_info_value = $this->getCleanerInfo1($clean_info_type, $clean_info_value);
+            $clean_info_value = $this->getCleanerInfo2($next_info, $clean_info_type, $clean_info_value);
 
             $info[$clean_info_type] = $clean_info_value;
 
@@ -278,6 +241,81 @@ class InfoModel extends MainModel
         }
 
         return $info;
+    }
+
+    /**
+     * Get clean other info.
+     *
+     * @param string $info_type
+     * @param \simplehtmldom_1_5\simple_html_dom $next_info
+     *
+     * @return string
+     */
+    private function getCleanInfo($info_type, $next_info)
+    {
+        $info_value = $next_info->plaintext;
+        $clean_info_value = trim(str_replace($info_type, '', $info_value));
+        $clean_info_value = preg_replace("/([\s])+/", ' ', $clean_info_value);
+        return str_replace([', add some', '?', 'Not yet aired', 'Unknown'], '', $clean_info_value);
+    }
+
+    /**
+     * Get cleaner other info.
+     *
+     * @param string $clean_info_type
+     * @param string $clean_info_value
+     *
+     * @return string|array
+     */
+    private function getCleanerInfo1($clean_info_type, $clean_info_value)
+    {
+        if ($clean_info_type == 'published' || $clean_info_type == 'aired') {
+            $start_air = $end_air = '';
+            if ($clean_info_value != 'Not available') {
+                $parsed_airing = explode(' to ', $clean_info_value);
+                $start_air = ($parsed_airing[0] != '?') ? $parsed_airing[0] : '';
+                if (count($parsed_airing) > 1) {
+                    $end_air = ($parsed_airing[1] != '?') ? $parsed_airing[1] : '';
+                }
+            }
+
+            $clean_info_value = [];
+            $clean_info_value['start'] = $start_air;
+            $clean_info_value['end'] = $end_air;
+        }
+        return $clean_info_value;
+    }
+
+    /**
+     * Get cleaner other info.
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $next_info
+     * @param string $clean_info_type
+     * @param string $clean_info_value
+     *
+     * @return string|array
+     */
+    private function getCleanerInfo2($next_info, $clean_info_type, $clean_info_value)
+    {
+        if ($clean_info_type == 'producers'
+            || $clean_info_type == 'licensors'
+            || $clean_info_type == 'studios'
+            || $clean_info_type == 'genres'
+            || $clean_info_type == 'authors'
+        ) {
+            $info_temp = [];
+            $info_temp_index = 0;
+            if ($clean_info_value != 'None found') {
+                foreach ($next_info->find('a') as $each_info) {
+                    $temp_id = explode('/', $each_info->href);
+                    $info_temp[$info_temp_index]['id'] = $clean_info_type == 'authors' ? $temp_id[2] : $temp_id[3];
+                    $info_temp[$info_temp_index]['name'] = $each_info->plaintext;
+                    $info_temp_index++;
+                }
+            }
+            return $info_temp;
+        }
+        return $clean_info_value;
     }
 
     /**
@@ -298,19 +336,33 @@ class InfoModel extends MainModel
                 $each_rel_index = 0;
                 $rel_anime = $rel->find('td', 1);
                 foreach ($rel_anime->find('a') as $r) {
-                    $rel_anime_link = $r->href;
-                    $separated_anime_link = explode('/', $rel_anime_link);
-
-                    $each_rel[$each_rel_index]['id'] = $separated_anime_link[2];
-                    $each_rel[$each_rel_index]['title'] = $r->plaintext;
-                    $each_rel[$each_rel_index]['type'] = $separated_anime_link[1];
-
+                    $each_rel[$each_rel_index] = $this->getRelatedDetail($r);
                     $each_rel_index++;
                 }
 
                 $related[$rel_type] = $each_rel;
             }
         }
+
+        return $related;
+    }
+
+    /**
+     * Get related detail.
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $r
+     *
+     * @return array
+     */
+    private function getRelatedDetail($r)
+    {
+        $related = [];
+        $rel_anime_link = $r->href;
+        $separated_anime_link = explode('/', $rel_anime_link);
+
+        $related['id'] = $separated_anime_link[2];
+        $related['title'] = $r->plaintext;
+        $related['type'] = $separated_anime_link[1];
 
         return $related;
     }

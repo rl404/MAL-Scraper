@@ -165,11 +165,21 @@ class MainModel
      *
      * @return string
      */
-    public function getCleanClassName($model)
+    public static function getCleanClassName($model)
     {
         $className = get_class($model);
         $className = explode('\\', $className);
 
         return $className[count($className) - 1];
+    }
+
+    /**
+     * Get default type.
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return 'anime';
     }
 }

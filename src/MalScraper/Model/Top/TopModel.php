@@ -45,10 +45,10 @@ class TopModel extends MainModel
         $this->_supertype = $supertype;
         $this->_page = 50 * ($page - 1);
         if ($this->_supertype == 'anime') {
-            $this->_type = Helper::getTopAnimeType($type);
+            $this->_type = Helper::getTopAnimeType()[$type];
             $this->_url = $this->_myAnimeListUrl.'/topanime.php?type='.$this->_type.'&limit='.$this->_page;
         } else {
-            $this->_type = Helper::getTopMangaType($type);
+            $this->_type = Helper::getTopMangaType()[$type];
             $this->_url = $this->_myAnimeListUrl.'/topmanga.php?type='.$this->_type.'&limit='.$this->_page;
         }
         $this->_parserArea = $parserArea;

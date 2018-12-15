@@ -101,22 +101,9 @@ class CharacterStaffModel extends MainModel
                 $character[$character_index]['role'] = $this->getCharacterRole($char_name_area);
 
                 // va name + role
-                $va = [];
-                $va_index = 0;
                 $char_va_area = $char_table->find('td', 2);
                 if ($char_va_area) {
-                    $char_va_area = $char_va_area->find('table', 0);
-                    foreach ($char_va_area->find('tr') as $each_va) {
-                        $va_name_area = $each_va->find('td', 0);
-
-                        $va[$va_index]['id'] = $this->getCharacterVaId($va_name_area);
-                        $va[$va_index]['name'] = $this->getCharacterVaName($va_name_area);
-                        $va[$va_index]['role'] = $this->getCharacterVaRole($va_name_area);
-                        $va[$va_index]['image'] = $this->getCharacterVaImage($each_va);
-
-                        $va_index++;
-                    }
-                    $character[$character_index]['va'] = $va;
+                    $character[$character_index]['va'] = $this->getVa($char_va_area);
                 }
 
                 $char_table = $char_table->next_sibling();
@@ -132,6 +119,31 @@ class CharacterStaffModel extends MainModel
 
     /**
      * Get anime/manga character image.
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $char_va_area
+     *
+     * @return string
+     */
+    private function getVa($char_va_area)
+    {
+        $va = [];
+        $va_index = 0;
+        $char_va_area = $char_va_area->find('table', 0);
+        foreach ($char_va_area->find('tr') as $each_va) {
+            $va_name_area = $each_va->find('td', 0);
+
+            $va[$va_index]['id'] = $this->getCharacterVaId($va_name_area);
+            $va[$va_index]['name'] = $this->getCharacterVaName($va_name_area);
+            $va[$va_index]['role'] = $this->getCharacterVaRole($va_name_area);
+            $va[$va_index]['image'] = $this->getCharacterVaImage($each_va);
+
+            $va_index++;
+        }
+        return $va;
+    }
+
+    /**
+     * Get anime/manga va character.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $char_table
      *

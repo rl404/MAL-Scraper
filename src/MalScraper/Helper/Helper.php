@@ -2,8 +2,6 @@
 
 namespace MalScraper\Helper;
 
-use DateTime;
-
 /**
  *	Helper class.
  */
@@ -83,91 +81,41 @@ class Helper
     /**
      * Get top anime code.
      *
-     * @param string|int $type
-     *
      * @return string
      */
-    public static function getTopAnimeType($type)
+    public static function getTopAnimeType()
     {
-        $converted_type = '';
-        switch ($type) {
-            case '0':
-                $converted_type = '';
-                break;
-            case '1':
-                $converted_type = 'airing';
-                break;
-            case '2':
-                $converted_type = 'upcoming';
-                break;
-            case '3':
-                $converted_type = 'tv';
-                break;
-            case '4':
-                $converted_type = 'movie';
-                break;
-            case '5':
-                $converted_type = 'ova';
-                break;
-            case '6':
-                $converted_type = 'special';
-                break;
-            case '7':
-                $converted_type = 'bypopularity';
-                break;
-            case '8':
-                $converted_type = 'favorite';
-                break;
-            default:
-                $converted_type = '';
-        }
-
-        return $converted_type;
+        return [
+            '',
+            'airing',
+            'upcoming',
+            'tv',
+            'movie',
+            'ova',
+            'special',
+            'bypopularity',
+            'favorite',
+        ];
     }
 
     /**
      * Get top manga code.
      *
-     * @param string|int $type
-     *
      * @return string
      */
-    public static function getTopMangaType($type)
+    public static function getTopMangaType()
     {
-        $converted_type = '';
-        switch ($type) {
-            case '0':
-                $converted_type = '';
-                break;
-            case '1':
-                $converted_type = 'manga';
-                break;
-            case '2':
-                $converted_type = 'novels';
-                break;
-            case '3':
-                $converted_type = 'oneshots';
-                break;
-            case '4':
-                $converted_type = 'doujin';
-                break;
-            case '5':
-                $converted_type = 'manhwa';
-                break;
-            case '6':
-                $converted_type = 'manhua';
-                break;
-            case '7':
-                $converted_type = 'bypopularity';
-                break;
-            case '8':
-                $converted_type = 'favorite';
-                break;
-            default:
-                $converted_type = '';
-        }
-
-        return $converted_type;
+        return [
+            '',
+            'manga',
+            'novel',
+            'oneshots',
+            'doujin',
+            'manhwa',
+            'manhua',
+            'bypopularity',
+            'favorite',
+        ];
     }
 
     /**
@@ -177,29 +125,12 @@ class Helper
      */
     public static function getCurrentSeason()
     {
-        $day = new DateTime();
+        $currentMonth = date('m');
 
-        //  Days of spring
-        $spring_starts = new DateTime('April 1');
-        $spring_ends = new DateTime('June 30');
-
-        //  Days of summer
-        $summer_starts = new DateTime('July 1');
-        $summer_ends = new DateTime('September 30');
-
-        //  Days of autumn
-        $autumn_starts = new DateTime('October 1');
-        $autumn_ends = new DateTime('December 31');
-
-        //  If $day is between the days of spring, summer, autumn, and winter
-        if ($day >= $spring_starts && $day <= $spring_ends) :
-            $season = 'spring'; elseif ($day >= $summer_starts && $day <= $summer_ends) :
-            $season = 'summer'; elseif ($day >= $autumn_starts && $day <= $autumn_ends) :
-            $season = 'fall'; else :
-            $season = 'winter';
-        endif;
-
-        return $season;
+        if ($currentMonth >= '01' && $currentMonth < '04') return 'winter';
+        if ($currentMonth >= '04' && $currentMonth < '07') return 'spring';
+        if ($currentMonth >= '07' && $currentMonth < '10') return 'summer';
+        return 'autumn';
     }
 
     /**

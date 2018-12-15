@@ -122,54 +122,32 @@ class PeopleModel extends MainModel
      */
     private function getBiodata($type)
     {
-        switch ($type) {
-            case 'given_name':
-                preg_match("/(Given name:<\/span>)[^<]*/", $this->_biodata, $biodata);
-                break;
-            case 'family_name':
-                preg_match("/(Family name:<\/span>)[^<]*/", $this->_biodata, $biodata);
-                break;
-            case 'alternative_name':
-                preg_match("/(Alternate names:<\/span>)[^<]*/", $this->_biodata, $biodata);
-                break;
-            case 'birthday':
-                preg_match("/(Birthday:<\/span>)([^<])*/", $this->_biodata, $biodata);
-                break;
-            case 'website':
-                preg_match("/(Website:<\/span> <a)([^<])*/", $this->_biodata, $biodata);
-                break;
-            case 'favorite':
-                preg_match("/(Member Favorites:<\/span>)([^<])*/", $this->_biodata, $biodata);
-                break;
-            default:
-                return;
-        }
-
-        if ($biodata) {
-            if ($type != 'website') {
-                $biodata = strip_tags($biodata[0]);
-                $biodata = explode(': ', $biodata);
-                $biodata = trim($biodata[1]);
-            }
-
-            if ($type == 'given_name' || $type == 'family_name' || $type == 'birthday') {
-                return $biodata;
-            }
-
-            if ($type == 'alternative_name') {
-                return explode(', ', $biodata);
-            }
-
-            if ($type == 'favorite') {
-                return str_replace(',', '', $biodata);
-            }
-
-            if ($type == 'website') {
+        if ($type == 'Website') {
+            preg_match("/(".$type.":<\/span> <a)[^<]*/", $this->_biodata, $biodata);
+            if ($biodata) {
                 preg_match('/".+"/', $biodata[0], $biodata);
                 if ($biodata[0] != '"http://"') {
                     return str_replace('"', '', $biodata[0]);
                 }
             }
+        }
+
+        preg_match("/(".$type.":<\/span>)[^<]*/", $this->_biodata, $biodata);
+
+        if ($biodata) {
+            $biodata = strip_tags($biodata[0]);
+            $biodata = explode(': ', $biodata);
+            $biodata = trim($biodata[1]);
+
+            if ($type == 'Alternate names') {
+                return explode(', ', $biodata);
+            }
+
+            if ($type == 'Member Favorites') {
+                return str_replace(',', '', $biodata);
+            }
+
+            return $biodata;
         }
     }
 
@@ -329,12 +307,12 @@ class PeopleModel extends MainModel
             'id'               => $this->getId(),
             'name'             => $this->getName(),
             'image'            => $this->getImage(),
-            'given_name'       => $this->getBiodata('given_name'),
-            'family_name'      => $this->getBiodata('family_name'),
-            'alternative_name' => $this->getBiodata('alternative_name'),
-            'birthday'         => $this->getBiodata('birthday'),
-            'website'          => $this->getBiodata('website'),
-            'favorite'         => $this->getBiodata('favorite'),
+            'given_name'       => $this->getBiodata('Given name'),
+            'family_name'      => $this->getBiodata('Family name'),
+            'alternative_name' => $this->getBiodata('Alternate names'),
+            'birthday'         => $this->getBiodata('Birthday'),
+            'website'          => $this->getBiodata('Website'),
+            'favorite'         => $this->getBiodata('Member Favorites'),
             'more'             => $this->getMore(),
             'va'               => $this->getVa(),
             'staff'            => $this->getStaff(),
