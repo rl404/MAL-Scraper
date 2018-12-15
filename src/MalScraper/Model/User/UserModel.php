@@ -11,11 +11,11 @@ use MalScraper\Model\MainModel;
 class UserModel extends MainModel
 {
     /**
-     * Username
+     * Username.
      *
      * @var string
      */
-	private $_user;
+    private $_user;
 
     /**
      * Default constructor.
@@ -25,11 +25,11 @@ class UserModel extends MainModel
      *
      * @return void
      */
-	public function __construct($user, $parserArea = '#content')
+    public function __construct($user, $parserArea = '#content')
     {
-    	$this->_user = $user;
+        $this->_user = $user;
         $this->_url = $this->_myAnimeListUrl.'/profile/'.$user;
-    	$this->_parserArea = $parserArea;
+        $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);
     }
@@ -44,8 +44,10 @@ class UserModel extends MainModel
      */
     public function __call($method, $arguments)
     {
-        if ($this->_error)
+        if ($this->_error) {
             return $this->_error;
+        }
+
         return call_user_func_array([$this, $method], $arguments);
     }
 
@@ -68,6 +70,7 @@ class UserModel extends MainModel
     {
         $image = $this->_parser->find('.container-left .user-profile', 0);
         $image = $image->find('.user-image img', 0);
+
         return $image ? Helper::imageUrlCleaner($image->src) : '';
     }
 
@@ -90,6 +93,7 @@ class UserModel extends MainModel
                 return $status_value;
             }
         }
+
         return '';
     }
 
@@ -104,6 +108,7 @@ class UserModel extends MainModel
     {
         $status_area = $this->_parser->find('.container-left .user-profile', 0);
         $status_area = $status_area->find('.user-status', 2);
+
         return trim($status_area->find('li', $liNo)->find('span', 1)->plaintext);
     }
 
@@ -122,6 +127,7 @@ class UserModel extends MainModel
                 $sns[] = $each_sns->href;
             }
         }
+
         return $sns;
     }
 
@@ -149,6 +155,7 @@ class UserModel extends MainModel
 
             $friend['data'][] = $temp_friend;
         }
+
         return $friend;
     }
 
@@ -161,6 +168,7 @@ class UserModel extends MainModel
     {
         $about_area = $this->_parser->find('.container-right', 0);
         $about = $about_area->find('table tr td div[class=word-break]', 0);
+
         return $about ? trim($about->innertext) : '';
     }
 
@@ -185,7 +193,7 @@ class UserModel extends MainModel
 
         $anime_stat['days'] = $this->getDays($a_stat_score);
         $anime_stat['mean_score'] = $this->getMeanScore($a_stat_score);
-        $anime_stat['status'] = $this->getStatStatus($a_stat_area,$type);
+        $anime_stat['status'] = $this->getStatStatus($a_stat_area, $type);
         $anime_stat['history'] = $this->getHistory($right_area, $type);
 
         return $anime_stat;
@@ -202,6 +210,7 @@ class UserModel extends MainModel
     {
         $days = $a_stat_score->find('div', 0);
         $temp_days = $days->find('span', 0)->plaintext;
+
         return str_replace($temp_days, '', $days->plaintext);
     }
 
@@ -216,6 +225,7 @@ class UserModel extends MainModel
     {
         $mean_score = $a_stat_score->find('div', 1);
         $temp_score = $mean_score->find('span', 0)->plaintext;
+
         return str_replace($temp_score, '', $mean_score->plaintext);
     }
 
@@ -223,7 +233,7 @@ class UserModel extends MainModel
      * Get status stat.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $a_stat_area
-     * @param string $type
+     * @param string                             $type
      *
      * @return array
      */
@@ -255,6 +265,7 @@ class UserModel extends MainModel
             $temp_stat['chapter'] = $this->getStatStatusCount($a_stat_status, 5);
             $temp_stat['volume'] = $this->getStatStatusCount($a_stat_status, 7);
         }
+
         return $temp_stat;
     }
 
@@ -262,11 +273,11 @@ class UserModel extends MainModel
      * Get status stat count.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $a_stat_area
-     * @param int $spanNo
+     * @param int                                $spanNo
      *
      * @return array
      */
-    private function getStatStatusCount($a_stat_status,$spanNo)
+    private function getStatStatusCount($a_stat_status, $spanNo)
     {
         return str_replace(',', '', trim($a_stat_status->find('span', $spanNo)->plaintext));
     }
@@ -275,7 +286,7 @@ class UserModel extends MainModel
      * Get history.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $right_area
-     * @param string $type
+     * @param string                             $type
      *
      * @return array
      */
@@ -296,6 +307,7 @@ class UserModel extends MainModel
 
             $history[] = $temp_history;
         }
+
         return $history;
     }
 
@@ -309,6 +321,7 @@ class UserModel extends MainModel
     private function getHistoryImage($each_history)
     {
         $image = $each_history->find('img', 0)->src;
+
         return Helper::imageUrlCleaner($image);
     }
 
@@ -323,6 +336,7 @@ class UserModel extends MainModel
     {
         $id = $history_data_area->find('a', 0)->href;
         $id = explode('/', $id);
+
         return $id[4];
     }
 
@@ -348,6 +362,7 @@ class UserModel extends MainModel
     private function getHistoryDate($history_data_area)
     {
         $date = $history_data_area->find('span', 0)->plaintext;
+
         return trim($date);
     }
 
@@ -394,11 +409,11 @@ class UserModel extends MainModel
      * Get favorite list.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $favorite_area
-     * @param string $type
+     * @param string                             $type
      *
      * @return array
      */
-    private function getFavList($favorite_area,$type)
+    private function getFavList($favorite_area, $type)
     {
         $favorite = [];
         $favorite_area = $favorite_area->find('ul[class="favorites-list '.$type.'"]', 0);
@@ -426,6 +441,7 @@ class UserModel extends MainModel
                 $favorite[] = $temp_fav;
             }
         }
+
         return $favorite;
     }
 
@@ -441,6 +457,7 @@ class UserModel extends MainModel
         $image = $each_fav->find('a', 0)->style;
         preg_match('/\'([^\'])*/', $image, $image);
         $image = substr($image[0], 1);
+
         return Helper::imageUrlCleaner($image);
     }
 
@@ -455,6 +472,7 @@ class UserModel extends MainModel
     {
         $id = $each_fav->find('a', 0)->href;
         $id = explode('/', $id);
+
         return $id[4];
     }
 
@@ -481,6 +499,7 @@ class UserModel extends MainModel
     {
         $temp_type = $each_fav->find('span', 0)->plaintext;
         $temp_type = explode('·', $temp_type);
+
         return trim($temp_type[0]);
     }
 
@@ -495,6 +514,7 @@ class UserModel extends MainModel
     {
         $temp_type = $each_fav->find('span', 0)->plaintext;
         $temp_type = explode('·', $temp_type);
+
         return trim($temp_type[1]);
     }
 
@@ -509,6 +529,7 @@ class UserModel extends MainModel
     {
         $media_id = $each_fav->find('a', 2)->href;
         $media_id = explode('/', $media_id);
+
         return $media_id[$key];
     }
 
@@ -522,6 +543,7 @@ class UserModel extends MainModel
     private function getFavMediaTitle($each_fav)
     {
         $anime_title = $each_fav->find('a', 2)->plaintext;
+
         return trim($anime_title);
     }
 
@@ -533,8 +555,8 @@ class UserModel extends MainModel
     private function getAllInfo()
     {
         $data = [
-            'username'      => $this->getUsername(),
-            'image'         => $this->getImage(),
+            'username'       => $this->getUsername(),
+            'image'          => $this->getImage(),
             'last_online'    => $this->getStatus('Last Online'),
             'gender'         => $this->getStatus('Gender'),
             'birthday'       => $this->getStatus('Birthday'),

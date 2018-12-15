@@ -11,21 +11,21 @@ use MalScraper\Model\MainModel;
 class TopModel extends MainModel
 {
     /**
-     * Either anime or manga
+     * Either anime or manga.
      *
      * @var string
      */
     private $_supertype;
 
     /**
-     * Type
+     * Type.
      *
      * @var string
      */
-	private $_type;
+    private $_type;
 
     /**
-     * Page number
+     * Page number.
      *
      * @var string
      */
@@ -35,12 +35,12 @@ class TopModel extends MainModel
      * Default constructor.
      *
      * @param string|int $year
-     * @param string $season
-     * @param string $parserArea
+     * @param string     $season
+     * @param string     $parserArea
      *
      * @return void
      */
-	public function __construct($supertype, $type, $page, $parserArea = '#content')
+    public function __construct($supertype, $type, $page, $parserArea = '#content')
     {
         $this->_supertype = $supertype;
         $this->_page = 50 * ($page - 1);
@@ -66,8 +66,10 @@ class TopModel extends MainModel
      */
     public function __call($method, $arguments)
     {
-        if ($this->_error)
+        if ($this->_error) {
             return $this->_error;
+        }
+
         return call_user_func_array([$this, $method], $arguments);
     }
 
@@ -81,6 +83,7 @@ class TopModel extends MainModel
     private function getRank($each_anime)
     {
         $rank = $each_anime->find('td span', 0)->plaintext;
+
         return trim($rank);
     }
 
@@ -94,6 +97,7 @@ class TopModel extends MainModel
     private function getImage($each_anime)
     {
         $image = $each_anime->find('td', 1)->find('a img', 0)->getAttribute('data-src');
+
         return Helper::imageUrlCleaner($image);
     }
 
@@ -107,6 +111,7 @@ class TopModel extends MainModel
     private function getId($name_area)
     {
         $id = $name_area->find('div', 0)->id;
+
         return str_replace('area', '', $id);
     }
 
@@ -133,6 +138,7 @@ class TopModel extends MainModel
     {
         $parsed_info = trim(preg_replace("/([\s])+/", ' ', $parsed_info[0]));
         $parsed_info = explode(' ', $parsed_info);
+
         return $parsed_info[0];
     }
 
@@ -148,6 +154,7 @@ class TopModel extends MainModel
         $parsed_info = trim(preg_replace("/([\s])+/", ' ', $parsed_info[0]));
         $parsed_info = explode(' ', $parsed_info);
         $episode = str_replace('(', '', $parsed_info[1]);
+
         return $episode == '?' ? '' : $episode;
     }
 
@@ -190,10 +197,11 @@ class TopModel extends MainModel
     private function getScore($each_anime)
     {
         $score = $each_anime->find('td', 2)->plaintext;
+
         return trim(str_replace('N/A', '', $score));
     }
 
-     /**
+    /**
      * Get result list.
      *
      * @return array
@@ -204,7 +212,6 @@ class TopModel extends MainModel
         $data_index = 0;
         $top_table = $this->_parser->find('table', 0);
         foreach ($top_table->find('tr[class=ranking-list]') as $each_anime) {
-
             $name_area = $each_anime->find('td .detail', 0);
             $info_area = $name_area->find('div[class^=information]', 0);
             $parsed_info = explode('<br>', $info_area->innertext);
@@ -229,5 +236,4 @@ class TopModel extends MainModel
 
         return $data;
     }
-
 }

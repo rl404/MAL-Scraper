@@ -2,7 +2,6 @@
 
 namespace MalScraper\Model\Additional;
 
-use MalScraper\Helper\Helper;
 use MalScraper\Model\MainModel;
 
 /**
@@ -15,30 +14,30 @@ class PictureModel extends MainModel
      *
      * @var string
      */
-	private $_type;
+    private $_type;
 
     /**
      * Id of the anime or manga.
      *
      * @var string|int
      */
-	private $_id;
+    private $_id;
 
     /**
      * Default constructor.
      *
-     * @param string $type
+     * @param string     $type
      * @param string|int $id
-     * @param string $parserArea
+     * @param string     $parserArea
      *
      * @return void
      */
-	public function __construct($type, $id, $parserArea = '.js-scrollfix-bottom-rel')
+    public function __construct($type, $id, $parserArea = '.js-scrollfix-bottom-rel')
     {
-    	$this->_type = $type;
-    	$this->_id = $id;
+        $this->_type = $type;
+        $this->_id = $id;
         $this->_url = $this->_myAnimeListUrl.'/'.$type.'/'.$id;
-    	$this->_parserArea = $parserArea;
+        $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);
     }
@@ -53,8 +52,10 @@ class PictureModel extends MainModel
      */
     public function __call($method, $arguments)
     {
-        if ($this->_error)
+        if ($this->_error) {
             return $this->_error;
+        }
+
         return call_user_func_array([$this, $method], $arguments);
     }
 
@@ -75,7 +76,7 @@ class PictureModel extends MainModel
      */
     private function getId()
     {
-    	return $this->_id;
+        return $this->_id;
     }
 
     /**
@@ -94,6 +95,7 @@ class PictureModel extends MainModel
                 }
             }
         }
+
         return $data;
     }
 }

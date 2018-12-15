@@ -29,7 +29,7 @@ class ProducerModel extends MainModel
      *
      * @var string|int
      */
-	private $_id;
+    private $_id;
 
     /**
      * Page number.
@@ -41,19 +41,19 @@ class ProducerModel extends MainModel
     /**
      * Default constructor.
      *
-     * @param string $type
-     * @param string $type2
+     * @param string     $type
+     * @param string     $type2
      * @param string|int $id
-     * @param string $parserArea
+     * @param string     $parserArea
      *
      * @return void
      */
-	public function __construct($type, $type2, $id, $page = 1, $parserArea = '#content .js-categories-seasonal')
+    public function __construct($type, $type2, $id, $page = 1, $parserArea = '#content .js-categories-seasonal')
     {
         $this->_type = $type;
         $this->_type2 = $type2;
         $this->_id = $id;
-    	$this->_page = $page;
+        $this->_page = $page;
 
         if ($type2 == 'producer') {
             if ($type == 'anime') {
@@ -62,7 +62,7 @@ class ProducerModel extends MainModel
                 $this->_url = $this->_myAnimeListUrl.'/manga/magazine/'.$id.'/?page='.$page;
             }
         } else {
-                $this->_url = $this->_myAnimeListUrl.'/'.$type.'/genre/'.$id.'/?page='.$page;
+            $this->_url = $this->_myAnimeListUrl.'/'.$type.'/genre/'.$id.'/?page='.$page;
         }
 
         $this->_parserArea = $parserArea;
@@ -80,8 +80,10 @@ class ProducerModel extends MainModel
      */
     public function __call($method, $arguments)
     {
-        if ($this->_error)
+        if ($this->_error) {
             return $this->_error;
+        }
+
         return call_user_func_array([$this, $method], $arguments);
     }
 
@@ -95,6 +97,7 @@ class ProducerModel extends MainModel
     private function getAnimeImage($each_anime)
     {
         $image = $each_anime->find('div[class=image]', 0)->find('img', 0)->getAttribute('data-src');
+
         return  Helper::imageUrlCleaner($image);
     }
 
@@ -109,6 +112,7 @@ class ProducerModel extends MainModel
     {
         $anime_id = $name_area->find('p a', 0)->href;
         $anime_id = explode('/', $anime_id);
+
         return $anime_id[4];
     }
 
@@ -143,6 +147,7 @@ class ProducerModel extends MainModel
 
             $producer[] = $temp_prod;
         }
+
         return $producer;
     }
 
@@ -157,8 +162,10 @@ class ProducerModel extends MainModel
     {
         $prod_id = $each_producer->href;
         $prod_id = explode('/', $prod_id);
-        if ($this->_type == 'anime')
+        if ($this->_type == 'anime') {
             return $prod_id[3];
+        }
+
         return $prod_id[4];
     }
 
@@ -184,6 +191,7 @@ class ProducerModel extends MainModel
     private function getAnimeEpisode($producer_area)
     {
         $episode = $producer_area->find('div[class=eps]', 0)->plaintext;
+
         return trim(str_replace(['eps', 'ep', 'vols', 'vol'], '', $episode));
     }
 
@@ -197,6 +205,7 @@ class ProducerModel extends MainModel
     private function getAnimeSource($producer_area)
     {
         $source = $producer_area->find('span[class=source]', 0)->plaintext;
+
         return trim($source);
     }
 
@@ -214,6 +223,7 @@ class ProducerModel extends MainModel
         foreach ($genre_area->find('a') as $each_genre) {
             $genre[] = $each_genre->plaintext;
         }
+
         return $genre;
     }
 
@@ -227,6 +237,7 @@ class ProducerModel extends MainModel
     private function getAnimeSynopsis($each_anime)
     {
         $synopsis = $each_anime->find('div[class="synopsis js-synopsis"]', 0)->plaintext;
+
         return trim(preg_replace("/([\s])+/", ' ', $synopsis));
     }
 
@@ -242,9 +253,11 @@ class ProducerModel extends MainModel
         if ($this->_type == 'anime') {
             $licensor = $each_anime->find('div[class="synopsis js-synopsis"] .licensors', 0)->getAttribute('data-licensors');
             $licensor = explode(',', $licensor);
+
             return array_filter($licensor);
         } else {
             $serialization = $each_anime->find('div[class="synopsis js-synopsis"] .serialization a', 0);
+
             return $serialization ? $serialization->plaintext : '';
         }
     }
@@ -260,6 +273,7 @@ class ProducerModel extends MainModel
     {
         $type = $info_area->find('.info', 0)->plaintext;
         $type = explode('-', $type);
+
         return trim($type[0]);
     }
 
@@ -273,6 +287,7 @@ class ProducerModel extends MainModel
     private function getAnimeStart($info_area)
     {
         $airing_start = $info_area->find('.info .remain-time', 0)->plaintext;
+
         return trim($airing_start);
     }
 
@@ -286,6 +301,7 @@ class ProducerModel extends MainModel
     private function getAnimeScore($info_area)
     {
         $score = $info_area->find('.scormem .score', 0)->plaintext;
+
         return trim($score);
     }
 
@@ -299,6 +315,7 @@ class ProducerModel extends MainModel
     private function getAnimeMember($info_area)
     {
         $member = $info_area->find('.scormem span[class^=member]', 0)->plaintext;
+
         return trim(str_replace(',', '', $member));
     }
 
@@ -342,6 +359,7 @@ class ProducerModel extends MainModel
 
             $data[] = $result;
         }
+
         return $data;
     }
 }

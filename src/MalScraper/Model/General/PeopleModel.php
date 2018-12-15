@@ -15,7 +15,7 @@ class PeopleModel extends MainModel
      *
      * @var string|int
      */
-	private $_id;
+    private $_id;
 
     /**
      * Biodata area.
@@ -28,20 +28,21 @@ class PeopleModel extends MainModel
      * Default constructor.
      *
      * @param string|int $id
-     * @param string $parserArea
+     * @param string     $parserArea
      *
      * @return void
      */
-	public function __construct($id, $parserArea = '#contentWrapper')
+    public function __construct($id, $parserArea = '#contentWrapper')
     {
-    	$this->_id = $id;
+        $this->_id = $id;
         $this->_url = $this->_myAnimeListUrl.'/people/'.$id;
-    	$this->_parserArea = $parserArea;
+        $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);
 
-        if (!$this->_error)
+        if (!$this->_error) {
             $this->setBiodata();
+        }
     }
 
     /**
@@ -54,8 +55,10 @@ class PeopleModel extends MainModel
      */
     public function __call($method, $arguments)
     {
-        if ($this->_error)
+        if ($this->_error) {
             return $this->_error;
+        }
+
         return call_user_func_array([$this, $method], $arguments);
     }
 
@@ -87,6 +90,7 @@ class PeopleModel extends MainModel
     private function getImage()
     {
         $image = $this->_parser->find('#content table tr', 0)->find('td', 0)->find('img', 0);
+
         return $image ? $image->src : '';
     }
 
@@ -138,7 +142,7 @@ class PeopleModel extends MainModel
                 preg_match("/(Member Favorites:<\/span>)([^<])*/", $this->_biodata, $biodata);
                 break;
             default:
-                return null;
+                return;
         }
 
         if ($biodata) {
@@ -148,22 +152,25 @@ class PeopleModel extends MainModel
                 $biodata = trim($biodata[1]);
             }
 
-            if ($type == 'given_name' || $type == 'family_name' || $type == 'birthday')
+            if ($type == 'given_name' || $type == 'family_name' || $type == 'birthday') {
                 return $biodata;
+            }
 
-            if ($type == 'alternative_name')
+            if ($type == 'alternative_name') {
                 return explode(', ', $biodata);
+            }
 
-            if ($type == 'favorite')
+            if ($type == 'favorite') {
                 return str_replace(',', '', $biodata);
+            }
 
             if ($type == 'website') {
                 preg_match('/".+"/', $biodata[0], $biodata);
-                if ($biodata[0] != '"http://"')
+                if ($biodata[0] != '"http://"') {
                     return str_replace('"', '', $biodata[0]);
+                }
             }
         }
-        return null;
     }
 
     /**
@@ -175,6 +182,7 @@ class PeopleModel extends MainModel
     {
         $more = $this->_parser->find('#content table tr', 0)->find('td', 0);
         $more = $more->find('div[class^=people-informantion-more]', 0)->plaintext;
+
         return preg_replace('/\n[^\S\n]*/', "\n", $more);
     }
 
@@ -214,11 +222,12 @@ class PeopleModel extends MainModel
                 }
             }
         }
+
         return $va;
     }
 
     /**
-     * Get anime id
+     * Get anime id.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $anime_area
      *
@@ -228,11 +237,12 @@ class PeopleModel extends MainModel
     {
         $anime_id = $anime_area->find('a', 0)->href;
         $parsed_anime_id = explode('/', $anime_id);
+
         return $parsed_anime_id[4];
     }
 
     /**
-     * Get anime title
+     * Get anime title.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $anime_area
      *
@@ -244,7 +254,7 @@ class PeopleModel extends MainModel
     }
 
     /**
-     * Get anime image
+     * Get anime image.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $anime_image_area
      *
@@ -253,14 +263,15 @@ class PeopleModel extends MainModel
     private function getAnimeImage($anime_image_area)
     {
         $anime_image_area = $anime_image_area->find('img', 0)->getAttribute('data-src');
+
         return Helper::imageUrlCleaner($anime_image_area);
     }
 
     /**
-     * Get anime role
+     * Get anime role.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $anime_area
-     * @param bool $staff (Optional)
+     * @param bool                               $staff      (Optional)
      *
      * @return string
      */
@@ -269,6 +280,7 @@ class PeopleModel extends MainModel
         if ($staff) {
             return $anime_area->find('small', 0)->plaintext;
         }
+
         return $anime_area->find('div', 0)->plaintext;
     }
 
@@ -302,6 +314,7 @@ class PeopleModel extends MainModel
                 $staff_index++;
             }
         }
+
         return $staff;
     }
 

@@ -15,21 +15,21 @@ class CharacterModel extends MainModel
      *
      * @var string|int
      */
-	private $_id;
+    private $_id;
 
     /**
      * Default constructor.
      *
      * @param string|int $id
-     * @param string $parserArea
+     * @param string     $parserArea
      *
      * @return void
      */
-	public function __construct($id, $parserArea = '#contentWrapper')
+    public function __construct($id, $parserArea = '#contentWrapper')
     {
-    	$this->_id = $id;
+        $this->_id = $id;
         $this->_url = $this->_myAnimeListUrl.'/character/'.$id;
-    	$this->_parserArea = $parserArea;
+        $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);
     }
@@ -44,8 +44,10 @@ class CharacterModel extends MainModel
      */
     public function __call($method, $arguments)
     {
-        if ($this->_error)
+        if ($this->_error) {
             return $this->_error;
+        }
+
         return call_user_func_array([$this, $method], $arguments);
     }
 
@@ -68,6 +70,7 @@ class CharacterModel extends MainModel
     {
         $image = $this->_parser->find('#content table tr', 0);
         $image = $image->find('td', 0)->find('div', 0)->find('a', 0)->find('img', 0);
+
         return $image ? $image->src : '';
     }
 
@@ -81,9 +84,9 @@ class CharacterModel extends MainModel
         $nickname = $this->_parser->find('h1', 0)->plaintext;
         $nickname = trim(preg_replace('/\s+/', ' ', $nickname));
         preg_match('/\"([^"])*/', $nickname, $nickname);
-        if ($nickname)
+        if ($nickname) {
             return substr($nickname[0], 1, strlen($nickname[0]) - 2);
-        return null;
+        }
     }
 
     /**
@@ -93,7 +96,7 @@ class CharacterModel extends MainModel
      *
      * @return string
      */
-    private function getName($isKanji=false)
+    private function getName($isKanji = false)
     {
         $html = $this->_parser->find('#content table tr', 0);
         $html = $html->find('td', 0)->next_sibling()->find('div[class=normal_header]', 0);
@@ -101,8 +104,10 @@ class CharacterModel extends MainModel
         $name_kanji = $html->find('small', 0);
         $name_kanji = $name_kanji ? $name_kanji->plaintext : '';
 
-        if ($isKanji)
+        if ($isKanji) {
             return preg_replace('/(\(|\))/', '', $name_kanji);
+        }
+
         return trim(str_replace($name_kanji, '', $html->plaintext));
     }
 
@@ -117,6 +122,7 @@ class CharacterModel extends MainModel
         preg_match('/(Member Favorites: ).+/', $favorite, $parsed_favorite);
         $favorite = trim($parsed_favorite[0]);
         $parsed_favorite = explode(': ', $favorite);
+
         return str_replace(',', '', $parsed_favorite[1]);
     }
 
@@ -139,9 +145,10 @@ class CharacterModel extends MainModel
         if (!$temp_about) {
             $about = str_replace(['<br>', '<br />', '  '], ["\n", "\n", ' '], $about);
             $about = strip_tags($about);
+
             return preg_replace('/\n[^\S\n]*/', "\n", $about);
         } else {
-            return null;
+            return;
         }
     }
 
@@ -152,7 +159,7 @@ class CharacterModel extends MainModel
      *
      * @return array
      */
-    private function getMedia($type='anime')
+    private function getMedia($type = 'anime')
     {
         $mediaography = [];
         $mediaography_index = 0;
@@ -162,7 +169,6 @@ class CharacterModel extends MainModel
         $mediaography_area = $mediaography_area->find('tr');
         if ($mediaography_area) {
             foreach ($mediaography_area as $each_media) {
-
                 $media_image = $each_media->find('td', 0);
                 $media_area = $each_media->find('td', 1);
 
@@ -174,6 +180,7 @@ class CharacterModel extends MainModel
                 $mediaography_index++;
             }
         }
+
         return $mediaography;
     }
 
@@ -190,7 +197,6 @@ class CharacterModel extends MainModel
         $va_area = $html->find('div[class=normal_header]', 1)->next_sibling();
         if ($va_area->tag == 'table') {
             while (true) {
-
                 $va_name_area = $va_area->find('td', 1);
                 $va[$va_index]['id'] = $this->getVaId($va_name_area);
                 $va[$va_index]['name'] = $this->getVaName($va_name_area);
@@ -205,11 +211,12 @@ class CharacterModel extends MainModel
                 }
             }
         }
+
         return $va;
     }
 
     /**
-     * Get Va Id
+     * Get Va Id.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $va_name_area
      *
@@ -219,11 +226,12 @@ class CharacterModel extends MainModel
     {
         $va_id = $va_name_area->find('a', 0)->href;
         $parsed_va_id = explode('/', $va_id);
+
         return $parsed_va_id[4];
     }
 
     /**
-     * Get Va Name
+     * Get Va Name.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $va_name_area
      *
@@ -235,7 +243,7 @@ class CharacterModel extends MainModel
     }
 
     /**
-     * Get Va role
+     * Get Va role.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $va_name_area
      *
@@ -247,7 +255,7 @@ class CharacterModel extends MainModel
     }
 
     /**
-     * Get Va image
+     * Get Va image.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $va_area
      *
@@ -256,6 +264,7 @@ class CharacterModel extends MainModel
     private function getVaImage($va_area)
     {
         $va_image = $va_area->find('img', 0)->src;
+
         return Helper::imageUrlCleaner($va_image);
     }
 

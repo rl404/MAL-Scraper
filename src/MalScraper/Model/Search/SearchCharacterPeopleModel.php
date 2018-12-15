@@ -15,7 +15,7 @@ class SearchCharacterPeopleModel extends MainModel
      *
      * @var string
      */
-	private $_type;
+    private $_type;
 
     /**
      * Search query.
@@ -36,15 +36,15 @@ class SearchCharacterPeopleModel extends MainModel
      *
      * @param string $type
      * @param string $query
-     * @param int $page
+     * @param int    $page
      * @param string $parserArea
      *
      * @return void
      */
-	public function __construct($type, $query, $page, $parserArea = '#content')
+    public function __construct($type, $query, $page, $parserArea = '#content')
     {
         $this->_type = $type;
-    	$this->_query = $query;
+        $this->_query = $query;
         $this->_page = 50 * ($page - 1);
 
         if ($type == 'character') {
@@ -52,7 +52,7 @@ class SearchCharacterPeopleModel extends MainModel
         } else {
             $this->_url = $this->_myAnimeListUrl.'/people.php?q='.$query.'&show='.$this->_page;
         }
-    	$this->_parserArea = $parserArea;
+        $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);
     }
@@ -67,8 +67,10 @@ class SearchCharacterPeopleModel extends MainModel
      */
     public function __call($method, $arguments)
     {
-        if ($this->_error)
+        if ($this->_error) {
             return $this->_error;
+        }
+
         return call_user_func_array([$this, $method], $arguments);
     }
 
@@ -82,6 +84,7 @@ class SearchCharacterPeopleModel extends MainModel
     private function getImage($result_area)
     {
         $image = $result_area->find('td', 0)->find('a img', 0)->src;
+
         return Helper::imageUrlCleaner($image);
     }
 
@@ -96,6 +99,7 @@ class SearchCharacterPeopleModel extends MainModel
     {
         $id = $name_area->find('a', 0)->href;
         $parsed_char_id = explode('/', $id);
+
         return $this->_type == 'character' ? $parsed_char_id[4] : $parsed_char_id[2];
     }
 
@@ -121,6 +125,7 @@ class SearchCharacterPeopleModel extends MainModel
     private function getNickname($name_area)
     {
         $nickname = $name_area->find('small', 0);
+
         return $nickname ? substr($nickname->plaintext, 1, strlen($nickname->plaintext) - 2) : '';
     }
 
@@ -148,6 +153,7 @@ class SearchCharacterPeopleModel extends MainModel
                 $role[$role_type][] = $temp_role;
             }
         }
+
         return $role;
     }
 
@@ -183,6 +189,7 @@ class SearchCharacterPeopleModel extends MainModel
                 break;
             }
         }
+
         return $data;
     }
 }

@@ -10,21 +10,21 @@ use MalScraper\Model\User\UserListModel as UserList;
 class UserCoverModel
 {
     /**
-     * Username
+     * Username.
      *
      * @var string
      */
-	private $_user;
+    private $_user;
 
     /**
-     * Either anime or manga
+     * Either anime or manga.
      *
      * @var string
      */
     private $_type;
 
     /**
-     * CSS style
+     * CSS style.
      *
      * @var string
      */
@@ -40,7 +40,7 @@ class UserCoverModel
      *
      * @return void
      */
-	public function __construct($user, $type, $style)
+    public function __construct($user, $type, $style)
     {
         $this->_user = $user;
         $this->_type = $type;
@@ -69,6 +69,7 @@ class UserCoverModel
             }
             $cover .= $temp."\n";
         }
+
         return $cover;
     }
 }

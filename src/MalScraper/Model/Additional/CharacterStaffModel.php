@@ -15,30 +15,30 @@ class CharacterStaffModel extends MainModel
      *
      * @var string
      */
-	private $_type;
+    private $_type;
 
     /**
      * Id of the anime or manga.
      *
      * @var string|int
      */
-	private $_id;
+    private $_id;
 
     /**
      * Default constructor.
      *
-     * @param string $type
+     * @param string     $type
      * @param string|int $id
-     * @param string $parserArea
+     * @param string     $parserArea
      *
      * @return void
      */
-	public function __construct($type, $id, $parserArea = '.js-scrollfix-bottom-rel')
+    public function __construct($type, $id, $parserArea = '.js-scrollfix-bottom-rel')
     {
-    	$this->_type = $type;
-    	$this->_id = $id;
+        $this->_type = $type;
+        $this->_id = $id;
         $this->_url = $this->_myAnimeListUrl.'/'.$type.'/'.$id;
-    	$this->_parserArea = $parserArea;
+        $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);
     }
@@ -53,8 +53,10 @@ class CharacterStaffModel extends MainModel
      */
     public function __call($method, $arguments)
     {
-        if ($this->_error)
+        if ($this->_error) {
             return $this->_error;
+        }
+
         return call_user_func_array([$this, $method], $arguments);
     }
 
@@ -75,7 +77,7 @@ class CharacterStaffModel extends MainModel
      */
     private function getId()
     {
-    	return $this->_id;
+        return $this->_id;
     }
 
     /**
@@ -118,11 +120,13 @@ class CharacterStaffModel extends MainModel
                 }
 
                 $char_table = $char_table->next_sibling();
-                if ($char_table->tag == 'br' || $char_table->tag == 'a' || $char_table->tag == 'h2' || $char_table->tag == 'div')
+                if ($char_table->tag == 'br' || $char_table->tag == 'a' || $char_table->tag == 'h2' || $char_table->tag == 'div') {
                     break;
+                }
                 $character_index++;
             }
         }
+
         return $character;
     }
 
@@ -136,6 +140,7 @@ class CharacterStaffModel extends MainModel
     private function getCharacterImage($char_table)
     {
         $char_image = $char_table->find('td .picSurround img', 0)->getAttribute('data-src');
+
         return Helper::imageUrlCleaner($char_image);
     }
 
@@ -150,6 +155,7 @@ class CharacterStaffModel extends MainModel
     {
         $char_id = $char_name_area->find('a', 0)->href;
         $char_id = explode('/', $char_id);
+
         return $char_id[4];
     }
 
@@ -188,6 +194,7 @@ class CharacterStaffModel extends MainModel
     {
         $va_id = $va_name_area->find('a', 0)->href;
         $va_id = explode('/', $va_id);
+
         return $va_id[4];
     }
 
@@ -213,6 +220,7 @@ class CharacterStaffModel extends MainModel
     private function getCharacterVaImage($each_va)
     {
         $va_image = $each_va->find('td', 1)->find('img', 0)->getAttribute('data-src');
+
         return Helper::imageUrlCleaner($va_image);
     }
 
@@ -250,12 +258,14 @@ class CharacterStaffModel extends MainModel
                     $staff[$staff_index]['role'] = $this->getCharacterRole($staff_name_area);
 
                     $staff_table = $staff_table->next_sibling();
-                    if (!$staff_table)
+                    if (!$staff_table) {
                         break;
+                    }
                     $staff_index++;
                 }
             }
         }
+
         return $staff;
     }
 

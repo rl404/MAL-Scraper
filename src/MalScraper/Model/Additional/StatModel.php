@@ -15,30 +15,30 @@ class StatModel extends MainModel
      *
      * @var string
      */
-	private $_type;
+    private $_type;
 
     /**
      * Id of the anime or manga.
      *
      * @var string|int
      */
-	private $_id;
+    private $_id;
 
     /**
      * Default constructor.
      *
-     * @param string $type
+     * @param string     $type
      * @param string|int $id
-     * @param string $parserArea
+     * @param string     $parserArea
      *
      * @return void
      */
-	public function __construct($type, $id, $parserArea = '.js-scrollfix-bottom-rel')
+    public function __construct($type, $id, $parserArea = '.js-scrollfix-bottom-rel')
     {
-    	$this->_type = $type;
-    	$this->_id = $id;
+        $this->_type = $type;
+        $this->_id = $id;
         $this->_url = $this->_myAnimeListUrl.'/'.$type.'/'.$id;
-    	$this->_parserArea = $parserArea;
+        $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);
     }
@@ -53,8 +53,10 @@ class StatModel extends MainModel
      */
     public function __call($method, $arguments)
     {
-        if ($this->_error)
+        if ($this->_error) {
             return $this->_error;
+        }
+
         return call_user_func_array([$this, $method], $arguments);
     }
 
@@ -75,7 +77,7 @@ class StatModel extends MainModel
      */
     private function getId()
     {
-    	return $this->_id;
+        return $this->_id;
     }
 
     /**
@@ -105,6 +107,7 @@ class StatModel extends MainModel
                 }
             }
         }
+
         return $summary;
     }
 
@@ -128,6 +131,7 @@ class StatModel extends MainModel
                 $score[] = $temp_score;
             }
         }
+
         return $score;
     }
 
@@ -154,6 +158,7 @@ class StatModel extends MainModel
     {
         $vote = $each_score->find('td', 1)->find('span small', 0)->plaintext;
         $vote = substr($vote, 1, strlen($vote) - 2);
+
         return str_replace(' votes', '', $vote);
     }
 
@@ -169,6 +174,7 @@ class StatModel extends MainModel
         $temp_vote = $each_score->find('td', 1)->find('span small', 0)->plaintext;
         $percent = $each_score->find('td', 1)->find('span', 0)->plaintext;
         $percent = str_replace([$temp_vote, '%'], '', $percent);
+
         return trim($percent);
     }
 
@@ -183,8 +189,9 @@ class StatModel extends MainModel
         $user_area = $this->_parser->find('.table-recently-updated', 0);
         if ($user_area) {
             foreach ($user_area->find('tr') as $each_user) {
-                if (!$each_user->find('td', 0)->find('div', 0))
+                if (!$each_user->find('td', 0)->find('div', 0)) {
                     continue;
+                }
 
                 $temp_user = [];
 
@@ -207,6 +214,7 @@ class StatModel extends MainModel
                 $user[] = $temp_user;
             }
         }
+
         return $user;
     }
 
@@ -233,6 +241,7 @@ class StatModel extends MainModel
     {
         $user_image = $username_area->find('a', 0)->style;
         $user_image = substr($user_image, 21, strlen($user_image) - 22);
+
         return Helper::imageUrlCleaner($user_image);
     }
 
@@ -264,13 +273,14 @@ class StatModel extends MainModel
      * Get user progress.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $each_user
-     * @param int $count
+     * @param int                                $count
      *
      * @return string
      */
     private function getUserProgress($each_user, $count = 3)
     {
         $progress = $each_user->find('td', $count)->plaintext;
+
         return str_replace(' ', '', $progress);
     }
 
@@ -278,7 +288,7 @@ class StatModel extends MainModel
      * Get user date.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $each_user
-     * @param int $count
+     * @param int                                $count
      *
      * @return string
      */

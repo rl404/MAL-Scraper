@@ -2,7 +2,6 @@
 
 namespace MalScraper\Model\Lists;
 
-use MalScraper\Helper\Helper;
 use MalScraper\Model\MainModel;
 
 /**
@@ -15,7 +14,7 @@ class AllGenreModel extends MainModel
      *
      * @var string
      */
-	private $_type;
+    private $_type;
 
     /**
      * Default constructor.
@@ -25,15 +24,15 @@ class AllGenreModel extends MainModel
      *
      * @return void
      */
-	public function __construct($type, $parserArea = '.anime-manga-search .genre-link')
+    public function __construct($type, $parserArea = '.anime-manga-search .genre-link')
     {
-    	$this->_type = $type;
+        $this->_type = $type;
         if ($type == 'anime') {
             $this->_url = $this->_myAnimeListUrl.'/anime.php';
         } else {
             $this->_url = $this->_myAnimeListUrl.'/manga.php';
         }
-    	$this->_parserArea = $parserArea;
+        $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);
     }
@@ -48,13 +47,15 @@ class AllGenreModel extends MainModel
      */
     public function __call($method, $arguments)
     {
-        if ($this->_error)
+        if ($this->_error) {
             return $this->_error;
+        }
+
         return call_user_func_array([$this, $method], $arguments);
     }
 
     /**
-     * Get genre count
+     * Get genre count.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $each_genre
      *
@@ -65,6 +66,7 @@ class AllGenreModel extends MainModel
         $count = $each_genre->plaintext;
         preg_match('/\([0-9,]+\)/', $count, $count);
         $count = substr($count[0], 1, strlen($count[0]) - 2);
+
         return str_replace(',', '', $count);
     }
 
@@ -91,6 +93,7 @@ class AllGenreModel extends MainModel
 
             $data[] = $genre;
         }
+
         return $data;
     }
 }

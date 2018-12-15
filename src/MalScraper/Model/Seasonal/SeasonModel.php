@@ -15,7 +15,7 @@ class SeasonModel extends MainModel
      *
      * @var string
      */
-	private $_year;
+    private $_year;
 
     /**
      * Season name. Either spring, summer, fall, or winter.
@@ -28,17 +28,17 @@ class SeasonModel extends MainModel
      * Default constructor.
      *
      * @param string|int $year
-     * @param string $season
-     * @param string $parserArea
+     * @param string     $season
+     * @param string     $parserArea
      *
      * @return void
      */
-	public function __construct($year = false, $season = false, $parserArea = '#content .js-categories-seasonal')
+    public function __construct($year = false, $season = false, $parserArea = '#content .js-categories-seasonal')
     {
         $this->_year = !$year ? date('Y') : $year;
-    	$this->_season = !$season ? Helper::getCurrentSeason() : $season;
+        $this->_season = !$season ? Helper::getCurrentSeason() : $season;
         $this->_url = $this->_myAnimeListUrl.'/anime/season/'.$this->_year.'/'.$this->_season;
-    	$this->_parserArea = $parserArea;
+        $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);
     }
@@ -53,8 +53,10 @@ class SeasonModel extends MainModel
      */
     public function __call($method, $arguments)
     {
-        if ($this->_error)
+        if ($this->_error) {
             return $this->_error;
+        }
+
         return call_user_func_array([$this, $method], $arguments);
     }
 
@@ -70,6 +72,7 @@ class SeasonModel extends MainModel
         $temp_image = $each_anime->find('div[class=image]', 0)->find('img', 0);
         $image = $temp_image->src;
         $image = !$image ? $temp_image->getAttribute('data-src') : $image;
+
         return Helper::imageUrlCleaner($image);
     }
 
@@ -84,6 +87,7 @@ class SeasonModel extends MainModel
     {
         $id = $name_area->find('p a', 0)->href;
         $parsed_char_id = explode('/', $id);
+
         return $parsed_char_id[4];
     }
 
@@ -118,6 +122,7 @@ class SeasonModel extends MainModel
 
             $producer[] = $temp_prod;
         }
+
         return $producer;
     }
 
@@ -132,6 +137,7 @@ class SeasonModel extends MainModel
     {
         $prod_id = $each_producer->href;
         $parsed_prod_id = explode('/', $prod_id);
+
         return $parsed_prod_id[3];
     }
 
@@ -158,6 +164,7 @@ class SeasonModel extends MainModel
     {
         $episode = $producer_area->find('div[class=eps]', 0)->plaintext;
         $episode = trim(str_replace(['eps', 'ep'], '', $episode));
+
         return $episode == '?' ? '' : $episode;
     }
 
@@ -187,6 +194,7 @@ class SeasonModel extends MainModel
         foreach ($genre_area->find('a') as $each_genre) {
             $genre[] = $each_genre->plaintext;
         }
+
         return $genre;
     }
 
@@ -206,6 +214,7 @@ class SeasonModel extends MainModel
         } else {
             $synopsis = '';
         }
+
         return $synopsis;
     }
 
@@ -220,6 +229,7 @@ class SeasonModel extends MainModel
     {
         $temp_licensor = $each_anime->find('div[class="synopsis js-synopsis"] .licensors', 0)->getAttribute('data-licensors');
         $licensor = explode(',', $temp_licensor);
+
         return array_filter($licensor);
     }
 
@@ -234,6 +244,7 @@ class SeasonModel extends MainModel
     {
         $type = $info_area->find('.info', 0)->plaintext;
         $type = explode('-', $type);
+
         return trim($type[0]);
     }
 
@@ -247,6 +258,7 @@ class SeasonModel extends MainModel
     private function getAiring($info_area)
     {
         $airing_start = $info_area->find('.info .remain-time', 0)->plaintext;
+
         return trim(str_replace(['?', ' ,'], ['', ','], $airing_start));
     }
 
@@ -260,6 +272,7 @@ class SeasonModel extends MainModel
     private function getMember($info_area)
     {
         $member = $info_area->find('.scormem span[class^=member]', 0)->plaintext;
+
         return trim(str_replace(',', '', $member));
     }
 
@@ -273,6 +286,7 @@ class SeasonModel extends MainModel
     private function getScore($info_area)
     {
         $score = $info_area->find('.scormem .score', 0)->plaintext;
+
         return trim(str_replace('N/A', '', $score));
     }
 
@@ -312,5 +326,4 @@ class SeasonModel extends MainModel
 
         return $data;
     }
-
 }

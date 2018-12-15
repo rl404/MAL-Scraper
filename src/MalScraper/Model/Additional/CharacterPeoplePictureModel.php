@@ -2,7 +2,6 @@
 
 namespace MalScraper\Model\Additional;
 
-use MalScraper\Helper\Helper;
 use MalScraper\Model\MainModel;
 
 /**
@@ -11,7 +10,7 @@ use MalScraper\Model\MainModel;
 class CharacterPeoplePictureModel extends MainModel
 {
     /**
-     * Type of the picture (either character or people)
+     * Type of the picture (either character or people).
      *
      * @var string
      */
@@ -22,19 +21,19 @@ class CharacterPeoplePictureModel extends MainModel
      *
      * @var string|int
      */
-	private $_id;
+    private $_id;
 
     /**
      * Default constructor.
      *
      * @param string|int $id
-     * @param string $parserArea
+     * @param string     $parserArea
      *
      * @return void
      */
-	public function __construct($type, $id, $parserArea = '#content table tr td')
+    public function __construct($type, $id, $parserArea = '#content table tr td')
     {
-    	$this->_type = $type;
+        $this->_type = $type;
         $this->_id = $id;
         if ($this->_type == 'people') {
             $this->_url = $this->_myAnimeListUrl.'/people/'.$id;
@@ -56,8 +55,10 @@ class CharacterPeoplePictureModel extends MainModel
      */
     public function __call($method, $arguments)
     {
-        if ($this->_error)
+        if ($this->_error) {
             return $this->_error;
+        }
+
         return call_user_func_array([$this, $method], $arguments);
     }
 
@@ -68,7 +69,6 @@ class CharacterPeoplePictureModel extends MainModel
      */
     private function getType()
     {
-        return null;
     }
 
     /**
@@ -78,7 +78,7 @@ class CharacterPeoplePictureModel extends MainModel
      */
     private function getId()
     {
-    	return $this->_id;
+        return $this->_id;
     }
 
     /**
@@ -97,6 +97,7 @@ class CharacterPeoplePictureModel extends MainModel
                 }
             }
         }
+
         return $data;
     }
 }

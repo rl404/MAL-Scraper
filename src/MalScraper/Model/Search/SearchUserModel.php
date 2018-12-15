@@ -28,17 +28,17 @@ class SearchUserModel extends MainModel
      * Default constructor.
      *
      * @param string $query
-     * @param int $page
+     * @param int    $page
      * @param string $parserArea
      *
      * @return void
      */
-	public function __construct($query, $page, $parserArea = '#content')
+    public function __construct($query, $page, $parserArea = '#content')
     {
-    	$this->_query = $query;
+        $this->_query = $query;
         $this->_page = 24 * ($page - 1);
         $this->_url = $this->_myAnimeListUrl.'/users.php?q='.$query.'&show='.$this->_page;
-    	$this->_parserArea = $parserArea;
+        $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);
     }
@@ -53,8 +53,10 @@ class SearchUserModel extends MainModel
      */
     public function __call($method, $arguments)
     {
-        if ($this->_error)
+        if ($this->_error) {
             return $this->_error;
+        }
+
         return call_user_func_array([$this, $method], $arguments);
     }
 
@@ -103,7 +105,9 @@ class SearchUserModel extends MainModel
     {
         $data = [];
         foreach ($this->_parser->find('.borderClass') as $user) {
-            if ($user->align != 'center') { continue; }
+            if ($user->align != 'center') {
+                continue;
+            }
 
             $temp_user = [];
 
