@@ -246,7 +246,7 @@ class InfoModel extends MainModel
     /**
      * Get clean other info.
      *
-     * @param string $info_type
+     * @param string                             $info_type
      * @param \simplehtmldom_1_5\simple_html_dom $next_info
      *
      * @return string
@@ -256,6 +256,7 @@ class InfoModel extends MainModel
         $info_value = $next_info->plaintext;
         $clean_info_value = trim(str_replace($info_type, '', $info_value));
         $clean_info_value = preg_replace("/([\s])+/", ' ', $clean_info_value);
+
         return str_replace([', add some', '?', 'Not yet aired', 'Unknown'], '', $clean_info_value);
     }
 
@@ -283,6 +284,7 @@ class InfoModel extends MainModel
             $clean_info_value['start'] = $start_air;
             $clean_info_value['end'] = $end_air;
         }
+
         return $clean_info_value;
     }
 
@@ -290,8 +292,8 @@ class InfoModel extends MainModel
      * Get cleaner other info.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $next_info
-     * @param string $clean_info_type
-     * @param string|array $clean_info_value
+     * @param string                             $clean_info_type
+     * @param string|array                       $clean_info_value
      *
      * @return string|array
      */
@@ -313,8 +315,10 @@ class InfoModel extends MainModel
                     $info_temp_index++;
                 }
             }
+
             return $info_temp;
         }
+
         return $clean_info_value;
     }
 

@@ -479,8 +479,8 @@ class MalScraper
     /**
      * Get user cover.
      *
-     * @param string $user  Username
-     * @param string $type  (Optional) Either anime or manga
+     * @param string      $user  Username
+     * @param string      $type  (Optional) Either anime or manga
      * @param string|bool $style (Optional) CSS style for the cover
      *
      * @return string
