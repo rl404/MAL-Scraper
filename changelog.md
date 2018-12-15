@@ -1,5 +1,10 @@
 ## Changelog
 
+### v1.4.0 - Dec 15, 2018
+- `Add` Feature: `media_id`, `media_title`, and `media_type` in character favorite list of `getUser()`
+- `Fix` Wrong user `blog_post` and `club` count in `getUser()`
+- `Update` Refactor all method (now use 500kb less memory allocation)
+
 ### v1.3.4 - Nov 9, 2018
 - `Update` Remove Cache and HTMLDomParser class
 

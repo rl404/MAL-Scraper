@@ -1,115 +1,54 @@
 <?php
 
-require_once '../vendor/autoload.php'; // Autoload files using Composer autoload
+require_once '../vendor/autoload.php';
 
 header('Content-Type: application/json');
-// header("Content-type: text/css; charset: UTF-8");
 
 use MalScraper\MalScraper;
 
 ini_set('max_execution_time', 0);
 
+//
+
 $myscraper = new MalScraper([
-    // 'enable_cache' => true,
-    // 'cache_time' => 3599,
-    // 'to_api' => true,
+	'enable_cache' => true,
+	'cache_time' => 2,
+	// 'to_api' => true
 ]);
 
-// get user info
-// $result = $myscraper->getUser('rl404');
-// $result = $myscraper->getUser('equinox7');
-// $result = $myscraper->getUser('MozillaFennekin');
-// $result = $myscraper->getUser('404');
+// $result = $myscraper->getInfo('anime', 1);
+// $result = $myscraper->getCharacter(62);
+// $result = $myscraper->getPeople(1868);
+// $result = $myscraper->getStudioProducer(1);
+$result = $myscraper->getMagazine(1);
+// $result = $myscraper->getGenre('manga', 1, 2);
 
-// get user friend
-// $result = $myscraper->getUserFriend('rl404');
-
-// get user history
-// $result = $myscraper->getUserHistory('rl404');
-// $result = $myscraper->getUserHistory('rl404','manga');
-
-// get user list
-// $result = $myscraper->getUserList('rl404', 'manga');
-
-// get user cover
-// $result = $myscraper->getUserCover('rl404','manga',".data.image a[href*='/{id}/']{background-image: url({url})}");
-
-// get anime info
-// $result = $myscraper->getInfo('anime', 37430);
-// $result = $myscraper->getInfo('anime', 38150
-
-// get manga info
-// $result = $myscraper->getInfo('manga', 66499);
-// $result = $myscraper->getInfo('manga', 114470);
-
-// get character
-// $result = $myscraper->getCharacter(12);
-// $result = $myscraper->getCharacter(163216);
-
-// get people
-// $result = $myscraper->getPeople(1123);
-// $result = $myscraper->getPeople(37418);
-
-// get list of all character + staff
-// $result = $myscraper->getCharacterStaff('anime', 1);
-
-// get detail stat
-// $result = $myscraper->getStat('anime', 1);
-// $result = $myscraper->getStat('manga', 2);
-
-// get additional pic
-// $result = $myscraper->getPicture('anime', 1);
-
-// get additional char pic
+// $result = $myscraper->getCharacterStaff('anime',1);
+// $result = $myscraper->getStat('manga',1);
+// $result = $myscraper->getPicture('anime',1);
 // $result = $myscraper->getCharacterPicture(1);
-
-// get additional people pic
 // $result = $myscraper->getPeoplePicture(1);
 
-// get what studio/producer produced
-// $result = $myscraper->getStudioProducer(1);
-
-// get what magazine produced
-// $result = $myscraper->getMagazine(1);
-
-// get which anime/manga has this genre
-// $result = $myscraper->getGenre('manga', 1);
-
-// get all anime genre
 // $result = $myscraper->getAllAnimeGenre();
-
-// get all manga genre
 // $result = $myscraper->getAllMangaGenre();
-
-// get all studio/producer
 // $result = $myscraper->getAllStudioProducer();
-
-// get all magazine
 // $result = $myscraper->getAllMagazine();
 
-// search anime
-// $result = $myscraper->searchAnime('etotama');
+// $result = $myscraper->searchAnime('naruto', 2);
+// $result = $myscraper->searchManga('naruto', 2);
+// $result = $myscraper->searchCharacter('naruto');
+// $result = $myscraper->searchPeople('masashi', 2);
+// $result = $myscraper->searchUser('rl404');
 
-// search manga
-// $result = $myscraper->searchManga('non');
+// $result = $myscraper->getSeason(2017,'summer');
 
-// search character
-// $result = $myscraper->searchCharacter('ohu');
-
-// search people
-// $result = $myscraper->searchPeople('mas');
-
-// search user
-// $result = $myscraper->searchUser('rl4');
-
-// get seasonal anime
-// $result = $myscraper->getSeason(2019,'winter');
-
-// get top anime
-// $result = $myscraper->getTopAnime(2);
-
-// get top manga
+// $result = $myscraper->getTopAnime(2,2);
 // $result = $myscraper->getTopManga();
 
-print_r(memory_get_usage()."\n");
+// $result = $myscraper->getUser('rl404');
+// $result = $myscraper->getUserFriend('rl404');
+// $result = $myscraper->getUserHistory('rl404', 'manga');
+// $result = $myscraper->getUserList('rl404', 'anime', 4);
+// $result = $myscraper->getUserCover('rl404', 'manga');
+
 print_r($result);

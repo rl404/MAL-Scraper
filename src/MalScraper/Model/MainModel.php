@@ -61,6 +61,10 @@ class MainModel
 	    if (empty($file_headers) || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
 	        return 404;
 	    }
+
+        if (empty($file_headers) || $file_headers[0] == 'HTTP/1.1 403 Forbidden') {
+            return 403;
+        }
 	    return 200;
 	}
 
@@ -104,8 +108,10 @@ class MainModel
         if (!$model->_error) {
             $header = self::getHeader($model->_url);
             if ($header == 200) {
-            	$additionalSetting = ($className == 'CharacterPeoplePictureModel');
-                $model->_parser = self::getParser(self::getAbsoluteUrl($model), $model->_parserArea, $additionalSetting);
+                if ($className != 'UserListModel') {
+                	$additionalSetting = ($className == 'CharacterPeoplePictureModel');
+                    $model->_parser = self::getParser(self::getAbsoluteUrl($model), $model->_parserArea, $additionalSetting);
+                }
             } else {
                 $model->_error = $header;
             }

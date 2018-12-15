@@ -9,26 +9,51 @@
  *
  * @since 26-09-2018
  *
- * @version 1.3.4
+ * @version 1.4.0
  *
  * @license MIT https://opensource.org/licenses/MIT
  */
 
 namespace MalScraper;
 
-require 'scraper/mal_scraper.php';
-
 use Cache;
+use MalScraper\Helper\Helper;
+
+use MalScraper\Model\General\InfoModel as Info;
+use MalScraper\Model\General\CharacterModel as Character;
+use MalScraper\Model\General\PeopleModel as People;
+use MalScraper\Model\General\ProducerModel as Producer;
+
+use MalScraper\Model\Additional\CharacterStaffModel as CharacterStaff;
+use MalScraper\Model\Additional\StatModel as Stat;
+use MalScraper\Model\Additional\PictureModel as Picture;
+use MalScraper\Model\Additional\CharacterPeoplePictureModel as CharacterPeoplePicture;
+
+use MalScraper\Model\Lists\AllGenreModel as AllGenre;
+use MalScraper\Model\Lists\AllProducerModel as AllProducer;
+
+use MalScraper\Model\Search\SearchAnimeMangaModel as SearchAnimeManga;
+use MalScraper\Model\Search\SearchCharacterPeopleModel as SearchCharacterPeople;
+use MalScraper\Model\Search\SearchUserModel as SearchUser;
+
+use MalScraper\Model\Seasonal\SeasonModel as Season;
+use MalScraper\Model\Top\TopModel as Top;
+
+use MalScraper\Model\User\UserModel as User;
+use MalScraper\Model\User\FriendModel as Friend;
+use MalScraper\Model\User\HistoryModel as History;
+use MalScraper\Model\User\UserListModel as UserList;
+use MalScraper\Model\User\UserCoverModel as UserCover;
 
 /**
  * Class MalScraper.
  */
 class MalScraper
 {
-    /**
+	/**
      * Cache class.
      *
-     * @var class
+     * @var Cache
      */
     private $_cache;
 
@@ -62,25 +87,22 @@ class MalScraper
      */
     public function __construct($config = false)
     {
-        if (!empty($config['enable_cache'])) {
+        if (!empty($config['enable_cache']) && $config['enable_cache'] === true) {
             // enable cache function
             $this->_enable_cache = $config['enable_cache'];
 
             // create cache class
             $this->_cache = new Cache();
-            $this->_cache->setCachePath(dirname(__FILE__).'/cache/');
-            $this->_cache->setCache('malScraper');
-            $this->_cache->eraseExpired();
+            $this->_cache->setCachePath(dirname(__FILE__).'/Cache/');
 
             // set cache time
             if (!empty($config['cache_time'])) {
                 $this->_cache_time = $config['cache_time'];
-                $this->_cache->eraseExpired($this->_cache_time);
             }
         }
 
         // to http response function
-        if (!empty($config['to_api'])) {
+        if (!empty($config['to_api']) && $config['to_api'] === true) {
             $this->_to_api = $config['to_api'];
         }
     }
@@ -91,7 +113,7 @@ class MalScraper
      * @param string $method
      * @param array  $arguments
      *
-     * @return json
+     * @return string
      */
     public function __call($method, $arguments)
     {
@@ -99,6 +121,9 @@ class MalScraper
 
         // if cache function enabled
         if ($this->_enable_cache === true) {
+        	$this->_cache->setCache(str_replace('get', '', $method));
+        	$this->_cache->eraseExpired($this->_cache_time);
+
             $cacheName = $method.'('.implode(',', $arguments).')';
             $isCached = $this->_cache->isCached($cacheName);
 
@@ -115,84 +140,9 @@ class MalScraper
         }
 
         // if to api function enabled
-        if ($this->_to_api === true) {
-            $result = self::response($result);
-        } else {
-            $result = self::toResponse($result);
-        }
-
-        return $result;
-    }
-
-    /**
-     * Convert return result into easy-to-read result.
-     *
-     * @param string/array $response
-     *
-     * @return string/array
-     */
-    private function toResponse($response)
-    {
-        switch ($response) {
-            case 400:
-                return 'Search query needs at least 3 letters';
-            case 403:
-                return 'Private user list';
-            case 404:
-                return 'Page not found';
-            default:
-                return $response;
-        }
-    }
-
-    /**
-     * Convert return result into http response.
-     *
-     * @param string/array $response
-     *
-     * @return json
-     */
-    private function response($response)
-    {
-        $result = [];
-        if (is_numeric($response)) {
-            header('HTTP/1.1 '.$response);
-            $result['status'] = $response;
-            $result['status_message'] = self::toResponse($response);
-            $result['data'] = [];
-        } else {
-            header('HTTP/1.1 '. 200);
-            $result['status'] = 200;
-            $result['status_message'] = 'Success';
-            $result['data'] = self::superEncode($response);
-        }
-
-        $json_response = json_encode($result, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-        $json_response = str_replace('\\\\', '', $json_response);
-
-        return $json_response;
-    }
-
-    /**
-     * Convert characters to UTF-8.
-     *
-     * @param array $array
-     *
-     * @return array
-     */
-    private function superEncode($array)
-    {
-        if (is_array($array) && $array) {
-            foreach ($array as $key => $value) {
-                if (is_array($value)) {
-                    $array[$key] = self::superEncode($value);
-                } else {
-                    $array[$key] = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
-                }
-            }
-        }
-
-        return $array;
+        if ($this->_to_api === true)
+            return Helper::response($result);
+        return Helper::toResponse($result);
     }
 
     /**
@@ -201,346 +151,346 @@ class MalScraper
      * @param string $type anime or manga
      * @param int    $id   id of the anime or manga
      *
-     * @return json \scraper\getInfo
+     * @return array
      */
-    private function getInfo()
-    {
-        return call_user_func_array('\scraper\getInfo', func_get_args());
-    }
+	private function getInfo($type, $id)
+	{
+		return (new Info($type, $id))->getAllInfo();
+	}
 
     /**
      * Get character information.
      *
-     * @param int $id id of character
+     * @param int    $id   id of the character
      *
-     * @return json \scraper\getCharacter
+     * @return array
      */
-    private function getCharacter()
+    private function getCharacter($id)
     {
-        return call_user_func_array('\scraper\getCharacter', func_get_args());
+        return (new Character($id))->getAllInfo();
     }
 
     /**
      * Get people information.
      *
-     * @param int $id id of people
+     * @param int    $id   id of the people
      *
-     * @return json \scraper\getPeople
+     * @return array
      */
-    private function getPeople()
+    private function getPeople($id)
     {
-        return call_user_func_array('\scraper\getPeople', func_get_args());
+        return (new People($id))->getAllInfo();
     }
 
     /**
-     * Get complete list of character and staff of anime or manga.
+     * Get anime/manga character + staff complete list.
      *
-     * @param string $type anime or manga
+     * @param string    $type   Either anime or manga
      * @param int    $id   id of the anime or manga
      *
-     * @return json \scraper\getCharacterStaff
+     * @return array
      */
-    private function getCharacterStaff()
+    private function getCharacterStaff($type, $id)
     {
-        return call_user_func_array('\scraper\getCharacterStaff', func_get_args());
+        return (new CharacterStaff($type, $id))->getAllInfo();
     }
 
     /**
-     * Get detail stat of anime or manga.
+     * Get anime/manga detail stat.
      *
-     * @param string $type anime or manga
+     * @param string    $type   Either anime or manga
      * @param int    $id   id of the anime or manga
      *
-     * @return json \scraper\getStat
+     * @return array
      */
-    private function getStat()
+    private function getStat($type, $id)
     {
-        return call_user_func_array('\scraper\getStat', func_get_args());
+        return (new Stat($type, $id))->getAllInfo();
     }
 
     /**
-     * Get addition picture of anime or manga.
+     * Get anime/manga additional pictures.
      *
-     * @param string $type anime or manga
+     * @param string    $type   Either anime or manga
      * @param int    $id   id of the anime or manga
      *
-     * @return json \scraper\getPicture
+     * @return array
      */
-    private function getPicture()
+    private function getPicture($type, $id)
     {
-        return call_user_func_array('\scraper\getPicture', func_get_args());
+        return (new Picture($type, $id))->getAllInfo();
     }
 
     /**
-     * Get addition picture of character.
+     * Get character additional pictures.
      *
-     * @param int $id id of the character
+     * @param int    $id   id of the character
      *
-     * @return json \scraper\getCharacterPicture
+     * @return array
      */
-    private function getCharacterPicture()
+    private function getCharacterPicture($id)
     {
-        return call_user_func_array('\scraper\getCharacterPicture', func_get_args());
+        return (new CharacterPeoplePicture('character', $id))->getAllInfo();
     }
 
     /**
-     * Get addition picture of people.
+     * Get people additional pictures.
      *
-     * @param int $id id of the people
+     * @param int    $id   id of the people
      *
-     * @return json \scraper\getPeoplePicture
+     * @return array
      */
-    private function getPeoplePicture()
+    private function getPeoplePicture($id)
     {
-        return call_user_func_array('\scraper\getPeoplePicture', func_get_args());
+        return (new CharacterPeoplePicture('people', $id))->getAllInfo();
     }
 
     /**
-     * Get list of anime produced by selected studio/producer.
+     * Get all anime produced by the studio/producer.
      *
-     * @param int $id   id of studio/producer
-     * @param int $page page of result list
+     * @param int    $id   id of the studio/producer
+     * @param int    $page   (Optional) Page number
      *
-     * @return json \scraper\getStudioProducer
+     * @return array
      */
-    private function getStudioProducer()
+    private function getStudioProducer($id, $page = 1)
     {
-        return call_user_func_array('\scraper\getStudioProducer', func_get_args());
+        return (new Producer('anime', 'producer', $id, $page))->getAllInfo();
     }
 
     /**
-     * Get list of manga produced by selected magazine.
+     * Get all manga serialized by the magazine.
      *
-     * @param int $id   id of magazine
-     * @param int $page page of result list
+     * @param int    $id   id of the magazine
+     * @param int    $page   (Optional) Page number
      *
-     * @return json \scraper\getMagazine
+     * @return array
      */
-    private function getMagazine()
+    private function getMagazine($id, $page = 1)
     {
-        return call_user_func_array('\scraper\getMagazine', func_get_args());
+        return (new Producer('manga', 'producer', $id, $page))->getAllInfo();
     }
 
     /**
-     * Get list of anime contain selected genre.
+     * Get all anime or manga that has the genre.
      *
-     * @param string $type anime or manga
-     * @param int    $id   id of genre
-     * @param int    $page page of result list
+     * @param string    $type   Either anime or manga
+     * @param int    $id   id of the genre
+     * @param int    $page   (Optional) Page number
      *
-     * @return json \scraper\getGenre
+     * @return array
      */
-    private function getGenre()
+    private function getGenre($type, $id, $page = 1)
     {
-        return call_user_func_array('\scraper\getGenre', func_get_args());
+        return (new Producer($type, 'genre', $id, $page))->getAllInfo();
     }
 
     /**
      * Get list of all anime genre.
      *
-     * @return json \scraper\getAllAnimeGenre
+     * @return array
      */
     private function getAllAnimeGenre()
     {
-        return call_user_func_array('\scraper\getAllAnimeGenre', func_get_args());
+        return (new AllGenre('anime'))->getAllInfo();
     }
 
     /**
      * Get list of all manga genre.
      *
-     * @return json \scraper\getAllMangaGenre
+     * @return array
      */
     private function getAllMangaGenre()
     {
-        return call_user_func_array('\scraper\getAllMangaGenre', func_get_args());
+        return (new AllGenre('manga'))->getAllInfo();
     }
 
     /**
      * Get list of all anime studio/producer.
      *
-     * @return json \scraper\getAllStudioProducer
+     * @return array
      */
     private function getAllStudioProducer()
     {
-        return call_user_func_array('\scraper\getAllStudioProducer', func_get_args());
+        return (new AllProducer('anime'))->getAllInfo();
     }
 
     /**
      * Get list of all manga magazine.
      *
-     * @return json \scraper\getAllMagazine
+     * @return array
      */
     private function getAllMagazine()
     {
-        return call_user_func_array('\scraper\getAllMagazine', func_get_args());
+        return (new AllProducer('manga'))->getAllInfo();
     }
 
     /**
-     * Get list of result of anime search.
+     * Get anime search result.
      *
-     * @param string $q    search query
-     * @param int    $page page of result list
+     * @param string    $query   Search query
+     * @param int    $page   (Optional) Page number
      *
-     * @return json \scraper\searchAnime
+     * @return array
      */
-    private function searchAnime()
+    private function searchAnime($query, $page=1)
     {
-        return call_user_func_array('\scraper\searchAnime', func_get_args());
+        return (new SearchAnimeManga('anime', $query, $page))->getAllInfo();
     }
 
     /**
-     * Get list of result of manga search.
+     * Get manga search result.
      *
-     * @param string $q    search query
-     * @param int    $page page of result list
+     * @param string    $query   Search query
+     * @param int    $page   (Optional) Page number
      *
-     * @return json \scraper\searchManga
+     * @return array
      */
-    private function searchManga()
+    private function searchManga($query, $page=1)
     {
-        return call_user_func_array('\scraper\searchManga', func_get_args());
+        return (new SearchAnimeManga('manga', $query, $page))->getAllInfo();
     }
 
     /**
-     * Get list of result of character search.
+     * Get character search result.
      *
-     * @param string $q    search query
-     * @param int    $page page of result list
+     * @param string    $query   Search query
+     * @param int    $page   (Optional) Page number
      *
-     * @return json \scraper\searchCharacter
+     * @return array
      */
-    private function searchCharacter()
+    private function searchCharacter($query, $page=1)
     {
-        return call_user_func_array('\scraper\searchCharacter', func_get_args());
+        return (new SearchCharacterPeople('character', $query, $page))->getAllInfo();
     }
 
     /**
-     * Get list of result of people search.
+     * Get people search result.
      *
-     * @param string $q    search query
-     * @param int    $page page of result list
+     * @param string    $query   Search query
+     * @param int    $page   (Optional) Page number
      *
-     * @return json \scraper\searchPeople
+     * @return array
      */
-    private function searchPeople()
+    private function searchPeople($query, $page=1)
     {
-        return call_user_func_array('\scraper\searchPeople', func_get_args());
+        return (new SearchCharacterPeople('people', $query, $page))->getAllInfo();
     }
 
     /**
-     * Get list of result of user search.
+     * Get user search result.
      *
-     * @param string $q    search query
-     * @param int    $page page of result list
+     * @param string    $query   Search query
+     * @param int    $page   (Optional) Page number
      *
-     * @return json \scraper\searchUser
+     * @return array
      */
-    private function searchUser()
+    private function searchUser($query, $page=1)
     {
-        return call_user_func_array('\scraper\searchUser', func_get_args());
+        return (new SearchUser($query, $page))->getAllInfo();
     }
 
     /**
-     * Get list of anime of the season.
+     * Get seasonal anime.
      *
-     * @param string $year   year of the season (current year for default)
-     * @param string $season summer, spring, fall, winter (current season for default)
+     * @param string|int    $year   (Optional) Season year
+     * @param string        $season   (Optional) Season (summer,spring,fall,winter)
      *
-     * @return json \scraper\getSeason
+     * @return array
      */
-    private function getSeason()
+    private function getSeason($year = false, $season = false)
     {
-        return call_user_func_array('\scraper\getSeason', func_get_args());
+        return (new Season($year, $season))->getAllInfo();
     }
 
     /**
-     * Get list of top anime.
+     * Get top anime.
      *
-     * @param int $type type of top anime
-     * @param int $page page of top list
+     * @param string   $type   (Optional) Type of anime
+     * @param int        $page   (Optional) Page number
      *
-     * @return json \scraper\getTopAnime
+     * @return array
      */
-    private function getTopAnime()
+    private function getTopAnime($type = 0, $page = 1)
     {
-        return call_user_func_array('\scraper\getTopAnime', func_get_args());
+        return (new Top('anime', $type, $page))->getAllInfo();
     }
 
     /**
-     * Get list of top manga.
+     * Get top manga.
      *
-     * @param int $type type of top manga
-     * @param int $page page of top list
+     * @param string   $type   (Optional) Type of manga
+     * @param int        $page   (Optional) Page number
      *
-     * @return json \scraper\getTopManga
+     * @return array
      */
-    private function getTopManga()
+    private function getTopManga($type = 0, $page = 1)
     {
-        return call_user_func_array('\scraper\getTopManga', func_get_args());
+        return (new Top('manga', $type, $page))->getAllInfo();
     }
 
     /**
-     * Get user information.
+     * Get user info.
      *
-     * @param string $user username
+     * @param string   $user   Username
      *
-     * @return json \scraper\getUser
+     * @return array
      */
-    private function getUser()
+    private function getUser($user)
     {
-        return call_user_func_array('\scraper\getUser', func_get_args());
+        return (new User($user))->getAllInfo();
     }
 
     /**
-     * Get user's friend list.
+     * Get user friend list.
      *
-     * @param string $user username
+     * @param string   $user   Username
      *
-     * @return json \scraper\getUserFriend
+     * @return array
      */
-    private function getUserFriend()
+    private function getUserFriend($user)
     {
-        return call_user_func_array('\scraper\getUserFriend', func_get_args());
+        return (new Friend($user))->getAllInfo();
     }
 
     /**
-     * Get user's history information.
+     * Get user history.
      *
-     * @param string $user username
-     * @param string $type anime or manga (optional) (both for default)
+     * @param string   $user   Username
+     * @param string   $type   (Optional) Either anime or manga
      *
-     * @return json \scraper\getUserHistory
+     * @return array
      */
-    private function getUserHistory()
+    private function getUserHistory($user, $type = false)
     {
-        return call_user_func_array('\scraper\getUserHistory', func_get_args());
+        return (new History($user, $type))->getAllInfo();
     }
 
     /**
-     * Get user's anime or manga list.
+     * Get user list.
      *
-     * @param string $user   username
-     * @param string $type   anime or manga (optional) (anime for default)
-     * @param int    $status watching,completed,on hold, etc (optional)
+     * @param string   $user   Username
+     * @param string   $type   (Optional) Either anime or manga
+     * @param string   $status   (Optional) Anime/manga status
      *
-     * @return json \scraper\getUserList
+     * @return array
      */
-    private function getUserList()
+    private function getUserList($user, $type = 'anime', $status = 7)
     {
-        return call_user_func_array('\scraper\getUserList', func_get_args());
+        return (new UserList($user, $type, $status))->getAllInfo();
     }
 
     /**
-     * Get user's anime or manga list cover.
+     * Get user cover.
      *
-     * @param string $user  username
-     * @param string $type  anime or manga (optional) (anime for default)
-     * @param string $style css for each cover (optional)
+     * @param string   $user   Username
+     * @param string   $type   (Optional) Either anime or manga
+     * @param string   $style   (Optional) CSS style for the cover
      *
-     * @return json \scraper\getUserList
+     * @return array
      */
-    private function getUserCover()
+    private function getUserCover($user, $type = 'anime', $style = false)
     {
-        return call_user_func_array('\scraper\getUserCover', func_get_args());
+        return (new UserCover($user, $type, $style))->getAllInfo();
     }
 }
