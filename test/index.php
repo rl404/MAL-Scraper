@@ -24,7 +24,7 @@ $myscraper = new MalScraper([
 // $result = $myscraper->getGenre('manga', 1, 2);
 
 // $result = $myscraper->getCharacterStaff('anime',1);
-// $result = $myscraper->getStat('manga',1);
+$result = $myscraper->getStat('manga',1);
 // $result = $myscraper->getPicture('anime',1);
 // $result = $myscraper->getCharacterPicture(1);
 // $result = $myscraper->getPeoplePicture(1);
@@ -40,7 +40,7 @@ $myscraper = new MalScraper([
 // $result = $myscraper->searchPeople('masashi', 2);
 // $result = $myscraper->searchUser('rl404');
 
-$result = $myscraper->getSeason(2017, 'winter');
+// $result = $myscraper->getSeason(2017, 'winter');
 
 // $result = $myscraper->getTopAnime(1);
 // $result = $myscraper->getTopManga();

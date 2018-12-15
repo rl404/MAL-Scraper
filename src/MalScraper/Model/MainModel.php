@@ -172,14 +172,4 @@ class MainModel
 
         return $className[count($className) - 1];
     }
-
-    /**
-     * Get default type.
-     *
-     * @return string
-     */
-    public function getType()
-    {
-        return 'anime';
-    }
 }
