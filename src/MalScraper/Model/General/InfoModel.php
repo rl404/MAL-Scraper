@@ -291,7 +291,7 @@ class InfoModel extends MainModel
      *
      * @param \simplehtmldom_1_5\simple_html_dom $next_info
      * @param string $clean_info_type
-     * @param string $clean_info_value
+     * @param string|array $clean_info_value
      *
      * @return string|array
      */

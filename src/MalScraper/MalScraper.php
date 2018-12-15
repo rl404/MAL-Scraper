@@ -389,8 +389,8 @@ class MalScraper
     /**
      * Get seasonal anime.
      *
-     * @param string|int $year   (Optional) Season year
-     * @param string     $season (Optional) Season (summer,spring,fall,winter)
+     * @param string|int|bool $year   (Optional) Season year
+     * @param string|bool     $season (Optional) Season (summer,spring,fall,winter)
      *
      * @return array
      */
@@ -481,7 +481,7 @@ class MalScraper
      *
      * @param string $user  Username
      * @param string $type  (Optional) Either anime or manga
-     * @param string $style (Optional) CSS style for the cover
+     * @param string|bool $style (Optional) CSS style for the cover
      *
      * @return string
      */

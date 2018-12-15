@@ -61,7 +61,7 @@ class Helper
      *
      * @param array $array
      *
-     * @return array
+     * @return array|string
      */
     private static function superEncode($array)
     {
