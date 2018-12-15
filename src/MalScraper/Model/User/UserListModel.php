@@ -11,21 +11,21 @@ use MalScraper\Model\MainModel;
 class UserListModel extends MainModel
 {
     /**
-     * Username
+     * Username.
      *
      * @var string
      */
-	private $_user;
+    private $_user;
 
     /**
-     * Either anime or manga
+     * Either anime or manga.
      *
      * @var string
      */
     private $_type;
 
     /**
-     * Anime/manga status
+     * Anime/manga status.
      *
      * @var string
      */
@@ -41,13 +41,13 @@ class UserListModel extends MainModel
      *
      * @return void
      */
-	public function __construct($user, $type, $status, $parserArea = '#content')
+    public function __construct($user, $type, $status, $parserArea = '#content')
     {
         $this->_user = $user;
         $this->_type = $type;
-    	$this->_status = $status;
+        $this->_status = $status;
         $this->_url = $this->_myAnimeListUrl.'/'.$type.'list/'.$user.'?status='.$status;
-    	$this->_parserArea = $parserArea;
+        $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);
     }
@@ -62,8 +62,10 @@ class UserListModel extends MainModel
      */
     public function __call($method, $arguments)
     {
-        if ($this->_error)
+        if ($this->_error) {
             return $this->_error;
+        }
+
         return call_user_func_array([$this, $method], $arguments);
     }
 

@@ -15,30 +15,30 @@ class InfoModel extends MainModel
      *
      * @var string
      */
-	private $_type;
+    private $_type;
 
     /**
      * Id of the anime or manga.
      *
      * @var string|int
      */
-	private $_id;
+    private $_id;
 
     /**
      * Default constructor.
      *
-     * @param string $type
+     * @param string     $type
      * @param string|int $id
-     * @param string $parserArea
+     * @param string     $parserArea
      *
      * @return void
      */
-	public function __construct($type, $id, $parserArea = '#content')
+    public function __construct($type, $id, $parserArea = '#content')
     {
-    	$this->_type = $type;
-    	$this->_id = $id;
+        $this->_type = $type;
+        $this->_id = $id;
         $this->_url = $this->_myAnimeListUrl.'/'.$type.'/'.$id;
-    	$this->_parserArea = $parserArea;
+        $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);
     }
@@ -53,8 +53,10 @@ class InfoModel extends MainModel
      */
     public function __call($method, $arguments)
     {
-        if ($this->_error)
+        if ($this->_error) {
             return $this->_error;
+        }
+
         return call_user_func_array([$this, $method], $arguments);
     }
 
@@ -65,7 +67,7 @@ class InfoModel extends MainModel
      */
     private function getId()
     {
-    	return $this->_id;
+        return $this->_id;
     }
 
     /**
@@ -76,6 +78,7 @@ class InfoModel extends MainModel
     private function getCover()
     {
         $anime_cover = $this->_parser->find('img.ac', 0);
+
         return $anime_cover ? $anime_cover->src : '';
     }
 
@@ -87,6 +90,7 @@ class InfoModel extends MainModel
     private function getTitle()
     {
         $anime_cover = $this->_parser->find('img.ac', 0);
+
         return $anime_cover ? $anime_cover->alt : '';
     }
 
@@ -123,9 +127,10 @@ class InfoModel extends MainModel
         $synopsis = $this->_parser->find('span[itemprop=description]', 0);
         if ($synopsis) {
             $synopsis = $synopsis->plaintext;
+
             return trim(preg_replace('/\n[^\S\n]*/', "\n", $synopsis));
         } else {
-            return null;
+            return;
         }
     }
 
@@ -138,6 +143,7 @@ class InfoModel extends MainModel
     {
         $score = $this->_parser->find('div[class="fl-l score"]', 0)->plaintext;
         $score = trim($score);
+
         return $score != 'N/A' ? $score : null;
     }
 
@@ -149,6 +155,7 @@ class InfoModel extends MainModel
     private function getVoter()
     {
         $voter = $this->_parser->find('div[class="fl-l score"]', 0)->getAttribute('data-user');
+
         return trim(str_replace(['users', 'user', ','], '', $voter));
     }
 
@@ -161,6 +168,7 @@ class InfoModel extends MainModel
     {
         $rank = $this->_parser->find('span[class="numbers ranked"] strong', 0)->plaintext;
         $rank = $rank != 'N/A' ? $rank : '';
+
         return str_replace('#', '', $rank);
     }
 
@@ -172,6 +180,7 @@ class InfoModel extends MainModel
     private function getPopularity()
     {
         $popularity = $this->_parser->find('span[class="numbers popularity"] strong', 0)->plaintext;
+
         return str_replace('#', '', $popularity);
     }
 
@@ -183,6 +192,7 @@ class InfoModel extends MainModel
     private function getMembers()
     {
         $member = $this->_parser->find('span[class="numbers members"] strong', 0)->plaintext;
+
         return str_replace(',', '', $member);
     }
 
@@ -198,6 +208,7 @@ class InfoModel extends MainModel
         $favorite = $favorite->plaintext;
         $favorite = trim(str_replace($favorite_title, '', $favorite));
         $favorite = str_replace(',', '', $favorite);
+
         return preg_replace("/([\s])+/", ' ', $favorite);
     }
 
@@ -265,6 +276,7 @@ class InfoModel extends MainModel
                 break;
             }
         }
+
         return $info;
     }
 
@@ -299,6 +311,7 @@ class InfoModel extends MainModel
                 $related[$rel_type] = $each_rel;
             }
         }
+
         return $related;
     }
 
@@ -315,12 +328,11 @@ class InfoModel extends MainModel
         if ($character_area) {
             $character_list = [
                 $character_area->find('div[class*=fl-l]', 0),
-                $character_area->find('div[class*=fl-r]', 0)
+                $character_area->find('div[class*=fl-r]', 0),
             ];
             foreach ($character_list as $character_side) {
                 if ($character_side) {
                     foreach ($character_side->find('table[width=100%]') as $each_char) {
-
                         $char = $each_char->find('tr td', 1);
                         $va = $each_char->find('table td', 0);
 
@@ -344,6 +356,7 @@ class InfoModel extends MainModel
                 }
             }
         }
+
         return $character;
     }
 
@@ -360,7 +373,7 @@ class InfoModel extends MainModel
         if ($staff_area) {
             $staff_list = [
                 $staff_area->find('div[class*=fl-l]', 0),
-                $staff_area->find('div[class*=fl-r]', 0)
+                $staff_area->find('div[class*=fl-r]', 0),
             ];
             foreach ($staff_list as $staff_side) {
                 if ($staff_side) {
@@ -377,11 +390,12 @@ class InfoModel extends MainModel
                 }
             }
         }
+
         return $staff;
     }
 
     /**
-     * Get staff id
+     * Get staff id.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $st
      *
@@ -391,14 +405,15 @@ class InfoModel extends MainModel
     {
         $staff_id = $st->find('a', 0)->href;
         $staff_id = explode('/', $staff_id);
+
         return $staff_id[4];
     }
 
     /**
-     * Get staff name
+     * Get staff name.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $st
-     * @param bool $va (Optional)
+     * @param bool                               $va (Optional)
      *
      * @return string
      */
@@ -407,11 +422,12 @@ class InfoModel extends MainModel
         if ($va) {
             return $st->find('a', 0)->plaintext;
         }
+
         return trim(preg_replace('/\s+/', ' ', $st->find('a', 0)->plaintext));
     }
 
     /**
-     * Get staff role
+     * Get staff role.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $st
      *
@@ -423,10 +439,10 @@ class InfoModel extends MainModel
     }
 
     /**
-     * Get staff image
+     * Get staff image.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $each_staff
-     * @param bool $va (Optional)
+     * @param bool                               $va         (Optional)
      *
      * @return string
      */
@@ -437,6 +453,7 @@ class InfoModel extends MainModel
         } else {
             $staff_image = $each_staff->find('tr td', 0)->find('img', 0)->getAttribute('data-src');
         }
+
         return Helper::imageUrlCleaner($staff_image);
     }
 
@@ -463,6 +480,7 @@ class InfoModel extends MainModel
                 $song['closing'][] = $each_song;
             }
         }
+
         return $song;
     }
 
@@ -493,11 +511,11 @@ class InfoModel extends MainModel
             'related'   => $this->getRelated(),
             'character' => $this->getCharacter(),
             'staff'     => $this->getStaff(),
-            'song'      => $this->getSong()
+            'song'      => $this->getSong(),
         ];
 
         $data = array_merge($data, $data2);
 
-    	return $data;
+        return $data;
     }
 }

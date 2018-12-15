@@ -15,7 +15,7 @@ class SearchAnimeMangaModel extends MainModel
      *
      * @var string
      */
-	private $_type;
+    private $_type;
 
     /**
      * Search query.
@@ -36,15 +36,15 @@ class SearchAnimeMangaModel extends MainModel
      *
      * @param string $type
      * @param string $query
-     * @param int $page
+     * @param int    $page
      * @param string $parserArea
      *
      * @return void
      */
-	public function __construct($type, $query, $page, $parserArea = 'div[class^=js-categories-seasonal]')
+    public function __construct($type, $query, $page, $parserArea = 'div[class^=js-categories-seasonal]')
     {
         $this->_type = $type;
-    	$this->_query = $query;
+        $this->_query = $query;
         $this->_page = 50 * ($page - 1);
 
         if ($type == 'anime') {
@@ -52,7 +52,7 @@ class SearchAnimeMangaModel extends MainModel
         } else {
             $this->_url = $this->_myAnimeListUrl.'/manga.php?q='.$query.'&show='.$this->_page;
         }
-    	$this->_parserArea = $parserArea;
+        $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);
     }
@@ -67,8 +67,10 @@ class SearchAnimeMangaModel extends MainModel
      */
     public function __call($method, $arguments)
     {
-        if ($this->_error)
+        if ($this->_error) {
             return $this->_error;
+        }
+
         return call_user_func_array([$this, $method], $arguments);
     }
 
@@ -82,6 +84,7 @@ class SearchAnimeMangaModel extends MainModel
     private function getImage($result_area)
     {
         $image = $result_area->find('td', 0)->find('a img', 0)->getAttribute('data-src');
+
         return Helper::imageUrlCleaner($image);
     }
 
@@ -95,6 +98,7 @@ class SearchAnimeMangaModel extends MainModel
     private function getId($name_area)
     {
         $id = $name_area->find('div[id^=sarea]', 0)->id;
+
         return str_replace('sarea', '', $id);
     }
 
@@ -120,6 +124,7 @@ class SearchAnimeMangaModel extends MainModel
     private function getSummary($name_area)
     {
         $summary = $name_area->find('.pt4', 0)->plaintext;
+
         return str_replace('read more.', '', $summary);
     }
 
@@ -133,6 +138,7 @@ class SearchAnimeMangaModel extends MainModel
     private function getType($result_area)
     {
         $type = $result_area->find('td', 2)->plaintext;
+
         return trim($type);
     }
 
@@ -147,6 +153,7 @@ class SearchAnimeMangaModel extends MainModel
     {
         $episode = $result_area->find('td', 3)->plaintext;
         $episode = trim($episode);
+
         return $episode == '-' ? '' : $episode;
     }
 
@@ -161,6 +168,7 @@ class SearchAnimeMangaModel extends MainModel
     {
         $score = $result_area->find('td', 4)->plaintext;
         $score = trim($score);
+
         return $score == 'N/A' ? '' : $score;
     }
 
@@ -200,6 +208,7 @@ class SearchAnimeMangaModel extends MainModel
                 break;
             }
         }
+
         return $data;
     }
 }

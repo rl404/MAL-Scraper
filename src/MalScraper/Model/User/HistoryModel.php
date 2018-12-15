@@ -2,7 +2,6 @@
 
 namespace MalScraper\Model\User;
 
-use MalScraper\Helper\Helper;
 use MalScraper\Model\MainModel;
 
 /**
@@ -11,14 +10,14 @@ use MalScraper\Model\MainModel;
 class HistoryModel extends MainModel
 {
     /**
-     * Username
+     * Username.
      *
      * @var string
      */
-	private $_user;
+    private $_user;
 
     /**
-     * Either anime or manga
+     * Either anime or manga.
      *
      * @var string
      */
@@ -33,15 +32,15 @@ class HistoryModel extends MainModel
      *
      * @return void
      */
-	public function __construct($user, $type, $parserArea = '#content')
+    public function __construct($user, $type, $parserArea = '#content')
     {
         $this->_user = $user;
-    	$this->_type = $type;
+        $this->_type = $type;
         $this->_url = $this->_myAnimeListUrl.'/history/'.$user;
         if ($this->_type) {
             $this->_url .= '/'.$type;
         }
-    	$this->_parserArea = $parserArea;
+        $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);
     }
@@ -56,8 +55,10 @@ class HistoryModel extends MainModel
      */
     public function __call($method, $arguments)
     {
-        if ($this->_error)
+        if ($this->_error) {
             return $this->_error;
+        }
+
         return call_user_func_array([$this, $method], $arguments);
     }
 
@@ -72,6 +73,7 @@ class HistoryModel extends MainModel
     {
         $temp_id = $name_area->find('a', 0)->href;
         $temp_id = explode('=', $temp_id);
+
         return $temp_id[1];
     }
 
@@ -98,6 +100,7 @@ class HistoryModel extends MainModel
     {
         $type = $name_area->find('a', 0)->href;
         $type = explode('.php', $type);
+
         return substr($type[0], 1);
     }
 
@@ -128,6 +131,7 @@ class HistoryModel extends MainModel
         if ($useless_date) {
             $date = str_replace($useless_date, '', $date);
         }
+
         return trim($date);
     }
 
@@ -155,10 +159,9 @@ class HistoryModel extends MainModel
                 $h_temp['date'] = $this->getDate($history);
 
                 $data[] = $h_temp;
-
             }
         }
-        return $data;
 
+        return $data;
     }
 }

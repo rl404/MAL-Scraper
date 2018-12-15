@@ -18,39 +18,33 @@ namespace MalScraper;
 
 use Cache;
 use MalScraper\Helper\Helper;
-
-use MalScraper\Model\General\InfoModel as Info;
+use MalScraper\Model\Additional\CharacterPeoplePictureModel as CharacterPeoplePicture;
+use MalScraper\Model\Additional\CharacterStaffModel as CharacterStaff;
+use MalScraper\Model\Additional\PictureModel as Picture;
+use MalScraper\Model\Additional\StatModel as Stat;
 use MalScraper\Model\General\CharacterModel as Character;
+use MalScraper\Model\General\InfoModel as Info;
 use MalScraper\Model\General\PeopleModel as People;
 use MalScraper\Model\General\ProducerModel as Producer;
-
-use MalScraper\Model\Additional\CharacterStaffModel as CharacterStaff;
-use MalScraper\Model\Additional\StatModel as Stat;
-use MalScraper\Model\Additional\PictureModel as Picture;
-use MalScraper\Model\Additional\CharacterPeoplePictureModel as CharacterPeoplePicture;
-
 use MalScraper\Model\Lists\AllGenreModel as AllGenre;
 use MalScraper\Model\Lists\AllProducerModel as AllProducer;
-
 use MalScraper\Model\Search\SearchAnimeMangaModel as SearchAnimeManga;
 use MalScraper\Model\Search\SearchCharacterPeopleModel as SearchCharacterPeople;
 use MalScraper\Model\Search\SearchUserModel as SearchUser;
-
 use MalScraper\Model\Seasonal\SeasonModel as Season;
 use MalScraper\Model\Top\TopModel as Top;
-
-use MalScraper\Model\User\UserModel as User;
 use MalScraper\Model\User\FriendModel as Friend;
 use MalScraper\Model\User\HistoryModel as History;
-use MalScraper\Model\User\UserListModel as UserList;
 use MalScraper\Model\User\UserCoverModel as UserCover;
+use MalScraper\Model\User\UserListModel as UserList;
+use MalScraper\Model\User\UserModel as User;
 
 /**
  * Class MalScraper.
  */
 class MalScraper
 {
-	/**
+    /**
      * Cache class.
      *
      * @var Cache
@@ -121,8 +115,8 @@ class MalScraper
 
         // if cache function enabled
         if ($this->_enable_cache === true) {
-        	$this->_cache->setCache(str_replace('get', '', $method));
-        	$this->_cache->eraseExpired($this->_cache_time);
+            $this->_cache->setCache(str_replace('get', '', $method));
+            $this->_cache->eraseExpired($this->_cache_time);
 
             $cacheName = $method.'('.implode(',', $arguments).')';
             $isCached = $this->_cache->isCached($cacheName);
@@ -140,8 +134,10 @@ class MalScraper
         }
 
         // if to api function enabled
-        if ($this->_to_api === true)
+        if ($this->_to_api === true) {
             return Helper::response($result);
+        }
+
         return Helper::toResponse($result);
     }
 
@@ -153,15 +149,15 @@ class MalScraper
      *
      * @return array
      */
-	private function getInfo($type, $id)
-	{
-		return (new Info($type, $id))->getAllInfo();
-	}
+    private function getInfo($type, $id)
+    {
+        return (new Info($type, $id))->getAllInfo();
+    }
 
     /**
      * Get character information.
      *
-     * @param int    $id   id of the character
+     * @param int $id id of the character
      *
      * @return array
      */
@@ -173,7 +169,7 @@ class MalScraper
     /**
      * Get people information.
      *
-     * @param int    $id   id of the people
+     * @param int $id id of the people
      *
      * @return array
      */
@@ -185,7 +181,7 @@ class MalScraper
     /**
      * Get anime/manga character + staff complete list.
      *
-     * @param string    $type   Either anime or manga
+     * @param string $type Either anime or manga
      * @param int    $id   id of the anime or manga
      *
      * @return array
@@ -198,7 +194,7 @@ class MalScraper
     /**
      * Get anime/manga detail stat.
      *
-     * @param string    $type   Either anime or manga
+     * @param string $type Either anime or manga
      * @param int    $id   id of the anime or manga
      *
      * @return array
@@ -211,7 +207,7 @@ class MalScraper
     /**
      * Get anime/manga additional pictures.
      *
-     * @param string    $type   Either anime or manga
+     * @param string $type Either anime or manga
      * @param int    $id   id of the anime or manga
      *
      * @return array
@@ -224,7 +220,7 @@ class MalScraper
     /**
      * Get character additional pictures.
      *
-     * @param int    $id   id of the character
+     * @param int $id id of the character
      *
      * @return array
      */
@@ -236,7 +232,7 @@ class MalScraper
     /**
      * Get people additional pictures.
      *
-     * @param int    $id   id of the people
+     * @param int $id id of the people
      *
      * @return array
      */
@@ -248,8 +244,8 @@ class MalScraper
     /**
      * Get all anime produced by the studio/producer.
      *
-     * @param int    $id   id of the studio/producer
-     * @param int    $page   (Optional) Page number
+     * @param int $id   id of the studio/producer
+     * @param int $page (Optional) Page number
      *
      * @return array
      */
@@ -261,8 +257,8 @@ class MalScraper
     /**
      * Get all manga serialized by the magazine.
      *
-     * @param int    $id   id of the magazine
-     * @param int    $page   (Optional) Page number
+     * @param int $id   id of the magazine
+     * @param int $page (Optional) Page number
      *
      * @return array
      */
@@ -274,9 +270,9 @@ class MalScraper
     /**
      * Get all anime or manga that has the genre.
      *
-     * @param string    $type   Either anime or manga
+     * @param string $type Either anime or manga
      * @param int    $id   id of the genre
-     * @param int    $page   (Optional) Page number
+     * @param int    $page (Optional) Page number
      *
      * @return array
      */
@@ -328,12 +324,12 @@ class MalScraper
     /**
      * Get anime search result.
      *
-     * @param string    $query   Search query
-     * @param int    $page   (Optional) Page number
+     * @param string $query Search query
+     * @param int    $page  (Optional) Page number
      *
      * @return array
      */
-    private function searchAnime($query, $page=1)
+    private function searchAnime($query, $page = 1)
     {
         return (new SearchAnimeManga('anime', $query, $page))->getAllInfo();
     }
@@ -341,12 +337,12 @@ class MalScraper
     /**
      * Get manga search result.
      *
-     * @param string    $query   Search query
-     * @param int    $page   (Optional) Page number
+     * @param string $query Search query
+     * @param int    $page  (Optional) Page number
      *
      * @return array
      */
-    private function searchManga($query, $page=1)
+    private function searchManga($query, $page = 1)
     {
         return (new SearchAnimeManga('manga', $query, $page))->getAllInfo();
     }
@@ -354,12 +350,12 @@ class MalScraper
     /**
      * Get character search result.
      *
-     * @param string    $query   Search query
-     * @param int    $page   (Optional) Page number
+     * @param string $query Search query
+     * @param int    $page  (Optional) Page number
      *
      * @return array
      */
-    private function searchCharacter($query, $page=1)
+    private function searchCharacter($query, $page = 1)
     {
         return (new SearchCharacterPeople('character', $query, $page))->getAllInfo();
     }
@@ -367,12 +363,12 @@ class MalScraper
     /**
      * Get people search result.
      *
-     * @param string    $query   Search query
-     * @param int    $page   (Optional) Page number
+     * @param string $query Search query
+     * @param int    $page  (Optional) Page number
      *
      * @return array
      */
-    private function searchPeople($query, $page=1)
+    private function searchPeople($query, $page = 1)
     {
         return (new SearchCharacterPeople('people', $query, $page))->getAllInfo();
     }
@@ -380,12 +376,12 @@ class MalScraper
     /**
      * Get user search result.
      *
-     * @param string    $query   Search query
-     * @param int    $page   (Optional) Page number
+     * @param string $query Search query
+     * @param int    $page  (Optional) Page number
      *
      * @return array
      */
-    private function searchUser($query, $page=1)
+    private function searchUser($query, $page = 1)
     {
         return (new SearchUser($query, $page))->getAllInfo();
     }
@@ -393,8 +389,8 @@ class MalScraper
     /**
      * Get seasonal anime.
      *
-     * @param string|int    $year   (Optional) Season year
-     * @param string        $season   (Optional) Season (summer,spring,fall,winter)
+     * @param string|int $year   (Optional) Season year
+     * @param string     $season (Optional) Season (summer,spring,fall,winter)
      *
      * @return array
      */
@@ -406,8 +402,8 @@ class MalScraper
     /**
      * Get top anime.
      *
-     * @param string   $type   (Optional) Type of anime
-     * @param int        $page   (Optional) Page number
+     * @param string $type (Optional) Type of anime
+     * @param int    $page (Optional) Page number
      *
      * @return array
      */
@@ -419,8 +415,8 @@ class MalScraper
     /**
      * Get top manga.
      *
-     * @param string   $type   (Optional) Type of manga
-     * @param int        $page   (Optional) Page number
+     * @param string $type (Optional) Type of manga
+     * @param int    $page (Optional) Page number
      *
      * @return array
      */
@@ -432,7 +428,7 @@ class MalScraper
     /**
      * Get user info.
      *
-     * @param string   $user   Username
+     * @param string $user Username
      *
      * @return array
      */
@@ -444,7 +440,7 @@ class MalScraper
     /**
      * Get user friend list.
      *
-     * @param string   $user   Username
+     * @param string $user Username
      *
      * @return array
      */
@@ -456,8 +452,8 @@ class MalScraper
     /**
      * Get user history.
      *
-     * @param string   $user   Username
-     * @param string   $type   (Optional) Either anime or manga
+     * @param string $user Username
+     * @param string $type (Optional) Either anime or manga
      *
      * @return array
      */
@@ -469,9 +465,9 @@ class MalScraper
     /**
      * Get user list.
      *
-     * @param string   $user   Username
-     * @param string   $type   (Optional) Either anime or manga
-     * @param string   $status   (Optional) Anime/manga status
+     * @param string $user   Username
+     * @param string $type   (Optional) Either anime or manga
+     * @param string $status (Optional) Anime/manga status
      *
      * @return array
      */
@@ -483,9 +479,9 @@ class MalScraper
     /**
      * Get user cover.
      *
-     * @param string   $user   Username
-     * @param string   $type   (Optional) Either anime or manga
-     * @param string   $style   (Optional) CSS style for the cover
+     * @param string $user  Username
+     * @param string $type  (Optional) Either anime or manga
+     * @param string $style (Optional) CSS style for the cover
      *
      * @return array
      */

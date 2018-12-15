@@ -11,11 +11,11 @@ use MalScraper\Model\MainModel;
 class FriendModel extends MainModel
 {
     /**
-     * Username
+     * Username.
      *
      * @var string
      */
-	private $_user;
+    private $_user;
 
     /**
      * Default constructor.
@@ -25,11 +25,11 @@ class FriendModel extends MainModel
      *
      * @return void
      */
-	public function __construct($user, $parserArea = '#content')
+    public function __construct($user, $parserArea = '#content')
     {
-    	$this->_user = $user;
+        $this->_user = $user;
         $this->_url = $this->_myAnimeListUrl.'/profile/'.$user.'/friends';
-    	$this->_parserArea = $parserArea;
+        $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);
     }
@@ -44,8 +44,10 @@ class FriendModel extends MainModel
      */
     public function __call($method, $arguments)
     {
-        if ($this->_error)
+        if ($this->_error) {
             return $this->_error;
+        }
+
         return call_user_func_array([$this, $method], $arguments);
     }
 
@@ -82,6 +84,7 @@ class FriendModel extends MainModel
     {
         $name_temp = $f->find('a', 0)->href;
         $name_temp = explode('/', $name_temp);
+
         return $name_temp[4];
     }
 
@@ -95,6 +98,7 @@ class FriendModel extends MainModel
     private function getLastOnline($f)
     {
         $last_online = $f->find('strong', 0)->parent()->parent()->next_sibling();
+
         return trim($last_online->plaintext);
     }
 
@@ -109,6 +113,7 @@ class FriendModel extends MainModel
     {
         $friend_since = $f->find('strong', 0)->parent()->parent()->next_sibling()->next_sibling();
         $friend_since = str_replace('Friends since', '', $friend_since->plaintext);
+
         return trim($friend_since);
     }
 
@@ -137,5 +142,4 @@ class FriendModel extends MainModel
 
         return $friend;
     }
-
 }
