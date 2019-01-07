@@ -34,8 +34,9 @@ class TopModel extends MainModel
     /**
      * Default constructor.
      *
-     * @param string|int $year
-     * @param string     $season
+     * @param string     $supertype
+     * @param string     $type
+     * @param string|int $page
      * @param string     $parserArea
      *
      * @return void
