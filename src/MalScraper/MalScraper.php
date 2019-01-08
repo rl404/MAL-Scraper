@@ -34,6 +34,7 @@ use MalScraper\Model\Search\SearchUserModel as SearchUser;
 use MalScraper\Model\Seasonal\SeasonModel as Season;
 use MalScraper\Model\Top\TopModel as Top;
 use MalScraper\Model\Top\TopCharacterModel as TopCharacter;
+use MalScraper\Model\Top\TopPeopleModel as TopPeople;
 use MalScraper\Model\User\FriendModel as Friend;
 use MalScraper\Model\User\HistoryModel as History;
 use MalScraper\Model\User\UserCoverModel as UserCover;
@@ -436,6 +437,18 @@ class MalScraper
     private function getTopCharacter($page = 1)
     {
         return (new TopCharacter($page))->getAllInfo();
+    }
+
+    /**
+     * Get top people.
+     *
+     * @param int    $page (Optional) Page number
+     *
+     * @return array
+     */
+    private function getTopPeople($page = 1)
+    {
+        return (new TopPeople($page))->getAllInfo();
     }
 
     /**

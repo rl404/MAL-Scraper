@@ -1,5 +1,9 @@
 ## Changelog
 
+### v1.4.1 - Jan 8, 2019
+- `Add` Feature: Character most favorited list
+- `Add` Feature: People most favorited list
+
 ### v1.4.0 - Dec 15, 2018
 - `Add` Feature: `media_id`, `media_title`, and `media_type` in character favorite list of `getUser()`
 - `Fix` Wrong user `blog_post` and `club` count in `getUser()`

@@ -23,6 +23,7 @@ _Mal-Scraper_ is using [Sunra's](https://github.com/sunra/php-simple-html-dom-pa
 - Get seasonal anime
 - Get list of top anime from various categories (all, airing, upcoming, etc) (pagination supported)
 - Get list of top manga from various categories (all, manga, novel, etc) (pagination supported)
+- Get list of most favorited character and people (pagination supported)
 - Get information of user profile, friends, history, and anime/manga list
 - Caching (using [Simple-PHP-Cache library](https://github.com/cosenary/Simple-PHP-Cache))
 - Convertable return to http response (for API)

@@ -44,7 +44,8 @@ $myscraper = new MalScraper([
 
 // $result = $myscraper->getTopAnime(1);
 // $result = $myscraper->getTopManga();
-$result = $myscraper->getTopCharacter();
+// $result = $myscraper->getTopCharacter();
+$result = $myscraper->getTopPeople(111);
 
 // $result = $myscraper->getUser('rl404');
 // $result = $myscraper->getUserFriend('rl404');
