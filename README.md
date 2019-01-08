@@ -44,7 +44,7 @@ _More will be coming soon..._
 require "vendor/autoload.php";
 use MalScraper\MalScraper;
 
-// Default (no caching, return json)
+// Default (no caching, return array)
 $myMalScraper = new MalScraper();
 
 // Caching feature
