@@ -104,8 +104,10 @@ class TopPeopleModel extends MainModel
         $name = $name_area->find('.information', 0)->find('span', 0);
         if ($name) {
             $name = $name->plaintext;
-            return substr($name, 1, strlen($name)-3);
+
+            return substr($name, 1, strlen($name) - 3);
         }
+
         return '';
     }
 
@@ -119,6 +121,7 @@ class TopPeopleModel extends MainModel
     private function getImage($name_area)
     {
         $image = $name_area->find('img', 0)->getAttribute('data-src');
+
         return Helper::imageUrlCleaner($image);
     }
 
@@ -134,6 +137,7 @@ class TopPeopleModel extends MainModel
         $day = $each_char->find('.birthday', 0)->plaintext;
         $day = preg_replace('/\s+/', ' ', $day);
         $day = trim($day);
+
         return $day == 'Unknown' ? '' : $day;
     }
 
@@ -148,6 +152,7 @@ class TopPeopleModel extends MainModel
     {
         $fav = $each_char->find('.favorites', 0)->plaintext;
         $fav = str_replace(',', '', $fav);
+
         return trim($fav);
     }
 
@@ -162,7 +167,6 @@ class TopPeopleModel extends MainModel
         $data_index = 0;
         $top_table = $this->_parser->find('.people-favorites-ranking-table', 0);
         foreach ($top_table->find('tr[class=ranking-list]') as $each_char) {
-
             $name_area = $each_char->find('.people', 0);
 
             $data[$data_index]['rank'] = $this->getRank($each_char);

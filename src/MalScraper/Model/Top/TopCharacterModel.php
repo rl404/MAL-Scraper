@@ -104,8 +104,10 @@ class TopCharacterModel extends MainModel
         $name = $name_area->find('.information', 0)->find('span', 0);
         if ($name) {
             $name = $name->plaintext;
-            return substr($name, 1, strlen($name)-3);
+
+            return substr($name, 1, strlen($name) - 3);
         }
+
         return '';
     }
 
@@ -119,6 +121,7 @@ class TopCharacterModel extends MainModel
     private function getImage($name_area)
     {
         $image = $name_area->find('img', 0)->getAttribute('data-src');
+
         return Helper::imageUrlCleaner($image);
     }
 
@@ -126,7 +129,7 @@ class TopCharacterModel extends MainModel
      * Get role.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $each_char
-     * @param string $class
+     * @param string                             $class
      *
      * @return array
      */
@@ -138,8 +141,10 @@ class TopCharacterModel extends MainModel
             foreach ($area->find('.title') as $a) {
                 $role[] = $this->getEachRole($a);
             }
+
             return $role;
         }
+
         return $role;
     }
 
@@ -172,6 +177,7 @@ class TopCharacterModel extends MainModel
     {
         $fav = $each_char->find('.favorites', 0)->plaintext;
         $fav = str_replace(',', '', $fav);
+
         return trim($fav);
     }
 
@@ -186,7 +192,6 @@ class TopCharacterModel extends MainModel
         $data_index = 0;
         $top_table = $this->_parser->find('.characters-favorites-ranking-table', 0);
         foreach ($top_table->find('tr[class=ranking-list]') as $each_char) {
-
             $name_area = $each_char->find('.people', 0);
 
             $data[$data_index]['rank'] = $this->getRank($each_char);

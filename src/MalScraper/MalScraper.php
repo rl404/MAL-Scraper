@@ -32,8 +32,8 @@ use MalScraper\Model\Search\SearchAnimeMangaModel as SearchAnimeManga;
 use MalScraper\Model\Search\SearchCharacterPeopleModel as SearchCharacterPeople;
 use MalScraper\Model\Search\SearchUserModel as SearchUser;
 use MalScraper\Model\Seasonal\SeasonModel as Season;
-use MalScraper\Model\Top\TopModel as Top;
 use MalScraper\Model\Top\TopCharacterModel as TopCharacter;
+use MalScraper\Model\Top\TopModel as Top;
 use MalScraper\Model\Top\TopPeopleModel as TopPeople;
 use MalScraper\Model\User\FriendModel as Friend;
 use MalScraper\Model\User\HistoryModel as History;
@@ -430,7 +430,7 @@ class MalScraper
     /**
      * Get top character.
      *
-     * @param int    $page (Optional) Page number
+     * @param int $page (Optional) Page number
      *
      * @return array
      */
@@ -442,7 +442,7 @@ class MalScraper
     /**
      * Get top people.
      *
-     * @param int    $page (Optional) Page number
+     * @param int $page (Optional) Page number
      *
      * @return array
      */
