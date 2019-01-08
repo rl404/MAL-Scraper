@@ -13,6 +13,8 @@ Well, it is created to help people get MyAnimeList data without relying on MyAni
 
 _Mal-Scraper_ is using [Sunra's](https://github.com/sunra/php-simple-html-dom-parser) HTML DOM parser and inspired by [Kylart's](https://github.com/Kylart/MalScraper) and [Jikan's](https://github.com/jikan-me/jikan) API.
 
+For those who want the **REST API** one, please come [here](https://github.com/rl404/MAL-Scraper-API).
+
 ### Features
 - Get general information of anime, manga, charater (from anime and manga), or people (voice actor, author, staff, etc)
 - Get additional information of anime or manga character and staff, statistic and score, or picture
