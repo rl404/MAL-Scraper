@@ -110,6 +110,7 @@ class VideoModel extends MainModel
                 $episode[] = $temp;
             }
         }
+
         return $episode;
     }
 
@@ -117,7 +118,7 @@ class VideoModel extends MainModel
      * Get episode video title.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $link_area
-     * @param int $key
+     * @param int                                $key
      *
      * @return string
      */
@@ -126,6 +127,7 @@ class VideoModel extends MainModel
         $title = $link_area->find('span.title', 0)->plaintext;
         $title = explode("\n", $title);
         $title = $key == 0 ? str_replace('Episode ', '', $title[$key]) : $title[$key];
+
         return trim($title);
     }
 
@@ -149,6 +151,7 @@ class VideoModel extends MainModel
                 $promotion[] = $temp;
             }
         }
+
         return $promotion;
     }
 
@@ -184,7 +187,7 @@ class VideoModel extends MainModel
     private function getAllInfo()
     {
         return $data = [
-            'episode' => $this->getEpisode(),
+            'episode'   => $this->getEpisode(),
             'promotion' => $this->getPromotion(),
         ];
     }

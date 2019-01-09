@@ -127,8 +127,10 @@ class InfoModel extends MainModel
         $video_area = $this->_parser->find('.video-promotion', 0);
         if ($video_area) {
             $video = $video_area->find('a', 0)->href;
+
             return Helper::videoUrlCleaner($video);
         }
+
         return '';
     }
 

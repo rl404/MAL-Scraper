@@ -2,7 +2,6 @@
 
 namespace MalScraper\Model\Additional;
 
-use MalScraper\Helper\Helper;
 use MalScraper\Model\MainModel;
 
 /**
@@ -117,7 +116,7 @@ class EpisodeModel extends MainModel
      * Get episode video title.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $each_episode
-     * @param string $type
+     * @param string                             $type
      *
      * @return string
      */
@@ -128,6 +127,7 @@ class EpisodeModel extends MainModel
             if ($title->find('span', 1)) {
                 return trim($title->find('span', 1)->plaintext);
             }
+
             return trim($title->find('span', 0)->plaintext);
         } else {
             return $title->find('a', 0)->plaintext;
@@ -144,9 +144,9 @@ class EpisodeModel extends MainModel
     private function getEpisodeAired($each_episode)
     {
         $aired = $each_episode->find('.episode-aired', 0)->plaintext;
+
         return str_replace('N/A', '', $aired);
     }
-
 
     /**
      * Get anime videos.
