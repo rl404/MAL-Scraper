@@ -118,6 +118,21 @@ class InfoModel extends MainModel
     }
 
     /**
+     * Get anime/manga promotional video.
+     *
+     * @return string
+     */
+    private function getVideo()
+    {
+        $video_area = $this->_parser->find('.video-promotion', 0);
+        if ($video_area) {
+            $video = $video_area->find('a', 0)->href;
+            return Helper::videoUrlCleaner($video);
+        }
+        return '';
+    }
+
+    /**
      * Get anime/manga synopsis.
      *
      * @return string
@@ -552,6 +567,7 @@ class InfoModel extends MainModel
             'cover'     => $this->getCover(),
             'title'     => $this->getTitle(),
             'title2'    => $this->getTitle2(),
+            'video'     => $this->getVideo(),
             'synopsis'  => $this->getSynopsis(),
             'score'     => $this->getScore(),
             'voter'     => $this->getVoter(),

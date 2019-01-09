@@ -142,6 +142,10 @@ class MainModel
             case 'PictureModel':
                 $area = 'li a[href$=pics]';
                 break;
+            case 'VideoModel':
+                $area = 'li a[href$=video]';
+                $additionalUrl = '?p='.$model->getPage();
+                break;
             case 'CharacterPeoplePictureModel':
                 $area = 'li a[href$=pictures]';
                 break;

@@ -1,5 +1,9 @@
 ## Changelog
 
+### v1.4.2 -
+- `Add` Feature: Video list of anime
+- `Fix` Missing promotional video in `getInfo()`
+
 ### v1.4.1 - Jan 8, 2019
 - `Add` Feature: Character most favorited list
 - `Add` Feature: People most favorited list
