@@ -23,6 +23,7 @@ use MalScraper\Model\Additional\CharacterStaffModel as CharacterStaff;
 use MalScraper\Model\Additional\PictureModel as Picture;
 use MalScraper\Model\Additional\StatModel as Stat;
 use MalScraper\Model\Additional\VideoModel as Video;
+use MalScraper\Model\Additional\EpisodeModel as Episode;
 use MalScraper\Model\General\CharacterModel as Character;
 use MalScraper\Model\General\InfoModel as Info;
 use MalScraper\Model\General\PeopleModel as People;
@@ -218,6 +219,19 @@ class MalScraper
     private function getVideo($id, $page = 1)
     {
         return (new Video($id, $page))->getAllInfo();
+    }
+
+    /**
+     * Get anime episode.
+     *
+     * @param int|string    $id   id of the anime
+     * @param int|string    $page   (Optional) Page number
+     *
+     * @return array
+     */
+    private function getEpisode($id, $page = 1)
+    {
+        return (new Episode($id, $page))->getAllInfo();
     }
 
     /**
