@@ -17,7 +17,7 @@ For those who want the **REST API** one, please come [here](https://github.com/r
 
 ### Features
 - Get general information of anime, manga, charater (from anime and manga), or people (voice actor, author, staff, etc)
-- Get additional information of anime or manga character and staff, statistic and score, or picture
+- Get additional information of anime or manga video, episode, character and staff, statistic and score, or picture
 - Get list of anime or manga of selected studio/producer, magazine, or genre
 - Get list of all anime or manga genre, anime studio/producer or manga magazine
 - Get list of character and staff involved in an anime or manga

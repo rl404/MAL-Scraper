@@ -16,7 +16,7 @@ $myscraper = new MalScraper([
     // 'to_api' => true
 ]);
 
-// $result = $myscraper->getInfo('anime', 1);
+// $result = $myscraper->getInfo('anime', 37430);
 // $result = $myscraper->getCharacter(62);
 // $result = $myscraper->getPeople(185);
 // $result = $myscraper->getStudioProducer(1);
@@ -28,6 +28,8 @@ $myscraper = new MalScraper([
 // $result = $myscraper->getPicture('anime',1);
 // $result = $myscraper->getCharacterPicture(1);
 // $result = $myscraper->getPeoplePicture(1);
+// $result = $myscraper->getVideo(34566, 1);
+$result = $myscraper->getEpisode(20, 3);
 
 // $result = $myscraper->getAllAnimeGenre();
 // $result = $myscraper->getAllMangaGenre();
@@ -45,7 +47,7 @@ $myscraper = new MalScraper([
 // $result = $myscraper->getTopAnime(1);
 // $result = $myscraper->getTopManga();
 // $result = $myscraper->getTopCharacter();
-$result = $myscraper->getTopPeople(111);
+// $result = $myscraper->getTopPeople();
 
 // $result = $myscraper->getUser('rl404');
 // $result = $myscraper->getUserFriend('rl404');

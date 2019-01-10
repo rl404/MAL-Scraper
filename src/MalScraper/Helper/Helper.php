@@ -159,4 +159,19 @@ class Helper
 
         return $str;
     }
+
+    /**
+     * Clean video URL.
+     *
+     * @param string $str
+     *
+     * @return string
+     */
+    public static function videoUrlCleaner($str)
+    {
+        $str = preg_replace('/\?.+/', '', $str);
+        $str = str_replace('embed/', 'watch?v=', $str);
+
+        return $str;
+    }
 }

@@ -9,7 +9,7 @@
  *
  * @since 26-09-2018
  *
- * @version 1.4.1
+ * @version 1.4.2
  *
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -20,8 +20,10 @@ use Cache;
 use MalScraper\Helper\Helper;
 use MalScraper\Model\Additional\CharacterPeoplePictureModel as CharacterPeoplePicture;
 use MalScraper\Model\Additional\CharacterStaffModel as CharacterStaff;
+use MalScraper\Model\Additional\EpisodeModel as Episode;
 use MalScraper\Model\Additional\PictureModel as Picture;
 use MalScraper\Model\Additional\StatModel as Stat;
+use MalScraper\Model\Additional\VideoModel as Video;
 use MalScraper\Model\General\CharacterModel as Character;
 use MalScraper\Model\General\InfoModel as Info;
 use MalScraper\Model\General\PeopleModel as People;
@@ -146,8 +148,8 @@ class MalScraper
     /**
      * Get anime/manga information.
      *
-     * @param string $type anime or manga
-     * @param int    $id   id of the anime or manga
+     * @param string     $type anime or manga
+     * @param int|string $id   id of the anime or manga
      *
      * @return array
      */
@@ -159,7 +161,7 @@ class MalScraper
     /**
      * Get character information.
      *
-     * @param int $id id of the character
+     * @param int|string $id id of the character
      *
      * @return array
      */
@@ -171,7 +173,7 @@ class MalScraper
     /**
      * Get people information.
      *
-     * @param int $id id of the people
+     * @param int|string $id id of the people
      *
      * @return array
      */
@@ -183,8 +185,8 @@ class MalScraper
     /**
      * Get anime/manga character + staff complete list.
      *
-     * @param string $type Either anime or manga
-     * @param int    $id   id of the anime or manga
+     * @param string     $type Either anime or manga
+     * @param int|string $id   id of the anime or manga
      *
      * @return array
      */
@@ -196,8 +198,8 @@ class MalScraper
     /**
      * Get anime/manga detail stat.
      *
-     * @param string $type Either anime or manga
-     * @param int    $id   id of the anime or manga
+     * @param string     $type Either anime or manga
+     * @param int|string $id   id of the anime or manga
      *
      * @return array
      */
@@ -207,10 +209,36 @@ class MalScraper
     }
 
     /**
+     * Get anime video.
+     *
+     * @param int|string $id   id of the anime
+     * @param int|string $page (Optional) Page number
+     *
+     * @return array
+     */
+    private function getVideo($id, $page = 1)
+    {
+        return (new Video($id, $page))->getAllInfo();
+    }
+
+    /**
+     * Get anime episode.
+     *
+     * @param int|string $id   id of the anime
+     * @param int|string $page (Optional) Page number
+     *
+     * @return array
+     */
+    private function getEpisode($id, $page = 1)
+    {
+        return (new Episode($id, $page))->getAllInfo();
+    }
+
+    /**
      * Get anime/manga additional pictures.
      *
-     * @param string $type Either anime or manga
-     * @param int    $id   id of the anime or manga
+     * @param string     $type Either anime or manga
+     * @param int|string $id   id of the anime or manga
      *
      * @return array
      */
@@ -222,7 +250,7 @@ class MalScraper
     /**
      * Get character additional pictures.
      *
-     * @param int $id id of the character
+     * @param int|string $id id of the character
      *
      * @return array
      */
@@ -234,7 +262,7 @@ class MalScraper
     /**
      * Get people additional pictures.
      *
-     * @param int $id id of the people
+     * @param int|string $id id of the people
      *
      * @return array
      */
@@ -246,8 +274,8 @@ class MalScraper
     /**
      * Get all anime produced by the studio/producer.
      *
-     * @param int $id   id of the studio/producer
-     * @param int $page (Optional) Page number
+     * @param int|string $id   id of the studio/producer
+     * @param int|string $page (Optional) Page number
      *
      * @return array
      */
@@ -259,8 +287,8 @@ class MalScraper
     /**
      * Get all manga serialized by the magazine.
      *
-     * @param int $id   id of the magazine
-     * @param int $page (Optional) Page number
+     * @param int|string $id   id of the magazine
+     * @param int|string $page (Optional) Page number
      *
      * @return array
      */
@@ -272,9 +300,9 @@ class MalScraper
     /**
      * Get all anime or manga that has the genre.
      *
-     * @param string $type Either anime or manga
-     * @param int    $id   id of the genre
-     * @param int    $page (Optional) Page number
+     * @param string     $type Either anime or manga
+     * @param int|string $id   id of the genre
+     * @param int|string $page (Optional) Page number
      *
      * @return array
      */
@@ -326,8 +354,8 @@ class MalScraper
     /**
      * Get anime search result.
      *
-     * @param string $query Search query
-     * @param int    $page  (Optional) Page number
+     * @param string     $query Search query
+     * @param int|string $page  (Optional) Page number
      *
      * @return array
      */
@@ -339,8 +367,8 @@ class MalScraper
     /**
      * Get manga search result.
      *
-     * @param string $query Search query
-     * @param int    $page  (Optional) Page number
+     * @param string     $query Search query
+     * @param int|string $page  (Optional) Page number
      *
      * @return array
      */
@@ -352,8 +380,8 @@ class MalScraper
     /**
      * Get character search result.
      *
-     * @param string $query Search query
-     * @param int    $page  (Optional) Page number
+     * @param string     $query Search query
+     * @param int|string $page  (Optional) Page number
      *
      * @return array
      */
@@ -365,8 +393,8 @@ class MalScraper
     /**
      * Get people search result.
      *
-     * @param string $query Search query
-     * @param int    $page  (Optional) Page number
+     * @param string     $query Search query
+     * @param int|string $page  (Optional) Page number
      *
      * @return array
      */
@@ -378,8 +406,8 @@ class MalScraper
     /**
      * Get user search result.
      *
-     * @param string $query Search query
-     * @param int    $page  (Optional) Page number
+     * @param string     $query Search query
+     * @param int|string $page  (Optional) Page number
      *
      * @return array
      */
@@ -404,8 +432,8 @@ class MalScraper
     /**
      * Get top anime.
      *
-     * @param string $type (Optional) Type of anime
-     * @param int    $page (Optional) Page number
+     * @param string     $type (Optional) Type of anime
+     * @param int|string $page (Optional) Page number
      *
      * @return array
      */
@@ -417,8 +445,8 @@ class MalScraper
     /**
      * Get top manga.
      *
-     * @param string $type (Optional) Type of manga
-     * @param int    $page (Optional) Page number
+     * @param string     $type (Optional) Type of manga
+     * @param int|string $page (Optional) Page number
      *
      * @return array
      */
@@ -430,7 +458,7 @@ class MalScraper
     /**
      * Get top character.
      *
-     * @param int $page (Optional) Page number
+     * @param int|string $page (Optional) Page number
      *
      * @return array
      */
@@ -442,7 +470,7 @@ class MalScraper
     /**
      * Get top people.
      *
-     * @param int $page (Optional) Page number
+     * @param int|string $page (Optional) Page number
      *
      * @return array
      */
