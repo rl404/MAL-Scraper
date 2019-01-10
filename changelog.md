@@ -1,6 +1,6 @@
 ## Changelog
 
-### v1.4.2 -
+### v1.4.2 - Jan 10, 2019
 - `Add` Feature: Video list of anime
 - `Add` Feature: Episode list of anime
 - `Fix` Missing promotional video in `getInfo()`
