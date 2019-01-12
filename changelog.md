@@ -1,5 +1,9 @@
 ## Changelog
 
+### v1.4.3 -
+- `Add` Feature: Additional anime/manga review
+- `Fix` Missing review in `getInfo()`
+
 ### v1.4.2 - Jan 10, 2019
 - `Add` Feature: Video list of anime
 - `Add` Feature: Episode list of anime

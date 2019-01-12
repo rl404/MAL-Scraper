@@ -712,7 +712,7 @@ class InfoModel extends MainModel
     {
         $useless_area_1 = $bottom_area->find('div', 0)->plaintext;
         $useless_area_2 = $bottom_area->find('a', 0)->plaintext;
-        $useless_area_3 = $bottom_area->find('a', 1)->plaintext;
+        $useless_area_3 = $bottom_area->find('a', 1) ? $bottom_area->find('a', 1)->plaintext : null;
         $text = str_replace([$useless_area_1, $useless_area_2, $useless_area_3], '', $bottom_area->plaintext);
         return trim(preg_replace('/\h+/', ' ', $text));
     }

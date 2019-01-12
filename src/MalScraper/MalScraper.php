@@ -9,7 +9,7 @@
  *
  * @since 26-09-2018
  *
- * @version 1.4.2
+ * @version 1.4.3
  *
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -24,6 +24,7 @@ use MalScraper\Model\Additional\EpisodeModel as Episode;
 use MalScraper\Model\Additional\PictureModel as Picture;
 use MalScraper\Model\Additional\StatModel as Stat;
 use MalScraper\Model\Additional\VideoModel as Video;
+use MalScraper\Model\Additional\AnimeMangaReviewModel as AnimeMangaReview;
 use MalScraper\Model\General\CharacterModel as Character;
 use MalScraper\Model\General\InfoModel as Info;
 use MalScraper\Model\General\PeopleModel as People;
@@ -269,6 +270,32 @@ class MalScraper
     private function getPeoplePicture($id)
     {
         return (new CharacterPeoplePicture('people', $id))->getAllInfo();
+    }
+
+    /**
+     * Get anime additional review.
+     *
+     * @param int|string $id id of the anime
+     * @param int|string $page (Optional) Page number
+     *
+     * @return array
+     */
+    private function getAnimeReview($id, $page = 1)
+    {
+        return (new AnimeMangaReview('anime', $id, $page))->getAllInfo();
+    }
+
+    /**
+     * Get manga additional review.
+     *
+     * @param int|string $id id of the manga
+     * @param int|string $page (Optional) Page number
+     *
+     * @return array
+     */
+    private function getMangaReview($id, $page = 1)
+    {
+        return (new AnimeMangaReview('manga', $id, $page))->getAllInfo();
     }
 
     /**
