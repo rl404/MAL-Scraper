@@ -2,6 +2,7 @@
 
 ### v1.4.3 -
 - `Add` Feature: Additional anime/manga review
+- `Add` Feature: Get all anime/manga/best-voted review list
 - `Fix` Missing review in `getInfo()`
 
 ### v1.4.2 - Jan 10, 2019

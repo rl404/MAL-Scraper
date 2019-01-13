@@ -31,6 +31,7 @@ use MalScraper\Model\General\PeopleModel as People;
 use MalScraper\Model\General\ProducerModel as Producer;
 use MalScraper\Model\Lists\AllGenreModel as AllGenre;
 use MalScraper\Model\Lists\AllProducerModel as AllProducer;
+use MalScraper\Model\Lists\AllReviewModel as AllReview;
 use MalScraper\Model\Search\SearchAnimeMangaModel as SearchAnimeManga;
 use MalScraper\Model\Search\SearchCharacterPeopleModel as SearchCharacterPeople;
 use MalScraper\Model\Search\SearchUserModel as SearchUser;
@@ -376,6 +377,19 @@ class MalScraper
     private function getAllMagazine()
     {
         return (new AllProducer('manga'))->getAllInfo();
+    }
+
+    /**
+     * Get list of all review.
+     *
+     * @param int|string $type Type of review
+     * @param int|string $page (Optional) Page number
+     *
+     * @return array
+     */
+    private function getAllReview($type = 'anime', $page = 1)
+    {
+        return (new AllReview($type, $page))->getAllInfo();
     }
 
     /**

@@ -30,13 +30,14 @@ $myscraper = new MalScraper([
 // $result = $myscraper->getPeoplePicture(1);
 // $result = $myscraper->getVideo(34566, 1);
 // $result = $myscraper->getEpisode(20);
-$result = $myscraper->getAnimeReview(1535, 2);
+// $result = $myscraper->getAnimeReview(1535, 2);
 // $result = $myscraper->getMangaReview(21,2);
 
 // $result = $myscraper->getAllAnimeGenre();
 // $result = $myscraper->getAllMangaGenre();
 // $result = $myscraper->getAllStudioProducer();
 // $result = $myscraper->getAllMagazine();
+$result = $myscraper->getAllReview('anime', 2);
 
 // $result = $myscraper->searchAnime('naruto', 2);
 // $result = $myscraper->searchManga('naruto', 2);
