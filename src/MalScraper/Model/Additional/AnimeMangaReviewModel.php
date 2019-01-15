@@ -215,9 +215,10 @@ class AnimeMangaReviewModel extends MainModel
     private function getReviewText($bottom_area)
     {
         $useless_area_1 = $bottom_area->find('div', 0)->plaintext;
-        $useless_area_2 = $bottom_area->find('a', 0)->plaintext;
-        $useless_area_3 = $bottom_area->find('a', 1) ? $bottom_area->find('a', 1)->plaintext : null;
+        $useless_area_2 = $bottom_area->find('div[id^=revhelp_output]', 0)->plaintext;
+        $useless_area_3 = $bottom_area->find('a[id^=reviewToggle]', 0) ? $bottom_area->find('a[id^=reviewToggle]', 0)->plaintext : null;
         $text = str_replace([$useless_area_1, $useless_area_2, $useless_area_3], '', $bottom_area->plaintext);
+        $text = str_replace('&lt;', '<', $text);
         return trim(preg_replace('/\h+/', ' ', $text));
     }
 

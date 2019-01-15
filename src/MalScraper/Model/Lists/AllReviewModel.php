@@ -93,9 +93,7 @@ class AllReviewModel extends MainModel
      */
     private function getReviewId($very_bottom_area)
     {
-        // $id = $very_bottom_area->find('a.lightLink', 0)->href;
-        return $very_bottom_area->find('a.lightLink', 0)->innertext;
-        // $id = $very_bottom_area->find('a', 0)->href;
+        $id = $very_bottom_area->find('a', 0)->href;
         $id = explode('?id=', $id);
         return $id[1];
     }
@@ -278,9 +276,10 @@ class AllReviewModel extends MainModel
         $useless_area = $bottom_area->find('div', 0);
         $useless_area_1 = $useless_area->plaintext;
         $useless_area_2 = $useless_area->next_sibling()->plaintext;
-        $useless_area_3 = $bottom_area->find('[id^=revhelp_output]', 0)->plaintext;
+        $useless_area_3 = $bottom_area->find('div[id^=revhelp_output]', 0)->plaintext;
         $useless_area_4 = $bottom_area->find('a[id^=reviewToggle]', 0) ? $bottom_area->find('a[id^=reviewToggle]', 0)->plaintext : null;
         $text = str_replace([$useless_area_1, $useless_area_2, $useless_area_3, $useless_area_4], '', $bottom_area->plaintext);
+        $text = str_replace('&lt;', '<', $text);
         return trim(preg_replace('/\h+/', ' ', $text));
     }
 
@@ -301,7 +300,7 @@ class AllReviewModel extends MainModel
                 $bottom_area = $top_area->next_sibling();
                 $very_bottom_area = $bottom_area->next_sibling();
 
-                $tmp['id'] = $this->getReviewId($each_review);
+                $tmp['id'] = $this->getReviewId($very_bottom_area);
                 $tmp['source'] = $this->getReviewSource($top_area, $bottom_area);
                 $tmp['username'] = $this->getReviewUser($top_area);
                 $tmp['image'] = $this->getReviewImage($top_area);

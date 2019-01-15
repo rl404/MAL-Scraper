@@ -37,7 +37,7 @@ $myscraper = new MalScraper([
 // $result = $myscraper->getAllMangaGenre();
 // $result = $myscraper->getAllStudioProducer();
 // $result = $myscraper->getAllMagazine();
-$result = $myscraper->getAllReview('anime', 2);
+$result = $myscraper->getAllReview('anime', 3);
 
 // $result = $myscraper->searchAnime('naruto', 2);
 // $result = $myscraper->searchManga('naruto', 2);
