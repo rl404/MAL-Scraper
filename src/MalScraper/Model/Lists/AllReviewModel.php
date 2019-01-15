@@ -95,6 +95,7 @@ class AllReviewModel extends MainModel
     {
         $id = $very_bottom_area->find('a', 0)->href;
         $id = explode('?id=', $id);
+
         return $id[1];
     }
 
@@ -111,10 +112,10 @@ class AllReviewModel extends MainModel
         $source_area = $top_area->find('.mb8', 1);
 
         return [
-            'type'=> $this->getSourceType($source_area),
-            'id'=> $this->getSourceId($source_area),
+            'type' => $this->getSourceType($source_area),
+            'id'   => $this->getSourceId($source_area),
             'title'=> $this->getSourceTitle($source_area),
-            'image'=> $this->getSourceImage($bottom_area)
+            'image'=> $this->getSourceImage($bottom_area),
         ];
     }
 
@@ -129,6 +130,7 @@ class AllReviewModel extends MainModel
     {
         $type = $source_area->find('small', 0)->plaintext;
         $type = str_replace(['(', ')'], '', $type);
+
         return strtolower($type);
     }
 
@@ -143,6 +145,7 @@ class AllReviewModel extends MainModel
     {
         $id = $source_area->find('strong a', 0)->href;
         $id = explode('/', $id);
+
         return $id[4];
     }
 
@@ -156,6 +159,7 @@ class AllReviewModel extends MainModel
     private function getSourceTitle($source_area)
     {
         $title = $source_area->find('strong', 0)->plaintext;
+
         return trim($title);
     }
 
@@ -169,6 +173,7 @@ class AllReviewModel extends MainModel
     private function getSourceImage($bottom_area)
     {
         $image = $bottom_area->find('.picSurround img', 0)->getAttribute('data-src');
+
         return Helper::imageUrlCleaner($image);
     }
 
@@ -182,6 +187,7 @@ class AllReviewModel extends MainModel
     private function getReviewUser($top_area)
     {
         $user = $top_area->find('table', 0);
+
         return $user->find('td', 1)->find('a', 0)->plaintext;
     }
 
@@ -196,6 +202,7 @@ class AllReviewModel extends MainModel
     {
         $image = $top_area->find('table', 0);
         $image = $image->find('td', 0)->find('img', 0)->src;
+
         return Helper::imageUrlCleaner($image);
     }
 
@@ -210,6 +217,7 @@ class AllReviewModel extends MainModel
     {
         $helpful = $top_area->find('table', 0);
         $helpful = $helpful->find('td', 1)->find('strong', 0)->plaintext;
+
         return trim($helpful);
     }
 
@@ -223,9 +231,10 @@ class AllReviewModel extends MainModel
     private function getReviewDate($top_area)
     {
         $date = $top_area->find('div div', 0);
+
         return [
             'date' => $date->plaintext,
-            'time' => $date->title
+            'time' => $date->title,
         ];
     }
 
@@ -240,6 +249,7 @@ class AllReviewModel extends MainModel
     {
         $episode = $top_area->find('div div', 1)->plaintext;
         $episode = str_replace(['episodes seen', 'chapters read'], '', $episode);
+
         return trim($episode);
     }
 
@@ -261,6 +271,7 @@ class AllReviewModel extends MainModel
                 $score[$score_type] = $score_value;
             }
         }
+
         return $score;
     }
 
@@ -280,6 +291,7 @@ class AllReviewModel extends MainModel
         $useless_area_4 = $bottom_area->find('a[id^=reviewToggle]', 0) ? $bottom_area->find('a[id^=reviewToggle]', 0)->plaintext : null;
         $text = str_replace([$useless_area_1, $useless_area_2, $useless_area_3, $useless_area_4], '', $bottom_area->plaintext);
         $text = str_replace('&lt;', '<', $text);
+
         return trim(preg_replace('/\h+/', ' ', $text));
     }
 
