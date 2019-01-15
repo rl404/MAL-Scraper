@@ -29,8 +29,8 @@ $myscraper = new MalScraper([
 // $result = $myscraper->getCharacterPicture(1);
 // $result = $myscraper->getPeoplePicture(1);
 // $result = $myscraper->getVideo(34566, 2);
-$result = $myscraper->getEpisode(1735, 2);
-// $result = $myscraper->getAnimeReview(1535, 2);
+// $result = $myscraper->getEpisode(1735, 2);
+$result = $myscraper->getAnimeReview(1535, 2);
 // $result = $myscraper->getMangaReview(21,2);
 
 // $result = $myscraper->getAllAnimeGenre();

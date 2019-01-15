@@ -1,9 +1,17 @@
 ## Changelog
 
-### v1.4.3 -
+### v1.5.0 - Jan 15, 2019
 - `Add` Feature: Additional anime/manga review
 - `Add` Feature: Get all anime/manga/best-voted review list
 - `Fix` Missing review in `getInfo()`
+- `Update` Use direct url for
+    - `getCharacterStaff()`
+    - `getStat()`
+    - `getPicture()`
+    - `getCharacterPicture()`
+    - `getPeoplePicture()`
+    - `getVideo()`
+    - `getEpisode()`
 
 ### v1.4.2 - Jan 10, 2019
 - `Add` Feature: Video list of anime
