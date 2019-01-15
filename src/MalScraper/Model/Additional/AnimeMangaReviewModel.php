@@ -110,6 +110,7 @@ class AnimeMangaReviewModel extends MainModel
     {
         $id = $very_bottom_area->find('a', 0)->href;
         $id = explode('?id=', $id);
+
         return $id[1];
     }
 
@@ -123,6 +124,7 @@ class AnimeMangaReviewModel extends MainModel
     private function getReviewUser($top_area)
     {
         $user = $top_area->find('table', 0);
+
         return $user->find('td', 1)->find('a', 0)->plaintext;
     }
 
@@ -137,6 +139,7 @@ class AnimeMangaReviewModel extends MainModel
     {
         $image = $top_area->find('table', 0);
         $image = $image->find('td', 0)->find('img', 0)->src;
+
         return Helper::imageUrlCleaner($image);
     }
 
@@ -151,6 +154,7 @@ class AnimeMangaReviewModel extends MainModel
     {
         $helpful = $top_area->find('table', 0);
         $helpful = $helpful->find('td', 1)->find('strong', 0)->plaintext;
+
         return trim($helpful);
     }
 
@@ -164,9 +168,10 @@ class AnimeMangaReviewModel extends MainModel
     private function getReviewDate($top_area)
     {
         $date = $top_area->find('div div', 0);
+
         return [
             'date' => $date->plaintext,
-            'time' => $date->title
+            'time' => $date->title,
         ];
     }
 
@@ -181,6 +186,7 @@ class AnimeMangaReviewModel extends MainModel
     {
         $episode = $top_area->find('div div', 1)->plaintext;
         $episode = str_replace(['episodes seen', 'chapters read'], '', $episode);
+
         return trim($episode);
     }
 
@@ -202,6 +208,7 @@ class AnimeMangaReviewModel extends MainModel
                 $score[$score_type] = $score_value;
             }
         }
+
         return $score;
     }
 
@@ -219,6 +226,7 @@ class AnimeMangaReviewModel extends MainModel
         $useless_area_3 = $bottom_area->find('a[id^=reviewToggle]', 0) ? $bottom_area->find('a[id^=reviewToggle]', 0)->plaintext : null;
         $text = str_replace([$useless_area_1, $useless_area_2, $useless_area_3], '', $bottom_area->plaintext);
         $text = str_replace('&lt;', '<', $text);
+
         return trim(preg_replace('/\h+/', ' ', $text));
     }
 

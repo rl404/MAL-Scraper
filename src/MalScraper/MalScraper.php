@@ -18,13 +18,13 @@ namespace MalScraper;
 
 use Cache;
 use MalScraper\Helper\Helper;
+use MalScraper\Model\Additional\AnimeMangaReviewModel as AnimeMangaReview;
 use MalScraper\Model\Additional\CharacterPeoplePictureModel as CharacterPeoplePicture;
 use MalScraper\Model\Additional\CharacterStaffModel as CharacterStaff;
 use MalScraper\Model\Additional\EpisodeModel as Episode;
 use MalScraper\Model\Additional\PictureModel as Picture;
 use MalScraper\Model\Additional\StatModel as Stat;
 use MalScraper\Model\Additional\VideoModel as Video;
-use MalScraper\Model\Additional\AnimeMangaReviewModel as AnimeMangaReview;
 use MalScraper\Model\General\CharacterModel as Character;
 use MalScraper\Model\General\InfoModel as Info;
 use MalScraper\Model\General\PeopleModel as People;
@@ -276,7 +276,7 @@ class MalScraper
     /**
      * Get anime additional review.
      *
-     * @param int|string $id id of the anime
+     * @param int|string $id   id of the anime
      * @param int|string $page (Optional) Page number
      *
      * @return array
@@ -289,7 +289,7 @@ class MalScraper
     /**
      * Get manga additional review.
      *
-     * @param int|string $id id of the manga
+     * @param int|string $id   id of the manga
      * @param int|string $page (Optional) Page number
      *
      * @return array
