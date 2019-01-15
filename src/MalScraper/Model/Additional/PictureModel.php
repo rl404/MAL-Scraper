@@ -36,7 +36,7 @@ class PictureModel extends MainModel
     {
         $this->_type = $type;
         $this->_id = $id;
-        $this->_url = $this->_myAnimeListUrl.'/'.$type.'/'.$id;
+        $this->_url = $this->_myAnimeListUrl.'/'.$type.'/'.$id.'/a/pics';
         $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);

@@ -36,9 +36,9 @@ class CharacterPeoplePictureModel extends MainModel
         $this->_type = $type;
         $this->_id = $id;
         if ($this->_type == 'people') {
-            $this->_url = $this->_myAnimeListUrl.'/people/'.$id;
+            $this->_url = $this->_myAnimeListUrl.'/people/'.$id.'/a/pictures';
         } else {
-            $this->_url = $this->_myAnimeListUrl.'/character/'.$id;
+            $this->_url = $this->_myAnimeListUrl.'/character/'.$id.'/a/pictures';
         }
         $this->_parserArea = $parserArea;
 

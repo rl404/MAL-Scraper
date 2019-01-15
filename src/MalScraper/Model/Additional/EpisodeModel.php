@@ -34,8 +34,8 @@ class EpisodeModel extends MainModel
     public function __construct($id, $page, $parserArea = '.js-scrollfix-bottom-rel')
     {
         $this->_id = $id;
-        $this->_page = $page;
-        $this->_url = $this->_myAnimeListUrl.'/anime/'.$id;
+        $this->_page = 100 * ($page - 1);
+        $this->_url = $this->_myAnimeListUrl.'/anime/'.$id.'/a/episode?offset='.$this->_page;
         $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);

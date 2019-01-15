@@ -113,59 +113,12 @@ class MainModel
             if ($header == 200) {
                 if ($className != 'UserListModel') {
                     $additionalSetting = ($className == 'CharacterPeoplePictureModel');
-                    $model->_parser = self::getParser(self::getAbsoluteUrl($model), $model->_parserArea, $additionalSetting);
+                    $model->_parser = self::getParser($model->_url, $model->_parserArea, $additionalSetting);
                 }
             } else {
                 $model->_error = $header;
             }
         }
-    }
-
-    /**
-     * Get the correct url.
-     *
-     * @param MainModel $model Any model
-     *
-     * @return string
-     */
-    public static function getAbsoluteUrl($model)
-    {
-        $className = self::getCleanClassName($model);
-        $additionalUrl = '';
-
-        switch ($className) {
-            case 'CharacterStaffModel':
-                $area = 'li a[href$=characters]';
-                break;
-            case 'StatModel':
-                $area = 'li a[href$=stats]';
-                $additionalUrl = '?m=all&show=1';
-                break;
-            case 'PictureModel':
-                $area = 'li a[href$=pics]';
-                break;
-            case 'VideoModel':
-                $area = 'li a[href$=video]';
-                $additionalUrl = '?p='.$model->getPage();
-                break;
-            case 'EpisodeModel':
-                $area = 'li a[href$=episode]';
-                $additionalUrl = '?offset='.(100 * ($model->getPage() - 1));
-                break;
-            case 'CharacterPeoplePictureModel':
-                $area = 'li a[href$=pictures]';
-                break;
-            default:
-                return $model->_url;
-        }
-
-        $html = HtmlDomParser::file_get_html($model->_url)->find($area, 0)->href;
-
-        if ($model->getType() == 'manga') {
-            return 'https://myanimelist.net'.$html.$additionalUrl;
-        }
-
-        return $html.$additionalUrl;
     }
 
     /**

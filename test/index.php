@@ -23,13 +23,13 @@ $myscraper = new MalScraper([
 // $result = $myscraper->getMagazine(1);
 // $result = $myscraper->getGenre('manga', 1, 2);
 
-// $result = $myscraper->getCharacterStaff('anime',1);
-// $result = $myscraper->getStat('manga', 1);
-// $result = $myscraper->getPicture('anime',1);
+// $result = $myscraper->getCharacterStaff('manga',21479);
+// $result = $myscraper->getStat('manga', 2);
+// $result = $myscraper->getPicture('manga',1);
 // $result = $myscraper->getCharacterPicture(1);
 // $result = $myscraper->getPeoplePicture(1);
-// $result = $myscraper->getVideo(34566, 1);
-// $result = $myscraper->getEpisode(20);
+// $result = $myscraper->getVideo(34566, 2);
+$result = $myscraper->getEpisode(1735, 2);
 // $result = $myscraper->getAnimeReview(1535, 2);
 // $result = $myscraper->getMangaReview(21,2);
 
@@ -37,7 +37,7 @@ $myscraper = new MalScraper([
 // $result = $myscraper->getAllMangaGenre();
 // $result = $myscraper->getAllStudioProducer();
 // $result = $myscraper->getAllMagazine();
-$result = $myscraper->getAllReview('anime', 3);
+// $result = $myscraper->getAllReview('anime', 3);
 
 // $result = $myscraper->searchAnime('naruto', 2);
 // $result = $myscraper->searchManga('naruto', 2);

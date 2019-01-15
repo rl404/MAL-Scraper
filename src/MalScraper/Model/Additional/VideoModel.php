@@ -36,7 +36,7 @@ class VideoModel extends MainModel
     {
         $this->_id = $id;
         $this->_page = $page;
-        $this->_url = $this->_myAnimeListUrl.'/anime/'.$id;
+        $this->_url = $this->_myAnimeListUrl.'/anime/'.$id.'/a/video?p='.$page;
         $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);

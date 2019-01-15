@@ -37,7 +37,7 @@ class StatModel extends MainModel
     {
         $this->_type = $type;
         $this->_id = $id;
-        $this->_url = $this->_myAnimeListUrl.'/'.$type.'/'.$id;
+        $this->_url = $this->_myAnimeListUrl.'/'.$type.'/'.$id.'/a/stats';
         $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);
@@ -173,7 +173,7 @@ class StatModel extends MainModel
     {
         $temp_vote = $each_score->find('td', 1)->find('span small', 0)->plaintext;
         $percent = $each_score->find('td', 1)->find('span', 0)->plaintext;
-        $percent = str_replace([$temp_vote, '%'], '', $percent);
+        $percent = str_replace([$temp_vote, '%', "\xc2\xa0"], '', $percent);
 
         return trim($percent);
     }
