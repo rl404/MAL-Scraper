@@ -105,16 +105,34 @@ class InfoModel extends MainModel
 
         $anime_info = $this->_parser->find('.js-scrollfix-bottom', 0);
 
-        preg_match('/(English:<\/span>)([^<]*)/', $anime_info->innertext, $english);
-        $title2['english'] = trim($english ? $english[2] : '');
+        $title2['english'] = $this->getTitle3($anime_info, 'English');
+        $title2['synonym'] = $this->getTitle3($anime_info, 'Synonyms');
+        $title2['japanese'] = $this->getTitle3($anime_info, 'Japanese');
 
-        preg_match('/(Synonyms:<\/span>)([^<]*)/', $anime_info->innertext, $synonym);
-        $title2['synonym'] = trim($synonym ? $synonym[2] : '');
+        // preg_match('/(English:<\/span>)([^<]*)/', $anime_info->innertext, $english);
+        // $title2['english'] = trim($english ? $english[2] : '');
 
-        preg_match('/(Japanese:<\/span>)([^<]*)/', $anime_info->innertext, $japanese);
-        $title2['japanese'] = trim($japanese ? $japanese[2] : '');
+        // preg_match('/(Synonyms:<\/span>)([^<]*)/', $anime_info->innertext, $synonym);
+        // $title2['synonym'] = trim($synonym ? $synonym[2] : '');
+
+        // preg_match('/(Japanese:<\/span>)([^<]*)/', $anime_info->innertext, $japanese);
+        // $title2['japanese'] = trim($japanese ? $japanese[2] : '');
 
         return $title2;
+    }
+
+    /**
+     * Get anime/manga alternative title.
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $anime_info
+     * @param string $type
+     *
+     * @return array
+     */
+    private function getTitle3($anime_info, $type)
+    {
+        preg_match('/('.$type.':<\/span>)([^<]*)/', $anime_info->innertext, $title);
+        return trim($title ? $title[2] : '');
     }
 
     /**
