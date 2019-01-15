@@ -125,13 +125,14 @@ class InfoModel extends MainModel
      * Get anime/manga alternative title.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $anime_info
-     * @param string $type
+     * @param string                             $type
      *
      * @return array
      */
     private function getTitle3($anime_info, $type)
     {
         preg_match('/('.$type.':<\/span>)([^<]*)/', $anime_info->innertext, $title);
+
         return trim($title ? $title[2] : '');
     }
 
