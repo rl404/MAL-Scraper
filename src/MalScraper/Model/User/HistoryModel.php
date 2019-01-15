@@ -26,9 +26,9 @@ class HistoryModel extends MainModel
     /**
      * Default constructor.
      *
-     * @param string $user
+     * @param string      $user
      * @param string|bool $type
-     * @param string $parserArea
+     * @param string      $parserArea
      *
      * @return void
      */

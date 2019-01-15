@@ -87,6 +87,7 @@ class CharacterModel extends MainModel
         if ($nick) {
             return substr($nick[0], 1, strlen($nick[0]) - 2);
         }
+
         return '';
     }
 
