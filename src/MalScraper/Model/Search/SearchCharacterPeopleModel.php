@@ -34,10 +34,10 @@ class SearchCharacterPeopleModel extends MainModel
     /**
      * Default constructor.
      *
-     * @param string $type
-     * @param string $query
-     * @param int|string    $page
-     * @param string $parserArea
+     * @param string     $type
+     * @param string     $query
+     * @param int|string $page
+     * @param string     $parserArea
      *
      * @return void
      */

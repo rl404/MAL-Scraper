@@ -116,7 +116,7 @@ class EpisodeModel extends MainModel
      * Get episode video title.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $each_episode
-     * @param string|bool                            $type
+     * @param string|bool                        $type
      *
      * @return string
      */
