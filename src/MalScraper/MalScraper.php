@@ -548,7 +548,7 @@ class MalScraper
      * Get user history.
      *
      * @param string $user Username
-     * @param string $type (Optional) Either anime or manga
+     * @param string|bool $type (Optional) Either anime or manga
      *
      * @return array
      */

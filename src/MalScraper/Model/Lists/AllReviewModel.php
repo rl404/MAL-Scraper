@@ -20,7 +20,7 @@ class AllReviewModel extends MainModel
     /**
      * Page number.
      *
-     * @var int
+     * @var int|string
      */
     private $_page;
 
@@ -304,30 +304,28 @@ class AllReviewModel extends MainModel
     {
         $data = [];
         $review_area = $this->_parser->find('.borderDark');
-        if (count($review_area) > 0) {
-            foreach ($this->_parser->find('.borderDark') as $each_review) {
-                $tmp = [];
+        foreach ($review_area as $each_review) {
+            $tmp = [];
 
-                $top_area = $each_review->find('.spaceit', 0);
-                $bottom_area = $top_area->next_sibling();
-                $very_bottom_area = $bottom_area->next_sibling();
+            $top_area = $each_review->find('.spaceit', 0);
+            $bottom_area = $top_area->next_sibling();
+            $very_bottom_area = $bottom_area->next_sibling();
 
-                $tmp['id'] = $this->getReviewId($very_bottom_area);
-                $tmp['source'] = $this->getReviewSource($top_area, $bottom_area);
-                $tmp['username'] = $this->getReviewUser($top_area);
-                $tmp['image'] = $this->getReviewImage($top_area);
-                $tmp['helpful'] = $this->getReviewHelpful($top_area);
-                $tmp['date'] = $this->getReviewDate($top_area);
-                if ($this->_type == 'anime') {
-                    $tmp['episode'] = $this->getReviewEpisode($top_area);
-                } else {
-                    $tmp['chapter'] = $this->getReviewEpisode($top_area);
-                }
-                $tmp['score'] = $this->getReviewScore($bottom_area);
-                $tmp['review'] = $this->getReviewText($bottom_area);
-
-                $data[] = $tmp;
+            $tmp['id'] = $this->getReviewId($very_bottom_area);
+            $tmp['source'] = $this->getReviewSource($top_area, $bottom_area);
+            $tmp['username'] = $this->getReviewUser($top_area);
+            $tmp['image'] = $this->getReviewImage($top_area);
+            $tmp['helpful'] = $this->getReviewHelpful($top_area);
+            $tmp['date'] = $this->getReviewDate($top_area);
+            if ($this->_type == 'anime') {
+                $tmp['episode'] = $this->getReviewEpisode($top_area);
+            } else {
+                $tmp['chapter'] = $this->getReviewEpisode($top_area);
             }
+            $tmp['score'] = $this->getReviewScore($bottom_area);
+            $tmp['review'] = $this->getReviewText($bottom_area);
+
+            $data[] = $tmp;
         }
 
         return $data;

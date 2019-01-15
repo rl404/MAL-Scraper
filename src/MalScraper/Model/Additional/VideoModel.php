@@ -186,7 +186,7 @@ class VideoModel extends MainModel
      */
     private function getAllInfo()
     {
-        return $data = [
+        return [
             'episode'   => $this->getEpisode(),
             'promotion' => $this->getPromotion(),
         ];

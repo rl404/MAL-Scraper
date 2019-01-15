@@ -83,10 +83,11 @@ class CharacterModel extends MainModel
     {
         $nickname = $this->_parser->find('h1', 0)->plaintext;
         $nickname = trim(preg_replace('/\s+/', ' ', $nickname));
-        preg_match('/\"([^"])*/', $nickname, $nickname);
-        if ($nickname) {
-            return substr($nickname[0], 1, strlen($nickname[0]) - 2);
+        preg_match('/\"([^"])*/', $nickname, $nick);
+        if ($nick) {
+            return substr($nick[0], 1, strlen($nick[0]) - 2);
         }
+        return '';
     }
 
     /**
@@ -167,18 +168,16 @@ class CharacterModel extends MainModel
         $html = $this->_parser->find('#content table tr', 0)->find('td', 0);
         $mediaography_area = $type == 'anime' ? $html->find('table', 0) : $html->find('table', 1);
         $mediaography_area = $mediaography_area->find('tr');
-        if ($mediaography_area) {
-            foreach ($mediaography_area as $each_media) {
-                $media_image = $each_media->find('td', 0);
-                $media_area = $each_media->find('td', 1);
+        foreach ($mediaography_area as $each_media) {
+            $media_image = $each_media->find('td', 0);
+            $media_area = $each_media->find('td', 1);
 
-                $mediaography[$mediaography_index]['image'] = $this->getVaImage($media_image);
-                $mediaography[$mediaography_index]['id'] = $this->getVaId($media_area);
-                $mediaography[$mediaography_index]['title'] = $this->getVaName($media_area);
-                $mediaography[$mediaography_index]['role'] = $this->getVaRole($media_area);
+            $mediaography[$mediaography_index]['image'] = $this->getVaImage($media_image);
+            $mediaography[$mediaography_index]['id'] = $this->getVaId($media_area);
+            $mediaography[$mediaography_index]['title'] = $this->getVaName($media_area);
+            $mediaography[$mediaography_index]['role'] = $this->getVaRole($media_area);
 
-                $mediaography_index++;
-            }
+            $mediaography_index++;
         }
 
         return $mediaography;

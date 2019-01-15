@@ -20,7 +20,7 @@ class SearchUserModel extends MainModel
     /**
      * Page number.
      *
-     * @var int
+     * @var int|string
      */
     private $_page;
 
@@ -28,7 +28,7 @@ class SearchUserModel extends MainModel
      * Default constructor.
      *
      * @param string $query
-     * @param int    $page
+     * @param int|string    $page
      * @param string $parserArea
      *
      * @return void

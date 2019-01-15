@@ -64,8 +64,8 @@ class AllGenreModel extends MainModel
     private function getGenreCount($each_genre)
     {
         $count = $each_genre->plaintext;
-        preg_match('/\([0-9,]+\)/', $count, $count);
-        $count = substr($count[0], 1, strlen($count[0]) - 2);
+        preg_match('/\([0-9,]+\)/', $count, $cnt);
+        $count = substr($cnt[0], 1, strlen($cnt[0]) - 2);
 
         return str_replace(',', '', $count);
     }

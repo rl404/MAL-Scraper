@@ -27,7 +27,7 @@ class SearchAnimeMangaModel extends MainModel
     /**
      * Page number.
      *
-     * @var int
+     * @var int|string
      */
     private $_page;
 
@@ -36,7 +36,7 @@ class SearchAnimeMangaModel extends MainModel
      *
      * @param string $type
      * @param string $query
-     * @param int    $page
+     * @param int|string    $page
      * @param string $parserArea
      *
      * @return void

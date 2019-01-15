@@ -19,7 +19,7 @@ class HistoryModel extends MainModel
     /**
      * Either anime or manga.
      *
-     * @var string
+     * @var string|bool
      */
     private $_type;
 
@@ -27,7 +27,7 @@ class HistoryModel extends MainModel
      * Default constructor.
      *
      * @param string $user
-     * @param string $type
+     * @param string|bool $type
      * @param string $parserArea
      *
      * @return void

@@ -59,7 +59,7 @@ class Helper
     /**
      * Convert characters to UTF-8.
      *
-     * @param array $array
+     * @param array|string $array
      *
      * @return array|string
      */
