@@ -745,6 +745,89 @@ class InfoModel extends MainModel
     }
 
     /**
+     * Get anime/manga recommendation.
+     *
+     * @return array
+     */
+    private function getRecommendation()
+    {
+        $recommendation = [];
+        $recommendation_area = $this->_type == 'anime' ? $this->_parser->find('#anime_recommendation', 0) : $this->_parser->find('#manga_recommendation', 0);
+        if ($recommendation_area) {
+            foreach ($recommendation_area->find('li.btn-anime') as $each_recom) {
+                $tmp = [];
+
+                $tmp['id'] = $this->getRecomId($each_recom);
+                $tmp['title'] = $this->getRecomTitle($each_recom);
+                $tmp['image'] = $this->getRecomImage($each_recom);
+                $tmp['user'] = $this->getRecomUser($each_recom);
+
+                $recommendation[] = $tmp;
+            }
+        }
+
+        return $recommendation;
+    }
+
+    /**
+     * Get recommendation id.
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $each_recom
+     *
+     * @return string
+     */
+    private function getRecomId($each_recom)
+    {
+        $id = $each_recom->find('a', 0)->href;
+        $id = explode('/', $id);
+        $id = explode('-', $id[5]);
+        if ($id[0] == $this->_id) {
+            return $id[1];
+        } else {
+            return $id[0];
+        }
+    }
+
+    /**
+     * Get recommendation title.
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $each_recom
+     *
+     * @return string
+     */
+    private function getRecomTitle($each_recom)
+    {
+        return $each_recom->find('span', 0)->plaintext;
+    }
+
+    /**
+     * Get recommendation image.
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $each_recom
+     *
+     * @return string
+     */
+    private function getRecomImage($each_recom)
+    {
+        $image = $each_recom->find('img', 0)->getAttribute('data-src');
+        return Helper::imageUrlCleaner($image);
+    }
+
+    /**
+     * Get recommendation user.
+     *
+     * @param \simplehtmldom_1_5\simple_html_dom $each_recom
+     *
+     * @return string
+     */
+    private function getRecomUser($each_recom)
+    {
+        $user = $each_recom->find('.users', 0)->plaintext;
+        $user = str_replace(['Users', 'User'], '', $user);
+        return trim($user);
+    }
+
+    /**
      * Get anime/manga all information.
      *
      * @return array
@@ -774,6 +857,7 @@ class InfoModel extends MainModel
             'staff'     => $this->getStaff(),
             'song'      => $this->getSong(),
             'review'    => $this->getReview(),
+            'recommendation' => $this->getRecommendation(),
         ];
 
         $data = array_merge($data, $data2);

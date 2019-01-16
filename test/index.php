@@ -16,13 +16,13 @@ $myscraper = new MalScraper([
     // 'to_api' => true
 ]);
 
-// $result = $myscraper->getInfo('anime', 37430);
+$result = $myscraper->getInfo('anime', 37430);
 // $result = $myscraper->getCharacter(20000);
 // $result = $myscraper->getPeople(185);
 // $result = $myscraper->getStudioProducer(1);
 // $result = $myscraper->getMagazine(1);
 // $result = $myscraper->getGenre('manga', 1, 2);
-$result = $myscraper->getReview(243131);
+// $result = $myscraper->getReview(243131);
 
 // $result = $myscraper->getCharacterStaff('manga',21479);
 // $result = $myscraper->getStat('manga', 2);
