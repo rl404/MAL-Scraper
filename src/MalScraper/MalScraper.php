@@ -18,17 +18,18 @@ namespace MalScraper;
 
 use Cache;
 use MalScraper\Helper\Helper;
+use MalScraper\Model\Additional\AnimeMangaReviewModel as AnimeMangaReview;
 use MalScraper\Model\Additional\CharacterPeoplePictureModel as CharacterPeoplePicture;
 use MalScraper\Model\Additional\CharacterStaffModel as CharacterStaff;
 use MalScraper\Model\Additional\EpisodeModel as Episode;
 use MalScraper\Model\Additional\PictureModel as Picture;
-use MalScraper\Model\Additional\ReviewModel as Review;
 use MalScraper\Model\Additional\StatModel as Stat;
 use MalScraper\Model\Additional\VideoModel as Video;
 use MalScraper\Model\General\CharacterModel as Character;
 use MalScraper\Model\General\InfoModel as Info;
 use MalScraper\Model\General\PeopleModel as People;
 use MalScraper\Model\General\ProducerModel as Producer;
+use MalScraper\Model\General\ReviewModel as Review;
 use MalScraper\Model\Lists\AllGenreModel as AllGenre;
 use MalScraper\Model\Lists\AllProducerModel as AllProducer;
 use MalScraper\Model\Lists\AllReviewModel as AllReview;
@@ -185,6 +186,18 @@ class MalScraper
     }
 
     /**
+     * Get review information.
+     *
+     * @param int|string $id id of the review
+     *
+     * @return array
+     */
+    private function getReview($id)
+    {
+        return (new Review($id))->getAllInfo();
+    }
+
+    /**
      * Get anime/manga character + staff complete list.
      *
      * @param string     $type Either anime or manga
@@ -274,17 +287,29 @@ class MalScraper
     }
 
     /**
-     * Get anime/manga additional review.
+     * Get anime additional review.
      *
-     * @param string     $type Either anime or manga
-     * @param int|string $id   id of the anime.manga
+     * @param int|string $id   id of the anime
      * @param int|string $page (Optional) Page number
      *
      * @return array
      */
-    private function getReview($type, $id, $page = 1)
+    private function getAnimeReview($id, $page = 1)
     {
-        return (new Review($type, $id, $page))->getAllInfo();
+        return (new AnimeMangaReview('anime', $id, $page))->getAllInfo();
+    }
+
+    /**
+     * Get manga additional review.
+     *
+     * @param int|string $id   id of the manga
+     * @param int|string $page (Optional) Page number
+     *
+     * @return array
+     */
+    private function getMangaReview($id, $page = 1)
+    {
+        return (new AnimeMangaReview('manga', $id, $page))->getAllInfo();
     }
 
     /**

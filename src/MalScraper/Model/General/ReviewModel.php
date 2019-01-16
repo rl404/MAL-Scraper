@@ -1,47 +1,41 @@
 <?php
 
-namespace MalScraper\Model\Lists;
+namespace MalScraper\Model\General;
 
 use MalScraper\Helper\Helper;
 use MalScraper\Model\MainModel;
 
 /**
- * AllReviewModel class.
+ * ReviewModel class.
  */
-class AllReviewModel extends MainModel
+class ReviewModel extends MainModel
 {
     /**
-     * Either anime, manga or bestvoted.
+     * Id of the review.
+     *
+     * @var string|int
+     */
+    private $_id;
+
+    /**
+     * Either anime, manga.
      *
      * @var string
      */
     private $_type;
 
     /**
-     * Page number.
-     *
-     * @var int|string
-     */
-    private $_page;
-
-    /**
      * Default constructor.
      *
-     * @param string     $type
-     * @param string|int $page
+     * @param string|int $id
      * @param string     $parserArea
      *
      * @return void
      */
-    public function __construct($type, $page, $parserArea = '#content')
+    public function __construct($id, $parserArea = '#content')
     {
-        $this->_type = $type;
-        $this->_page = $page;
-        if ($type != 'bestvoted') {
-            $this->_url = $this->_myAnimeListUrl.'/reviews.php?t='.$type.'&p='.$page;
-        } else {
-            $this->_url = $this->_myAnimeListUrl.'/reviews.php?st='.$type.'&p='.$page;
-        }
+        $this->_id = $id;
+        $this->_url = $this->_myAnimeListUrl.'/reviews.php?id='.$id;
         $this->_parserArea = $parserArea;
 
         parent::errorCheck($this);
@@ -75,28 +69,13 @@ class AllReviewModel extends MainModel
     }
 
     /**
-     * Get page.
+     * Get id.
      *
      * @return string
      */
-    private function getPage()
+    private function getId()
     {
-        return $this->_page;
-    }
-
-    /**
-     * Get review user.
-     *
-     * @param \simplehtmldom_1_5\simple_html_dom $very_bottom_area
-     *
-     * @return string
-     */
-    private function getReviewId($very_bottom_area)
-    {
-        $id = $very_bottom_area->find('a', 0)->href;
-        $id = explode('?id=', $id);
-
-        return $id[1];
+        return $this->_id;
     }
 
     /**
@@ -303,30 +282,25 @@ class AllReviewModel extends MainModel
     private function getAllInfo()
     {
         $data = [];
-        $review_area = $this->_parser->find('.borderDark');
-        foreach ($review_area as $each_review) {
-            $tmp = [];
+        $review_area = $this->_parser->find('.borderDark', 0);
 
-            $top_area = $each_review->find('.spaceit', 0);
-            $bottom_area = $top_area->next_sibling();
-            $very_bottom_area = $bottom_area->next_sibling();
+        $top_area = $review_area->find('.spaceit', 0);
+        $bottom_area = $top_area->next_sibling();
+        $very_bottom_area = $bottom_area->next_sibling();
 
-            $tmp['id'] = $this->getReviewId($very_bottom_area);
-            $tmp['source'] = $this->getReviewSource($top_area, $bottom_area);
-            $tmp['username'] = $this->getReviewUser($top_area);
-            $tmp['image'] = $this->getReviewImage($top_area);
-            $tmp['helpful'] = $this->getReviewHelpful($top_area);
-            $tmp['date'] = $this->getReviewDate($top_area);
-            if ($this->_type == 'anime') {
-                $tmp['episode'] = $this->getReviewEpisode($top_area);
-            } else {
-                $tmp['chapter'] = $this->getReviewEpisode($top_area);
-            }
-            $tmp['score'] = $this->getReviewScore($bottom_area);
-            $tmp['review'] = $this->getReviewText($bottom_area);
-
-            $data[] = $tmp;
+        $data['id'] = $this->getId();
+        $data['source'] = $this->getReviewSource($top_area, $bottom_area);
+        $data['username'] = $this->getReviewUser($top_area);
+        $data['image'] = $this->getReviewImage($top_area);
+        $data['helpful'] = $this->getReviewHelpful($top_area);
+        $data['date'] = $this->getReviewDate($top_area);
+        if ($this->_type == 'anime') {
+            $data['episode'] = $this->getReviewEpisode($top_area);
+        } else {
+            $data['chapter'] = $this->getReviewEpisode($top_area);
         }
+        $data['score'] = $this->getReviewScore($bottom_area);
+        $data['review'] = $this->getReviewText($bottom_area);
 
         return $data;
     }
