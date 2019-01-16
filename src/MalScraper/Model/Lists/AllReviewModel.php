@@ -131,6 +131,7 @@ class AllReviewModel extends MainModel
         $type = $source_area->find('small', 0)->plaintext;
         $type = str_replace(['(', ')'], '', $type);
         $this->_type = strtolower($type);
+
         return strtolower($type);
     }
 
