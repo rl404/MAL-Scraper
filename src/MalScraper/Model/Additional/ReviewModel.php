@@ -6,9 +6,9 @@ use MalScraper\Helper\Helper;
 use MalScraper\Model\MainModel;
 
 /**
- * AnimeMangaReviewModel class.
+ * ReviewModel class.
  */
-class AnimeMangaReviewModel extends MainModel
+class ReviewModel extends MainModel
 {
     /**
      * Either anime or manga.

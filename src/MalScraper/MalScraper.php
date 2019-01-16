@@ -18,7 +18,7 @@ namespace MalScraper;
 
 use Cache;
 use MalScraper\Helper\Helper;
-use MalScraper\Model\Additional\AnimeMangaReviewModel as AnimeMangaReview;
+use MalScraper\Model\Additional\ReviewModel as Review;
 use MalScraper\Model\Additional\CharacterPeoplePictureModel as CharacterPeoplePicture;
 use MalScraper\Model\Additional\CharacterStaffModel as CharacterStaff;
 use MalScraper\Model\Additional\EpisodeModel as Episode;
@@ -274,29 +274,17 @@ class MalScraper
     }
 
     /**
-     * Get anime additional review.
+     * Get anime/manga additional review.
      *
-     * @param int|string $id   id of the anime
+     * @param string $type   Either anime or manga
+     * @param int|string $id   id of the anime.manga
      * @param int|string $page (Optional) Page number
      *
      * @return array
      */
-    private function getAnimeReview($id, $page = 1)
+    private function getReview($type, $id, $page = 1)
     {
-        return (new AnimeMangaReview('anime', $id, $page))->getAllInfo();
-    }
-
-    /**
-     * Get manga additional review.
-     *
-     * @param int|string $id   id of the manga
-     * @param int|string $page (Optional) Page number
-     *
-     * @return array
-     */
-    private function getMangaReview($id, $page = 1)
-    {
-        return (new AnimeMangaReview('manga', $id, $page))->getAllInfo();
+        return (new Review($type, $id, $page))->getAllInfo();
     }
 
     /**
