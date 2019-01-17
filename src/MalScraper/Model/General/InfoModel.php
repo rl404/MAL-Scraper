@@ -109,15 +109,6 @@ class InfoModel extends MainModel
         $title2['synonym'] = $this->getTitle3($anime_info, 'Synonyms');
         $title2['japanese'] = $this->getTitle3($anime_info, 'Japanese');
 
-        // preg_match('/(English:<\/span>)([^<]*)/', $anime_info->innertext, $english);
-        // $title2['english'] = trim($english ? $english[2] : '');
-
-        // preg_match('/(Synonyms:<\/span>)([^<]*)/', $anime_info->innertext, $synonym);
-        // $title2['synonym'] = trim($synonym ? $synonym[2] : '');
-
-        // preg_match('/(Japanese:<\/span>)([^<]*)/', $anime_info->innertext, $japanese);
-        // $title2['japanese'] = trim($japanese ? $japanese[2] : '');
-
         return $title2;
     }
 
