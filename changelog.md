@@ -1,5 +1,10 @@
 ## Changelog
 
+### v1.5.1 -
+- `Add` Feature: Additional anime/manga recommendation
+- `Add` Feature: Get all anime/manga recommendation list
+- `Fix` Missing recommendation in `getInfo()`
+
 ### v1.5.0 - Jan 15, 2019
 - `Add` Feature: Additional anime/manga review
 - `Add` Feature: Get all anime/manga/best-voted review list

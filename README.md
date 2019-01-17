@@ -22,6 +22,7 @@ For those who want the **REST API** one, please come [here](https://github.com/r
 - Get list of all anime or manga genre, anime studio/producer or manga magazine
 - Get list of character and staff involved in an anime or manga
 - Get list of anime, manga or best-voted review (pagination supported)
+- Get list of anime or manga recommendation (pagination supported)
 - Get result of searching, anime, manga, character, people or user (pagination supported)
 - Get seasonal anime
 - Get list of top anime from various categories (all, airing, upcoming, etc) (pagination supported)

@@ -9,7 +9,7 @@
  *
  * @since 26-09-2018
  *
- * @version 1.5.0
+ * @version 1.5.1
  *
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -34,6 +34,7 @@ use MalScraper\Model\General\ReviewModel as Review;
 use MalScraper\Model\Lists\AllGenreModel as AllGenre;
 use MalScraper\Model\Lists\AllProducerModel as AllProducer;
 use MalScraper\Model\Lists\AllReviewModel as AllReview;
+use MalScraper\Model\Lists\AllRecommendationModel as AllRecommendation;
 use MalScraper\Model\Search\SearchAnimeMangaModel as SearchAnimeManga;
 use MalScraper\Model\Search\SearchCharacterPeopleModel as SearchCharacterPeople;
 use MalScraper\Model\Search\SearchUserModel as SearchUser;
@@ -428,6 +429,19 @@ class MalScraper
     private function getAllReview($type = 'anime', $page = 1)
     {
         return (new AllReview($type, $page))->getAllInfo();
+    }
+
+    /**
+     * Get list of all recommendation.
+     *
+     * @param int|string $type Either anime or manga
+     * @param int|string $page (Optional) Page number
+     *
+     * @return array
+     */
+    private function getAllRecommendation($type = 'anime', $page = 1)
+    {
+        return (new AllRecommendation($type, $page))->getAllInfo();
     }
 
     /**
