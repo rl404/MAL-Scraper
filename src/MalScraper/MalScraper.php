@@ -18,8 +18,8 @@ namespace MalScraper;
 
 use Cache;
 use MalScraper\Helper\Helper;
-use MalScraper\Model\Additional\AnimeMangaReviewModel as AnimeMangaReview;
 use MalScraper\Model\Additional\AnimeMangaRecommendationModel as AnimeMangaRecommendation;
+use MalScraper\Model\Additional\AnimeMangaReviewModel as AnimeMangaReview;
 use MalScraper\Model\Additional\CharacterPeoplePictureModel as CharacterPeoplePicture;
 use MalScraper\Model\Additional\CharacterStaffModel as CharacterStaff;
 use MalScraper\Model\Additional\EpisodeModel as Episode;
@@ -29,13 +29,13 @@ use MalScraper\Model\Additional\VideoModel as Video;
 use MalScraper\Model\General\CharacterModel as Character;
 use MalScraper\Model\General\InfoModel as Info;
 use MalScraper\Model\General\PeopleModel as People;
-use MalScraper\Model\General\RecommendationModel as Recommendation;
 use MalScraper\Model\General\ProducerModel as Producer;
+use MalScraper\Model\General\RecommendationModel as Recommendation;
 use MalScraper\Model\General\ReviewModel as Review;
 use MalScraper\Model\Lists\AllGenreModel as AllGenre;
 use MalScraper\Model\Lists\AllProducerModel as AllProducer;
-use MalScraper\Model\Lists\AllReviewModel as AllReview;
 use MalScraper\Model\Lists\AllRecommendationModel as AllRecommendation;
+use MalScraper\Model\Lists\AllReviewModel as AllReview;
 use MalScraper\Model\Search\SearchAnimeMangaModel as SearchAnimeManga;
 use MalScraper\Model\Search\SearchCharacterPeopleModel as SearchCharacterPeople;
 use MalScraper\Model\Search\SearchUserModel as SearchUser;
@@ -204,12 +204,12 @@ class MalScraper
      * Get recommendation information.
      *
      * @param string     $type Either anime or manga
-     * @param int|string $id id of the first anime/manga
-     * @param int|string $id id of the second anime/manga
+     * @param int|string $id   id of the first anime/manga
+     * @param int|string $id   id of the second anime/manga
      *
      * @return array
      */
-    private function getRecommendation($type = 'anime', $id1, $id2)
+    private function getRecommendation($type, $id1, $id2)
     {
         return (new Recommendation($type, $id1, $id2))->getAllInfo();
     }
@@ -332,7 +332,7 @@ class MalScraper
     /**
      * Get anime additional recommendation.
      *
-     * @param int|string $id   id of the anime
+     * @param int|string $id id of the anime
      *
      * @return array
      */
@@ -344,7 +344,7 @@ class MalScraper
     /**
      * Get manga additional recommendation.
      *
-     * @param int|string $id   id of the manga
+     * @param int|string $id id of the manga
      *
      * @return array
      */

@@ -25,7 +25,7 @@ class RecommendationModel extends MainModel
     private $_id1;
 
     /**
-     * Id of the first anime/manga
+     * Id of the first anime/manga.
      *
      * @var int|string
      */
@@ -34,10 +34,10 @@ class RecommendationModel extends MainModel
     /**
      * Default constructor.
      *
-     * @param string $type
+     * @param string     $type
      * @param string|int $id1
      * @param string|int $id2
-     * @param string $parserArea
+     * @param string     $parserArea
      *
      * @return void
      */
@@ -112,6 +112,7 @@ class RecommendationModel extends MainModel
         $source_area = $each_recom->find('table tr', 0);
         $source['liked'] = $this->getSourceLiked($source_area, 0);
         $source['recommendation'] = $this->getSourceLiked($source_area, 1);
+
         return $source;
     }
 
@@ -119,7 +120,7 @@ class RecommendationModel extends MainModel
      * Get source liked.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $source_area
-     * @param int $key
+     * @param int                                $key
      *
      * @return array
      */
@@ -131,6 +132,7 @@ class RecommendationModel extends MainModel
         $liked['title'] = $this->getSourceTitle($source_area);
         $liked['type'] = $this->getType();
         $liked['image'] = $this->getSourceImage($source_area);
+
         return $liked;
     }
 
@@ -145,6 +147,7 @@ class RecommendationModel extends MainModel
     {
         $id = $source_area->find('a', 0)->href;
         $id = explode('/', $id);
+
         return $id[4];
     }
 
@@ -170,6 +173,7 @@ class RecommendationModel extends MainModel
     private function getSourceImage($source_area)
     {
         $image = $source_area->find('img', 0)->src;
+
         return Helper::imageUrlCleaner($image);
     }
 
@@ -191,6 +195,7 @@ class RecommendationModel extends MainModel
 
             $recommendation[] = $tmp;
         }
+
         return $recommendation;
     }
 
@@ -217,6 +222,7 @@ class RecommendationModel extends MainModel
     {
         $text = $each_recom->find('span', 0)->plaintext;
         $text = preg_replace('/\s{2,}/', "\n", $text);
+
         return $text;
     }
 

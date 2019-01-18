@@ -91,6 +91,7 @@ class AnimeMangaRecommendationModel extends MainModel
     {
         $id = $content_area->find('a', 0)->href;
         $id = explode('/', $id);
+
         return $id[4];
     }
 
@@ -116,6 +117,7 @@ class AnimeMangaRecommendationModel extends MainModel
     private function getRecomImage($each_recom)
     {
         $image = $each_recom->find('img', 0)->getAttribute('data-src');
+
         return Helper::imageUrlCleaner($image);
     }
 
