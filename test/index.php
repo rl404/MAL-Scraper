@@ -34,7 +34,7 @@ $myscraper = new MalScraper([
 // $result = $myscraper->getEpisode(1735, 2);
 // $result = $myscraper->getAnimeReview(37430);
 // $result = $myscraper->getMangaReview(21,2);
-// $result = $myscraper->getAnimeRecommendation(37430);
+// $result = $myscraper->getAnimeRecommendation(150);
 $result = $myscraper->getMangaRecommendation(87609);
 
 // $result = $myscraper->getAllAnimeGenre();

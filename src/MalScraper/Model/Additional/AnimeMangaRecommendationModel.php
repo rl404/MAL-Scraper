@@ -223,7 +223,7 @@ class AnimeMangaRecommendationModel extends MainModel
             $tmp['image'] = $this->getRecomImage($each_recom);
             $tmp['username'] = $this->getRecomUsername($content_area);
             $tmp['recommendation'] = $this->getRecomText($content_area);
-            // $tmp['other'] = $this->getRecomOther($other_area);
+            $tmp['other'] = $this->getRecomOther($other_area);
 
             $data[] = $tmp;
         }
