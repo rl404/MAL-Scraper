@@ -27,9 +27,9 @@ class AllRecommendationModel extends MainModel
     /**
      * Default constructor.
      *
-     * @param string $type
+     * @param string     $type
      * @param string|int $page
-     * @param string $parserArea
+     * @param string     $parserArea
      *
      * @return void
      */
@@ -103,6 +103,7 @@ class AllRecommendationModel extends MainModel
     {
         $date = $each_recom->find('table', 0)->next_sibling()->next_sibling()->plaintext;
         $date = explode('-', $date);
+
         return trim($date[1]);
     }
 
@@ -119,6 +120,7 @@ class AllRecommendationModel extends MainModel
         $source_area = $each_recom->find('table tr', 0);
         $source['liked'] = $this->getSourceLiked($source_area, 0);
         $source['recommendation'] = $this->getSourceLiked($source_area, 1);
+
         return $source;
     }
 
@@ -126,7 +128,7 @@ class AllRecommendationModel extends MainModel
      * Get source liked.
      *
      * @param \simplehtmldom_1_5\simple_html_dom $source_area
-     * @param int $key
+     * @param int                                $key
      *
      * @return array
      */
@@ -138,6 +140,7 @@ class AllRecommendationModel extends MainModel
         $liked['title'] = $this->getSourceTitle($source_area);
         $liked['type'] = $this->getType();
         $liked['image'] = $this->getSourceImage($source_area);
+
         return $liked;
     }
 
@@ -152,6 +155,7 @@ class AllRecommendationModel extends MainModel
     {
         $id = $source_area->find('a', 0)->href;
         $id = explode('/', $id);
+
         return $id[4];
     }
 
@@ -177,6 +181,7 @@ class AllRecommendationModel extends MainModel
     private function getSourceImage($source_area)
     {
         $image = $source_area->find('img', 0)->getAttribute('data-src');
+
         return Helper::imageUrlCleaner($image);
     }
 
@@ -191,6 +196,7 @@ class AllRecommendationModel extends MainModel
     {
         $text = $each_recom->find('.recommendations-user-recs-text', 0)->plaintext;
         $text = preg_replace('/\s{2,}/', "\n", $text);
+
         return $text;
     }
 

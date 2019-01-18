@@ -801,6 +801,7 @@ class InfoModel extends MainModel
     private function getRecomImage($each_recom)
     {
         $image = $each_recom->find('img', 0)->getAttribute('data-src');
+
         return Helper::imageUrlCleaner($image);
     }
 
@@ -815,6 +816,7 @@ class InfoModel extends MainModel
     {
         $user = $each_recom->find('.users', 0)->plaintext;
         $user = str_replace(['Users', 'User'], '', $user);
+
         return trim($user);
     }
 
@@ -843,11 +845,11 @@ class InfoModel extends MainModel
         $data = array_merge($data, $this->getOtherInfo());
 
         $data2 = [
-            'related'   => $this->getRelated(),
-            'character' => $this->getCharacter(),
-            'staff'     => $this->getStaff(),
-            'song'      => $this->getSong(),
-            'review'    => $this->getReview(),
+            'related'        => $this->getRelated(),
+            'character'      => $this->getCharacter(),
+            'staff'          => $this->getStaff(),
+            'song'           => $this->getSong(),
+            'review'         => $this->getReview(),
             'recommendation' => $this->getRecommendation(),
         ];
 
