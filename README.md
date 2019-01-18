@@ -16,8 +16,8 @@ _Mal-Scraper_ is using [Sunra's](https://github.com/sunra/php-simple-html-dom-pa
 For those who want the **REST API** one, please come [here](https://github.com/rl404/MAL-Scraper-API).
 
 ### Features
-- Get general information of anime, manga, character (from anime and manga), people (voice actor, author, staff, etc), or review
-- Get additional information of anime or manga video, episode, review, character and staff, statistic and score, or picture
+- Get general information of anime, manga, character (from anime and manga), people (voice actor, author, staff, etc), review or recommendation
+- Get additional information of anime or manga video, episode, review, recommendation, character and staff, statistic and score, or picture
 - Get list of anime or manga of selected studio/producer, magazine, or genre
 - Get list of all anime or manga genre, anime studio/producer or manga magazine
 - Get list of character and staff involved in an anime or manga

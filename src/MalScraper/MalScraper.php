@@ -29,6 +29,7 @@ use MalScraper\Model\Additional\VideoModel as Video;
 use MalScraper\Model\General\CharacterModel as Character;
 use MalScraper\Model\General\InfoModel as Info;
 use MalScraper\Model\General\PeopleModel as People;
+use MalScraper\Model\General\RecommendationModel as Recommendation;
 use MalScraper\Model\General\ProducerModel as Producer;
 use MalScraper\Model\General\ReviewModel as Review;
 use MalScraper\Model\Lists\AllGenreModel as AllGenre;
@@ -197,6 +198,20 @@ class MalScraper
     private function getReview($id)
     {
         return (new Review($id))->getAllInfo();
+    }
+
+    /**
+     * Get recommendation information.
+     *
+     * @param string     $type Either anime or manga
+     * @param int|string $id id of the first anime/manga
+     * @param int|string $id id of the second anime/manga
+     *
+     * @return array
+     */
+    private function getRecommendation($type = 'anime', $id1, $id2)
+    {
+        return (new Recommendation($type, $id1, $id2))->getAllInfo();
     }
 
     /**
