@@ -35,7 +35,7 @@ $myscraper = new MalScraper([
 // $result = $myscraper->getAnimeReview(37430);
 // $result = $myscraper->getMangaReview(21,2);
 // $result = $myscraper->getAnimeRecommendation(150);
-$result = $myscraper->getMangaRecommendation(87609);
+// $result = $myscraper->getMangaRecommendation(87609);
 
 // $result = $myscraper->getAllAnimeGenre();
 // $result = $myscraper->getAllMangaGenre();
@@ -50,7 +50,7 @@ $result = $myscraper->getMangaRecommendation(87609);
 // $result = $myscraper->searchPeople('masashi', 2);
 // $result = $myscraper->searchUser('rl404');
 
-// $result = $myscraper->getSeason(2017, 'winter');
+$result = $myscraper->getSeason(2017, 'winter');
 
 // $result = $myscraper->getTopAnime(1);
 // $result = $myscraper->getTopManga();

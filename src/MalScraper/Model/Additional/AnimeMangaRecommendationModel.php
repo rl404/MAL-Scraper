@@ -161,7 +161,7 @@ class AnimeMangaRecommendationModel extends MainModel
     private function getRecomOther($other_area)
     {
         $other = [];
-        if ($other_area) {
+        if (!empty($other_area)) {
             foreach ($other_area->find('.borderClass') as $each_other) {
                 $tmp = [];
 

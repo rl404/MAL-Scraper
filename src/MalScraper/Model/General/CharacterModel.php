@@ -168,17 +168,19 @@ class CharacterModel extends MainModel
 
         $html = $this->_parser->find('#content table tr', 0)->find('td', 0);
         $mediaography_area = $type == 'anime' ? $html->find('table', 0) : $html->find('table', 1);
-        $mediaography_area = $mediaography_area->find('tr');
-        foreach ($mediaography_area as $each_media) {
-            $media_image = $each_media->find('td', 0);
-            $media_area = $each_media->find('td', 1);
+        if ($mediaography_area) {
+            $mediaography_area = $mediaography_area->find('tr');
+            foreach ($mediaography_area as $each_media) {
+                $media_image = $each_media->find('td', 0);
+                $media_area = $each_media->find('td', 1);
 
-            $mediaography[$mediaography_index]['image'] = $this->getVaImage($media_image);
-            $mediaography[$mediaography_index]['id'] = $this->getVaId($media_area);
-            $mediaography[$mediaography_index]['title'] = $this->getVaName($media_area);
-            $mediaography[$mediaography_index]['role'] = $this->getVaRole($media_area);
+                $mediaography[$mediaography_index]['image'] = $this->getVaImage($media_image);
+                $mediaography[$mediaography_index]['id'] = $this->getVaId($media_area);
+                $mediaography[$mediaography_index]['title'] = $this->getVaName($media_area);
+                $mediaography[$mediaography_index]['role'] = $this->getVaRole($media_area);
 
-            $mediaography_index++;
+                $mediaography_index++;
+            }
         }
 
         return $mediaography;

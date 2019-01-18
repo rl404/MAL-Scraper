@@ -287,7 +287,6 @@ class ReviewModel extends MainModel
 
         $top_area = $review_area->find('.spaceit', 0);
         $bottom_area = $top_area->next_sibling();
-        $very_bottom_area = $bottom_area->next_sibling();
 
         $data['id'] = $this->getId();
         $data['source'] = $this->getReviewSource($top_area, $bottom_area);

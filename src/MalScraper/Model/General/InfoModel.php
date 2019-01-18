@@ -118,7 +118,7 @@ class InfoModel extends MainModel
      * @param \simplehtmldom_1_5\simple_html_dom $anime_info
      * @param string                             $type
      *
-     * @return array
+     * @return string
      */
     private function getTitle3($anime_info, $type)
     {
@@ -250,20 +250,22 @@ class InfoModel extends MainModel
 
         $anime_info = $this->_parser->find('.js-scrollfix-bottom', 0);
         $other_info = (count($anime_info->find('h2')) > 2) ? $anime_info->find('h2', 1) : $anime_info->find('h2', 0);
-        $next_info = $other_info->next_sibling();
-        while (true) {
-            $info_type = $next_info->find('span', 0)->plaintext;
+        if ($other_info) {
+            $next_info = $other_info->next_sibling();
+            while (true) {
+                $info_type = $next_info->find('span', 0)->plaintext;
 
-            $clean_info_type = strtolower(str_replace(': ', '', $info_type));
-            $clean_info_value = $this->getCleanInfo($info_type, $next_info);
-            $clean_info_value = $this->getCleanerInfo1($clean_info_type, $clean_info_value);
-            $clean_info_value = $this->getCleanerInfo2($next_info, $clean_info_type, $clean_info_value);
+                $clean_info_type = strtolower(str_replace(': ', '', $info_type));
+                $clean_info_value = $this->getCleanInfo($info_type, $next_info);
+                $clean_info_value = $this->getCleanerInfo1($clean_info_type, $clean_info_value);
+                $clean_info_value = $this->getCleanerInfo2($next_info, $clean_info_type, $clean_info_value);
 
-            $info[$clean_info_type] = $clean_info_value;
+                $info[$clean_info_type] = $clean_info_value;
 
-            $next_info = $next_info->next_sibling();
-            if ($next_info->tag == 'h2' || $next_info->tag == 'br') {
-                break;
+                $next_info = $next_info->next_sibling();
+                if ($next_info->tag == 'h2' || $next_info->tag == 'br') {
+                    break;
+                }
             }
         }
 

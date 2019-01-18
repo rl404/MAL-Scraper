@@ -130,7 +130,7 @@ class TopPeopleModel extends MainModel
      *
      * @param \simplehtmldom_1_5\simple_html_dom $each_char
      *
-     * @return array
+     * @return string
      */
     private function getBirthday($each_char)
     {
