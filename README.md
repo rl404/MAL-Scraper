@@ -55,7 +55,7 @@ $myMalScraper = new MalScraper();
 // Caching feature
 $myMalScraper = new MalScraper([
     'enable_cache' => true,     // enable caching
-    'cache_time' => 3600        // (optional) caching time in seconds (1 day as default)
+    'cache_time' => 3600,       // (optional) caching time in seconds (1 day as default)
     'cache_path' => '../Cache/' // (optional) caching path (/src/MalScraper/Cache/ as default)
 ]);
 
