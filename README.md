@@ -56,6 +56,7 @@ $myMalScraper = new MalScraper();
 $myMalScraper = new MalScraper([
     'enable_cache' => true,     // enable caching
     'cache_time' => 3600        // (optional) caching time in seconds (1 day as default)
+    'cache_path' => '../Cache/' // (optional) caching path (/src/MalScraper/Cache/ as default)
 ]);
 
 // Return http response
@@ -63,6 +64,8 @@ $myMalScraper = new MalScraper([
     'to_api' => true,         	// convert return to http response
 ]);
 ```
+
+> If you set the `cache_path`, don't forget the last slash ('/') of the folder location.
 
 ### Example
 ```php

@@ -1,5 +1,8 @@
 ## Changelog
 
+### v1.5.2 - Feb 05, 2019
+- `Add` Feature: Configurable cache path
+
 ### v1.5.1 - Jan 18, 2019
 - `Add` Feature: Get anime/manga recommendation
 - `Add` Feature: Additional anime/manga recommendation
