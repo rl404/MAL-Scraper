@@ -12,7 +12,7 @@ ini_set('max_execution_time', 0);
 
 $myscraper = new MalScraper([
     'enable_cache' => true,
-    'cache_path' => '../cache/',
+    'cache_path'   => '../cache/',
     'cache_time'   => 2,
     // 'to_api' => true
 ]);
