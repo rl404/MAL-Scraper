@@ -76,6 +76,13 @@ class MalScraper
     private $_cache_time = 86400;
 
     /**
+     * Cache path.
+     *
+     * @var string
+     */
+    private $_cache_path = __DIR__.'/Cache/';
+
+    /**
      * Convert to http response.
      *
      * @var bool
@@ -97,7 +104,12 @@ class MalScraper
 
             // create cache class
             $this->_cache = new Cache();
-            $this->_cache->setCachePath(dirname(__FILE__).'/Cache/');
+
+            // set cache path
+            if (!empty($config['cache_path'])) {
+                $this->_cache_path = $config['cache_path'];
+            }
+            $this->_cache->setCachePath($this->_cache_path);
 
             // set cache time
             if (!empty($config['cache_time'])) {

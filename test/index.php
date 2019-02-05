@@ -11,19 +11,20 @@ ini_set('max_execution_time', 0);
 //
 
 $myscraper = new MalScraper([
-    // 'enable_cache' => true,
-    // 'cache_time'   => 2,
+    'enable_cache' => true,
+    'cache_path' => '../cache/',
+    'cache_time'   => 2,
     // 'to_api' => true
 ]);
 
-// $result = $myscraper->getInfo('anime', 37430);
+$result = $myscraper->getInfo('anime', 1);
 // $result = $myscraper->getCharacter(20000);
 // $result = $myscraper->getPeople(185);
 // $result = $myscraper->getStudioProducer(1);
 // $result = $myscraper->getMagazine(1);
 // $result = $myscraper->getGenre('manga', 1, 2);
-// $result = $myscraper->getReview(299320);
-// $result = $myscraper->getRecommendation('manga', 2, 583);
+// $result = $myscraper->getReview(100141);
+// $result = $myscraper->getRecommendation('anime', 31859, 31859);
 
 // $result = $myscraper->getCharacterStaff('manga',21479);
 // $result = $myscraper->getStat('manga', 2);
@@ -34,14 +35,14 @@ $myscraper = new MalScraper([
 // $result = $myscraper->getEpisode(1735, 2);
 // $result = $myscraper->getAnimeReview(37430);
 // $result = $myscraper->getMangaReview(21,2);
-// $result = $myscraper->getAnimeRecommendation(150);
+// $result = $myscraper->getAnimeRecommendation(1);
 // $result = $myscraper->getMangaRecommendation(87609);
 
 // $result = $myscraper->getAllAnimeGenre();
 // $result = $myscraper->getAllMangaGenre();
 // $result = $myscraper->getAllStudioProducer();
 // $result = $myscraper->getAllMagazine();
-// $result = $myscraper->getAllReview('bestvoted', 2);
+// $result = $myscraper->getAllReview('anime');
 // $result = $myscraper->getAllRecommendation('anime');
 
 // $result = $myscraper->searchAnime('naruto', 2);
@@ -50,7 +51,7 @@ $myscraper = new MalScraper([
 // $result = $myscraper->searchPeople('masashi', 2);
 // $result = $myscraper->searchUser('rl404');
 
-$result = $myscraper->getSeason(2017, 'winter');
+// $result = $myscraper->getSeason(2017, 'winter');
 
 // $result = $myscraper->getTopAnime(1);
 // $result = $myscraper->getTopManga();
