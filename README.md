@@ -1,7 +1,7 @@
 <p align=center><img src="https://raw.githubusercontent.com/rl404/MyAnimeList/master/Images/malscraper-logo.png"><br>
 <a href="https://php.net/"><img src="https://img.shields.io/badge/php-%3E%3D5.4-8892BF.svg"></a>
 <a href="https://styleci.io/repos/146173202"><img src="https://styleci.io/repos/146173202/shield?branch=master&style=flat" alt="StyleCI Status"></a>
-<a href="https://www.codacy.com/app/rl404/MAL-Scraper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rl404/MAL-Scraper&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/b91bdd9108c14b7bb434337d16bfde9b" alt="Codacy Status"></a>
+<a href="https://www.codefactor.io/repository/github/rl404/mal-scraper"><img src="https://www.codefactor.io/repository/github/rl404/mal-scraper/badge" alt="Code Factor"></a>
 <a href="https://scrutinizer-ci.com/g/rl404/MAL-Scraper/?branch=master"><img src="https://scrutinizer-ci.com/g/rl404/MAL-Scraper/badges/quality-score.png?b=master" alt="Scrutinizer Score"></a>
 <a href="https://packagist.org/packages/rl404/mal-scraper"><img src="https://poser.pugx.org/rl404/mal-scraper/v/stable" alt="Stable Version"></a>
 <a href="https://packagist.org/packages/rl404/mal-scraper"><img src="https://poser.pugx.org/rl404/mal-scraper/downloads" alt="Total Downloads"></a>
