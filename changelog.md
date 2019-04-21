@@ -1,5 +1,8 @@
 ## Changelog
 
+### v1.5.3 - Apr 21, 20199
+- `Update` PHP DOM parser version
+
 ### v1.5.2 - Feb 05, 2019
 - `Add` Feature: Configurable cache path
 

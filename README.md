@@ -41,8 +41,8 @@ _More will be coming soon..._
 
 #### Dependencies
 - PHP 5.4+
-- rl404/simple-php-cache 1.6.1
-- rl404/php-simple-html-dom-parser 1.5.3
+- rl404/simple-php-cache 1.6.1+
+- rl404/php-simple-html-dom-parser 1.5.3+
 
 ## Usage
 ```php
