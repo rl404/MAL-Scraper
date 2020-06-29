@@ -1,3 +1,5 @@
+> Go [here](https://github.com/rl404/go-malscraper) for a better and more updated version.
+
 <p align=center><img src="https://raw.githubusercontent.com/rl404/MyAnimeList/master/Images/malscraper-logo.png"><br>
 <a href="https://php.net/"><img src="https://img.shields.io/badge/php-%3E%3D5.4-8892BF.svg"></a>
 <a href="https://styleci.io/repos/146173202"><img src="https://styleci.io/repos/146173202/shield?branch=master&style=flat" alt="StyleCI Status"></a>
